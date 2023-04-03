@@ -8,6 +8,7 @@ import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import { get } from "../../servises/axios/api";
 s
+asdsadsd
 export default function DataTable({data, columns}) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
