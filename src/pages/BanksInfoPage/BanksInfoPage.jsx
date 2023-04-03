@@ -13,6 +13,7 @@ export default function BanksInfoPage() {
         console.log(error);
       });
   }, []);
+  
   const columns = [
     {
       key: "bankCode",
@@ -23,6 +24,9 @@ export default function BanksInfoPage() {
       title: "نام بانک",
     },
   ];
+  
+  console.log(data);
+  console.log(columns);
   return (
     <Content data={data} columns={columns}/>
   )

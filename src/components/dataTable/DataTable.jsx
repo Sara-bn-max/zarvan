@@ -7,10 +7,6 @@ import SearchBox from "../searchbox/SearchBox";
 import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import { get } from "../../servises/axios/api";
-a
-
-adsads
-
 
 export default function DataTable({data, columns}) {
   const [info, setInfo] = useState([]);
@@ -20,8 +16,6 @@ export default function DataTable({data, columns}) {
   const [totalPages, setTotalPages] = useState(0);
   // const [tableColumns, setTableColumns] = useState([]);
 
-  console.log(data);
-  console.log(columns);
   ////handle bank data/////
   // useEffect(() => {
   //   get(`/ACCBank/GetAllBanks/`)
