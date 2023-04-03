@@ -1,0 +1,30 @@
+@font-face {
+font-family: "iran-sans";
+  src: local("iran-sans"), url(./assets/fonts/IRAN.ttf) format("truetype");
+}
+* {
+  font-family: "iran-sans";
+  direction: rtl !important;
+  font-size: 13px;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  direction: rtl !important;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #668bb540;
+  position: relative;
+}
+a {
+  text-decoration: none;
+}
+.centered-style{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}

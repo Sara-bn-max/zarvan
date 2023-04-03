@@ -1,0 +1,15 @@
+.customBox {
+  width: 96vw;
+  margin: 2vh 2vw;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 3vh 3vw;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.handleFlex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: stretch;
+}

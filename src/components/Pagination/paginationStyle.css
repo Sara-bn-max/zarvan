@@ -1,0 +1,9 @@
+.customPagination{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        margin: 10px auto;
+}
