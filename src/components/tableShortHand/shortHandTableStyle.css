@@ -1,0 +1,17 @@
+.custom-rtl-btns{
+    border-radius: 6px;
+    overflow: hidden;
+}
+.custom-rtl-btns > button > *{
+    min-width: 25px;
+    min-height: 25px;
+    font-weight: bolder;
+}
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.btn-group>.btn:not(:first-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

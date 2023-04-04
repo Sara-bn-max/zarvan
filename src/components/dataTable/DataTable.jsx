@@ -6,28 +6,16 @@ import Pagination from "../Pagination/Pagination";
 import SearchBox from "../searchbox/SearchBox";
 import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
-import { get } from "../../servises/axios/api";
+import CustomModal from "../CustomModal/CustomModal";
 
-export default function DataTable({ data, columns }) {
+export default function DataTable({ data, columns, modalBody, handleAccept }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
-  // const [tableColumns, setTableColumns] = useState([columns]);
+  const [show, setShow] = useState(false);
 
-  ////handle bank data/////
-  // useEffect(() => {
-  //   get(`/ACCBank/GetAllBanks/`)
-  //     .then((response) => {
-  //       setInfo(response.data);
-  //       setFilteredData(response.data);
-  //       setTotalPages(Math.ceil(response.data.length / itemsPerPage));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [itemsPerPage]);
   useEffect(() => {
     setInfo(data);
     setFilteredData(data);
@@ -64,9 +52,9 @@ export default function DataTable({ data, columns }) {
       );
     });
     setFilteredData(filtered);
+    setTotalPages(Math.ceil(filtered.length / itemsPerPage)); // <-- update totalPages
     setCurrentPage(1); // reset current page
   };
-
   const handleSearchByName = (e) => {
     const query = e.target.value.toLowerCase();
     const filtered = info.filter((item) => {
@@ -85,7 +73,7 @@ export default function DataTable({ data, columns }) {
     setFilteredData(filtered);
     setCurrentPage(1); // reset current page
   };
-  /////////HANDLE TABLE
+  /////////HANDLE TABLE///////
 
   const infoThead = !info ? (
     <Loading />
@@ -95,14 +83,12 @@ export default function DataTable({ data, columns }) {
   const infoTbody = !info ? (
     <Loading />
   ) : (
-    data.map((row, index) => (
-      <>
-        <tr key={index}>
-          {columns.map((column, index) => (
-            <td key={index}>{row[column.customKey]}</td>
-          ))}
-        </tr>
-      </>
+    paginatedData.map((row, index) => (
+      <tr key={index}>
+        {columns.map((column, index) => (
+          <td key={index}>{row[column.customKey]}</td>
+        ))}
+      </tr>
     ))
   );
 
@@ -141,6 +127,14 @@ export default function DataTable({ data, columns }) {
               onChange={setCurrentPage}
             />
             <ShortHandTable />
+             <CustomModal
+              modalBody={modalBody}
+              modalClose={() => setShow(false)}
+              handleAccept={handleAccept}
+              modalAccept
+              showOn={show}
+              handleModalClose
+            />
           </>
         )}
       </div>
