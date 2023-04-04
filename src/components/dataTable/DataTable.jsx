@@ -8,13 +8,13 @@ import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import { get } from "../../servises/axios/api";
 
-export default function DataTable({data, columns}) {
+export default function DataTable({ data, columns }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
-  // const [tableColumns, setTableColumns] = useState([]);
+  // const [tableColumns, setTableColumns] = useState([columns]);
 
   ////handle bank data/////
   // useEffect(() => {
@@ -29,10 +29,9 @@ export default function DataTable({data, columns}) {
   //     });
   // }, [itemsPerPage]);
   useEffect(() => {
-      setInfo(data);
-      setFilteredData(data);
-      setTotalPages(Math.ceil(data.length / itemsPerPage));
-    
+    setInfo(data);
+    setFilteredData(data);
+    setTotalPages(Math.ceil(data.length / itemsPerPage));
   }, [itemsPerPage]);
   if (info !== null) {
     localStorage.setItem("banksData", JSON.stringify(info));
@@ -88,52 +87,24 @@ export default function DataTable({data, columns}) {
   };
   /////////HANDLE TABLE
 
-  // const infoThead = !info ? (
-  //   <Loading />
-  // ) : (
-  //   tableColumns.map((item, index) => {
-  //     return (
-  //       <th key={index} value={item.key}>
-  //         {item.title}
-  //       </th>
-  //     );
-  //   })
-  // );
-  const infoTr = !info ? (
+  const infoThead = !info ? (
     <Loading />
   ) : (
-    paginatedData.map((item, index) => {
-      return (
-        <tr key={index}>
-          <td>{item.bankCode}</td>
-          <td>{item.bankName}</td>
-        </tr>
-      );
-    })
+    columns.map((column, index) => <th key={index}>{column.title}</th>)
   );
-  // const infoTr = !info ? (
-  //   <Loading />
-  // ) : (
-  //   tableColumns.map((item, index) => {
-  //     return (
-  //       <>
-  //         <tr key={index}>
-  //           <td>
-  //             {" "}
-  //             <SearchBox handleSearchInput={(e) => handleSearchBox(e)} />
-  //           </td>
-  //         </tr>
-  //         <tr>
-  //           {paginatedData.map((item, index) => {
-  //             <tr key={index}>
-  //               <td>{item.}</td>
-  //             </tr>;
-  //           })}
-  //         </tr>
-  //       </>
-  //     );
-  //   })
-  // );
+  const infoTbody = !info ? (
+    <Loading />
+  ) : (
+    data.map((row, index) => (
+      <>
+        <tr key={index}>
+          {columns.map((column, index) => (
+            <td key={index}>{row[column.customKey]}</td>
+          ))}
+        </tr>
+      </>
+    ))
+  );
 
   return (
     <>
@@ -148,28 +119,22 @@ export default function DataTable({data, columns}) {
           <>
             <Table responsive hover bordered>
               <thead className="bg-primary text-light">
-                <tr>
-                  {/* {infoThead} */}
-                  <th>coded</th>
-                  <th>coded</th>
-                </tr>
+                <tr>{infoThead}</tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>
-                    <SearchBox
-                      handleSearchInput={(e) => handleSearchByCode(e)}
-                    />
-                  </td>
-                  <td>
-                    <SearchBox
-                      handleSearchInput={(e) => handleSearchByName(e)}
-                    />
-                  </td>
+                  {columns.map((column, index) => (
+                    <td key={index}>
+                      <SearchBox
+                        handleSearchInput={(e) => handleSearchBox(e)}
+                      />
+                    </td>
+                  ))}
                 </tr>
-                {infoTr}
+                {infoTbody}
               </tbody>
             </Table>
+
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

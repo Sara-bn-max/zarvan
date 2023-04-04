@@ -1,20 +1,39 @@
 import axios from "axios";
 
-//baseURL
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
-export function get(url, config = {}){
-    return axios.get(url, config)
-}
+export const get = async (url, config = {}) => {
+  try {
+    const response = await axios.get(url, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-export function post(url, payload, config){
-    return axios.post(url, payload, config)
-}
+export const post = async (url, payload, config) => {
+  try {
+    const response = await axios.post(url, payload, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-export function del(url, config = {}) {
-    return axios.delete(url, config = {})
-}
+export const del = async (url, config = {}) => {
+  try {
+    const response = await axios.delete(url, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-export function put(url, payload, config) {
-    return axios.put(url, payload, config)
-}
+export const put = async (url, payload, config) => {
+  try {
+    const response = await axios.put(url, payload, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

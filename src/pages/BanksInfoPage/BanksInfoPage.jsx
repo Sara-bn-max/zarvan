@@ -1,34 +1,33 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import Content from "../../components/content/Content";
 import { get } from "../../servises/axios/api";
 
 export default function BanksInfoPage() {
-  const [data, setData] = useState(null);
+  const [infos, setinfos] = useState(null);
   useEffect(() => {
-    get(`/ACCBank/GetAllBanks/`)
+    get(`/ACCBank/GetAllBanks`)
       .then((response) => {
-        setData(response.data);
+        setinfos(response);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  
+
   const columns = [
     {
-      key: "bankCode",
+      customKey: "bankCode",
       title: "کد بانک",
     },
     {
-      key: "bankName",
+      customKey: "bankName",
       title: "نام بانک",
     },
   ];
-  
-  console.log(data);
-  console.log(columns);
-  return (
-    <Content data={data} columns={columns}/>
-  )
-}
 
+  return (
+    <div>
+      {infos ? <Content data={infos} columns={columns} /> : <p>Loading...</p>}
+    </div>
+  );
+}
