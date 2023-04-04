@@ -7,12 +7,14 @@ import Loading from "../../components/Loading/Loading";
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
   const [show, setShow] = useState(false);
+  const [bankCodes, setBankCodeArray] = useState([]);
 
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
     get(`/ACCBank/GetAllBanks`)
       .then((response) => {
         setinfos(response);
+        setBankCodeArray(response.bankCode)
       })
       .catch((error) => {
         console.log(error);
@@ -52,14 +54,37 @@ export default function BanksInfoPage() {
       </Form.Group>
     </div>
   );
+//   if (infos) {
+//   const newBankCodeArray = infos.map((info) => {
+//     if (Array.isArray(info.bankCode)) {
+//       const newBankCode = [...info.bankCode, ...bankCodes];
+//       return newBankCode;
+//     } else {
+//       // handle the case where info.bankCode is not an array
+//     }
+//   });
+//   setBankCodeArray(newBankCodeArray);
+// }
+console.log(bankCodes);
+
+  
+  /////HANDLE OPEN ADD MODAL /////
+  const handleAdd = () => {
+    // const newankCode = infos.ba;
+    // const newwcode = newankCode++;
+    // console.log(newwcode);
+    setShow(true);
+  };
   return (
     <div>
       {infos ? (
         <Content
           data={infos}
           columns={columns}
-          modalbody={modalbody}
+          modalBody={modalbody}
           show={show}
+          handleAdd={handleAdd}
+          handleModalClose={() => setShow(false)}
         />
       ) : (
         <Loading />

@@ -8,13 +8,20 @@ import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import CustomModal from "../CustomModal/CustomModal";
 
-export default function DataTable({ data, columns, modalBody, handleAccept }) {
+export default function DataTable({
+  data,
+  columns,
+  modalBody,
+  handleAccept,
+  handleAdd,
+  show,
+  handleModalClose,
+}) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
     setInfo(data);
@@ -73,8 +80,8 @@ export default function DataTable({ data, columns, modalBody, handleAccept }) {
     setFilteredData(filtered);
     setCurrentPage(1); // reset current page
   };
-  /////////HANDLE TABLE///////
 
+  /////////HANDLE TABLE///////
   const infoThead = !info ? (
     <Loading />
   ) : (
@@ -91,7 +98,6 @@ export default function DataTable({ data, columns, modalBody, handleAccept }) {
       </tr>
     ))
   );
-
   return (
     <>
       <TopBar
@@ -120,20 +126,21 @@ export default function DataTable({ data, columns, modalBody, handleAccept }) {
                 {infoTbody}
               </tbody>
             </Table>
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onChange={setCurrentPage}
-            />
-            <ShortHandTable />
-             <CustomModal
+            <div className="space-between">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onChange={setCurrentPage}
+              />
+              <ShortHandTable handleAdd={handleAdd} />
+            </div>
+            <CustomModal
               modalBody={modalBody}
-              modalClose={() => setShow(false)}
               handleAccept={handleAccept}
-              modalAccept
               showOn={show}
-              handleModalClose
+              handleModalClose={handleModalClose}
+              modalClose="خیر"
+              modalAccept="بله"
             />
           </>
         )}

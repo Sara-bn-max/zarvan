@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import DataTable from "../dataTable/DataTable";
 import "./contentStyle.css";
 
-export default function Content({data, columns , modalBody}) {
+export default function Content({ data, columns, modalBody, handleAdd, show,handleModalClose}) {
   return (
     <div className="contentBox">
       <div className="customWindow">
@@ -19,7 +19,16 @@ export default function Content({data, columns , modalBody}) {
             <X />
           </Button>
         </div>
-        <div className="mainContent"><DataTable data={data} columns={columns} modalBody={modalBody}/></div>
+        <div className="mainContent">
+          <DataTable
+            data={data}
+            columns={columns}
+            handleAdd={handleAdd}
+            modalBody={modalBody}
+            show={show}
+            handleModalClose={handleModalClose}
+          />
+        </div>
       </div>
     </div>
   );

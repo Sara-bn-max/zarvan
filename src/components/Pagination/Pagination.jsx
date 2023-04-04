@@ -7,7 +7,7 @@ export default function Pagination({ currentPage, totalPages, onChange }) {
   return (
     <div className="customPagination">
       {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-        <Button className="mx-1" key={page} onClick={handleClick(page)} disabled={page === currentPage}>
+        <Button variant="outline-primary" className="m-1" key={page} onClick={handleClick(page)} disabled={page === currentPage}>
           {page}
         </Button>
       ))}
