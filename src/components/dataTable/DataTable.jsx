@@ -16,6 +16,14 @@ export default function DataTable({
   handleAdd,
   show,
   handleModalClose,
+  addFormData,
+  modalAcceptText,
+  modalCloseText,
+  modalTitle,
+  toottipBtnText,
+  popoverBody,
+  popoverHeader,
+  popoverId
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -23,6 +31,7 @@ export default function DataTable({
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
 
+  console.log(addFormData);
   useEffect(() => {
     setInfo(data);
     setFilteredData(data);
@@ -139,8 +148,14 @@ export default function DataTable({
               handleAccept={handleAccept}
               showOn={show}
               handleModalClose={handleModalClose}
-              modalClose="خیر"
-              modalAccept="بله"
+              modalClose="انصراف"
+              modalAcceptText={modalAcceptText}
+              modalCloseText={modalCloseText}
+              modalTitle={modalTitle}
+              toottipBtnText={toottipBtnText}
+              popoverBody={popoverBody}
+              popoverHeader={popoverHeader}
+              popoverId={popoverId}
             />
           </>
         )}

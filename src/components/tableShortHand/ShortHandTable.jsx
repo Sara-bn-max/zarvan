@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-import "./shortHandTableStyle.css";
 import {
   Check2Square,
   PencilSquare,

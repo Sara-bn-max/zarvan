@@ -4,7 +4,23 @@ import Button from "react-bootstrap/Button";
 import DataTable from "../dataTable/DataTable";
 import "./contentStyle.css";
 
-export default function Content({ data, columns, modalBody, handleAdd, show,handleModalClose}) {
+export default function Content({
+  data,
+  columns,
+  modalBody,
+  handleAdd,
+  show,
+  handleModalClose,
+  handleAccept,
+  addFormData,
+  modalAcceptText,
+  modalCloseText,
+  modalTitle,
+  toottipBtnText,
+  popoverBody,
+  popoverHeader,
+  popoverId
+}) {
   return (
     <div className="contentBox">
       <div className="customWindow">
@@ -27,6 +43,15 @@ export default function Content({ data, columns, modalBody, handleAdd, show,hand
             modalBody={modalBody}
             show={show}
             handleModalClose={handleModalClose}
+            handleAccept={handleAccept}
+            addFormData={addFormData}
+            modalAcceptText={modalAcceptText}
+            modalCloseText={modalCloseText}
+            modalTitle={modalTitle}
+            toottipBtnText={toottipBtnText}
+            popoverBody={popoverBody}
+            popoverHeader={popoverHeader}
+            popoverId={popoverId}
           />
         </div>
       </div>

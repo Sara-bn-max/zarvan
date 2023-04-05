@@ -1,5 +1,5 @@
 @font-face {
-font-family: "iran-sans";
+  font-family: "iran-sans";
   src: local("iran-sans"), url(./assets/fonts/IRAN.ttf) format("truetype");
 }
 * {
@@ -20,11 +20,46 @@ body {
 a {
   text-decoration: none;
 }
-.centered-style{
+.centered-style {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   align-content: center;
+}
+.space-between-style {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: space-around;
+}
+.custom-rtl-btns {
+  border-radius: 6px !important;
+}
+.custom-rtl-btns button {
+  border-radius: 6px !important;
+  min-width: 25px;
+  min-height: 25px;
+  font-weight: bolder;
+}
+.custom-rtl-btns * {
+  border-radius: 6px !important;
+  min-width: 25px;
+  min-height: 25px;
+  font-weight: bolder;
+}
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.btn-group > .btn:not(:first-child):not(.dropdown-toggle) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+svg{
+  min-width: 20px;
+  min-height: 20px;
 }
