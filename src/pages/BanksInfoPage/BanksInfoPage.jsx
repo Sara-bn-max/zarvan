@@ -13,7 +13,9 @@ export default function BanksInfoPage() {
   const [bankCodeValue, setBankCodeValue] = useState("");
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
-  const [customBankcode, setCustomBankcode] = useState('')
+  const [customBankcode, setCustomBankcode] = useState("");
+  const [addDataObject, setAddDataObject] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
@@ -44,32 +46,37 @@ export default function BanksInfoPage() {
     const maxNumberCode = Math.max(...bankCodes);
     const bankCodeGenerate = Number(maxNumberCode) + 1;
     setBankCodeValue(bankCodeGenerate);
-    setFormData({ ...formData, bankCode: bankCodeGenerate }); // <-- replace code with bankCodeValue
+    setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
 
-  //  const handleCodeBankChange = (e) => {
-  //   const value = e.target.value;
-  //   setCustomBankcode(value)
-  // };
+  const handleCodeBankChange = (e) => {
+    const value = e.target.value;
+    setCustomBankcode(value);
+  };
 
   const handleSubmit = (e) => {
-    const formData = new FormData(e.target); // <-- add this line
+    const formData = new FormData(e.target);
     e.preventDefault();
     const bankNames = infos.map((item) => item.bankName);
     const newBankName = formData.get("bankName");
     if (bankNames.includes(newBankName)) {
       setShowErrorBankName(true);
+      setIsSubmitting(false);
       return;
     } else {
       setShowErrorBankName(false);
       const data = Object.fromEntries(formData.entries());
       setFormData({ ...data, bankCode: bankCodeValue });
-      setShow(false); // <-- fix this line
+      setAddDataObject(data);
+      setIsSubmitting(true);
     }
   };
 
-  ///////HANDLE CHANGE INPUTS OF ADD MODAL////
+  const handleAccept = () => {
+    setShow(false);
+    setIsSubmitting(false);
+  };
   ////// CUSTOM ADD MODAL BODY/////
   const modalbody = (
     <Form onSubmit={handleSubmit}>
@@ -79,14 +86,13 @@ export default function BanksInfoPage() {
             <Form.Group className="mb-3">
               <Form.Label>کد بانک:</Form.Label>
               <InputGroup className="mb-3 custom-rtl-btns">
-                <Button variant="outline-secondary">
-                  کد تصادفی
-                </Button>
+                <Button variant="outline-secondary">کد تصادفی</Button>
                 <Form.Control
                   value={bankCodeValue}
                   placeholder="کد بانک"
                   name="bankCode"
                   type="text"
+                  onChange={handleCodeBankChange}
                 />
               </InputGroup>
             </Form.Group>
@@ -128,7 +134,7 @@ export default function BanksInfoPage() {
             </Form.Group>
           </div>
           <div className="col-12 text-left">
-            <Button className="bg-primary" type="submit">
+            <Button className="bg-primary" type="submit" disabled={isSubmitting}>
               ثبت اطلاعات
             </Button>
             {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
@@ -137,26 +143,24 @@ export default function BanksInfoPage() {
       </div>
     </Form>
   );
-  const objectFormdata = JSON.stringify(formData, null);
   return (
     <div>
       {infos ? (
         <Content
-          data={infos}
-          columns={columns}
-          modalBody={modalbody}
-          show={show}
-          handleAdd={handleAdd}
-          handleModalClose={() => setShow(false)}
-          addFormData={objectFormdata}
-          modalAcceptText="انصراف"
-          modalCloseText="تایید"
-          modalTitle="اطلاعات بانک"
-          toottipBtnText={<QuestionDiamond />}
-          popoverBody='لطفا اطلاعات مربوط به بانکی که مد نظر دارید در فرم وارد کنید'
-          popoverHeader='اطلاغات بانک'
-          popoverId='popoverId'
-        />
+        data={infos}
+        columns={columns}
+        modalBody={modalbody}
+        show={show}
+        handleAdd={handleAdd}
+        handleModalClose={() => setShow(false)}
+        handleAccept={() => handleAccept()}
+        addFormData={addDataObject}
+        modalAcceptText="انصراف"
+        modalCloseText="تایید"
+        modalTitle="اطلاعات بانک"
+        toottipBtnText={<QuestionDiamond />}
+        popoverBody="لطفا اطلاعات مربوط به بانکی که..."
+      />
       ) : (
         <Loading />
       )}

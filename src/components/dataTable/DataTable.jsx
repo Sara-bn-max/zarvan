@@ -23,7 +23,7 @@ export default function DataTable({
   toottipBtnText,
   popoverBody,
   popoverHeader,
-  popoverId
+  popoverId,
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -31,24 +31,36 @@ export default function DataTable({
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
 
-  console.log(addFormData);
   useEffect(() => {
     setInfo(data);
     setFilteredData(data);
     setTotalPages(Math.ceil(data.length / itemsPerPage));
   }, [itemsPerPage]);
-  if (info !== null) {
-    localStorage.setItem("banksData", JSON.stringify(info));
-  }
 
   //////CHANGE ITEM PER PAGE BY SELECT///
+
+  useEffect(() => {
+    if (addFormData != null) {
+      setFilteredData([...filteredData, addFormData]);
+      console.log(filteredData);
+    }
+  }, [addFormData]);
+  
+  useEffect(() => {
+    const newTotalPages = Math.ceil(filteredData.length / itemsPerPage);
+    setTotalPages(newTotalPages);
+    setCurrentPage(newTotalPages);
+  }, [filteredData, itemsPerPage]);
+
   const handleItemsPerPage = (e) => {
     const value = e.target.value;
     setItemsPerPage(value);
+    setFilteredData((prevFilteredData) => prevFilteredData);
     const newTotalPages = Math.ceil(filteredData.length / value);
     setTotalPages(newTotalPages);
-    setCurrentPage(1); // reset current page
+    setCurrentPage(1);
   };
+
   //////HANDLE PAGINATION///
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -71,26 +83,30 @@ export default function DataTable({
     setTotalPages(Math.ceil(filtered.length / itemsPerPage)); // <-- update totalPages
     setCurrentPage(1); // reset current page
   };
-  const handleSearchByName = (e) => {
-    const query = e.target.value.toLowerCase();
-    const filtered = info.filter((item) => {
-      return item.bankName.toLowerCase().includes(query);
-    });
-    setFilteredData(filtered);
-    setCurrentPage(1); // reset current page
-  };
+  // const handleSearchByName = (e) => {
+  //   const query = e.target.value.toLowerCase();
+  //   const filtered = info.filter((item) => {
+  //     return item.bankName.toLowerCase().includes(query);
+  //   });
+  //   setFilteredData(filtered);
+  //   setCurrentPage(1); // reset current page
+  // };
 
-  const handleSearchByCode = (e) => {
-    const query = e.target.value.toLowerCase();
-    const filtered = info.filter((item) => {
-      const lowerCaseBankCode = item.bankCode.toString().toLowerCase();
-      return lowerCaseBankCode.includes(query);
-    });
-    setFilteredData(filtered);
-    setCurrentPage(1); // reset current page
-  };
+  // const handleSearchByCode = (e) => {
+  //   const query = e.target.value.toLowerCase();
+  //   const filtered = info.filter((item) => {
+  //     const lowerCaseBankCode = item.bankCode.toString().toLowerCase();
+  //     return lowerCaseBankCode.includes(query);
+  //   });
+  //   setFilteredData(filtered);
+  //   setCurrentPage(1); // reset current page
+  // };
 
   /////////HANDLE TABLE///////
+  // if (addFormData) {
+  // setDataAppended([...paginatedData, addFormData])
+  // }
+
   const infoThead = !info ? (
     <Loading />
   ) : (
@@ -107,6 +123,7 @@ export default function DataTable({
       </tr>
     ))
   );
+
   return (
     <>
       <TopBar
