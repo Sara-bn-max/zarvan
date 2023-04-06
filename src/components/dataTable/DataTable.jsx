@@ -50,7 +50,7 @@ export default function DataTable({
     const newTotalPages = Math.ceil(filteredData.length / itemsPerPage);
     setTotalPages(newTotalPages);
     setCurrentPage(newTotalPages);
-  }, [filteredData, itemsPerPage]);
+  }, [filteredData, itemsPerPage, addFormData]);
 
   const handleItemsPerPage = (e) => {
     const value = e.target.value;
