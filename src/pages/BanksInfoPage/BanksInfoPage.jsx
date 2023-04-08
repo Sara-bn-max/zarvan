@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Content from "../../components/content/Content";
-import { get } from "../../servises/axios/api";
+import { get, post } from "../../servises/axios/api";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Loading from "../../components/Loading/Loading";
 import InputGroup from "react-bootstrap/InputGroup";
-import { QuestionDiamond } from "react-bootstrap-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
@@ -14,8 +15,9 @@ export default function BanksInfoPage() {
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
   const [customBankcode, setCustomBankcode] = useState("");
-  const [addDataObject, setAddDataObject] = useState(null)
+  const [addDataObject, setAddDataObject] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [addedData, setAddedData] = useState(null)
 
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
@@ -54,8 +56,44 @@ export default function BanksInfoPage() {
     const value = e.target.value;
     setCustomBankcode(value);
   };
+  const handleAcceptAdd = () => {
+    post(`/ACCBank/Create`, addDataObject)
+      .then((response) => {
+        setAddedData(response.bankId);
+        toast.success("بانک مورد نظر به سیستم اضافه شد", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // const handleSubmit = (e) => {
+  //   const formData = new FormData(e.target);
+  //   e.preventDefault();
+  //   const bankNames = infos.map((item) => item.bankName);
+  //   const newBankName = formData.get("bankName");
+  //   if (bankNames.includes(newBankName)) {
+  //     setShowErrorBankName(true);
+  //     setIsSubmitting(false);
+  //     return;
+  //   } else {
+  //     setShowErrorBankName(false);
+  //     const data = Object.fromEntries(formData.entries());
+  //     setFormData({ ...data, bankCode: bankCodeValue });
+  //     setAddDataObject(data);
+  //     setIsSubmitting(true);
+  //   }
+  // };
 
-  const handleSubmit = (e) => {
+  const handleAccept = (e) => {
     const formData = new FormData(e.target);
     e.preventDefault();
     const bankNames = infos.map((item) => item.bankName);
@@ -70,16 +108,12 @@ export default function BanksInfoPage() {
       setFormData({ ...data, bankCode: bankCodeValue });
       setAddDataObject(data);
       setIsSubmitting(true);
+      setShow(false);
     }
-  };
-
-  const handleAccept = () => {
-    setShow(false);
-    setIsSubmitting(false);
   };
   ////// CUSTOM ADD MODAL BODY/////
   const modalbody = (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleAccept}>
       <div className="w-100">
         <div className="row">
           <div className="col-12 col-md-6">
@@ -118,26 +152,23 @@ export default function BanksInfoPage() {
               <Form.Label>آدرس وبسایت:</Form.Label>
               <Form.Control
                 name="bankWebSite"
-                required
                 placeholder="آدرس وبسایت"
                 type="text"
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>توضیحات:</Form.Label>
-              <Form.Control
-                name="bankDesc"
-                required
-                placeholder="توضیحات"
-                type="text"
-              />
+              <Form.Control name="bankDesc" placeholder="توضیحات" type="text" />
             </Form.Group>
           </div>
           <div className="col-12 text-left">
-            <Button className="bg-primary" type="submit" disabled={isSubmitting}>
+            <Button
+              className="bg-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
               ثبت اطلاعات
             </Button>
-            {/* <pre>{JSON.stringify(formData, null, 2)}</pre> */}
           </div>
         </div>
       </div>
@@ -146,21 +177,24 @@ export default function BanksInfoPage() {
   return (
     <div>
       {infos ? (
-        <Content
-        data={infos}
-        columns={columns}
-        modalBody={modalbody}
-        show={show}
-        handleAdd={handleAdd}
-        handleModalClose={() => setShow(false)}
-        handleAccept={() => handleAccept()}
-        addFormData={addDataObject}
-        modalAcceptText="انصراف"
-        modalCloseText="تایید"
-        modalTitle="اطلاعات بانک"
-        toottipBtnText={<QuestionDiamond />}
-        popoverBody="لطفا اطلاعات مربوط به بانکی که..."
-      />
+        <>
+          <Content
+            data={infos}
+            columns={columns}
+            modalBody={modalbody}
+            show={show}
+            handleAdd={handleAdd}
+            handleAcceptAdd={handleAcceptAdd}
+            handleModalClose={(e) => setShow(false)}
+            handleAccept={() => handleAccept()}
+            addFormData={addDataObject}
+            addedData={addedData}
+            modalAcceptText="انصراف"
+            modalCloseText="تایید"
+            modalTitle="اطلاعات بانک"
+          />
+          <ToastContainer />
+        </>
       ) : (
         <Loading />
       )}

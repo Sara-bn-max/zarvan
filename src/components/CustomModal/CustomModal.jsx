@@ -29,12 +29,6 @@ export default function CustomModal({
           <Modal.Title className="w-100">
             <div className="space-between-style">
               <h3>{modalTitle}</h3>
-              <CustomToolTip
-                toottipBtnText={toottipBtnText}
-                popoverBody={popoverBody}
-                popoverHeader={popoverHeader}
-                popoverId={popoverId}
-              />
             </div>
           </Modal.Title>
         </Modal.Header>

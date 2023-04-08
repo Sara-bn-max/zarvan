@@ -2,11 +2,11 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import {
-  Check2Square,
-  PencilSquare,
-  PlusSquare,
+  Check2,
+  Pencil,
+  Plus,
   TrashFill,
-  XSquare,
+  X,
 } from "react-bootstrap-icons";
 
 export default function ShortHandTable({
@@ -24,20 +24,20 @@ export default function ShortHandTable({
   return (
     <>
       <div className="centered-style">
-        <ButtonGroup className="mb-2 custom-rtl-btns">
-          <Button onClick={handleAdd} disabled={addBtnDisable}>
-            <PlusSquare />
+        <ButtonGroup className="custom-rtl-btns">
+          <Button variant="outline-primary" className="outline-primary mx-1" onClick={handleAdd} disabled={addBtnDisable}>
+            <Plus />
           </Button>
-          <Button onClick={handleEdit} disabled={editBtnDisable}>
-            <PencilSquare />
+          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleEdit} disabled={editBtnDisable}>
+            <Pencil />
           </Button>
-          <Button onClick={handleDecline} disabled={declineBtnDisable}>
-            <XSquare />
+          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleDecline} disabled={declineBtnDisable}>
+            <X />
           </Button>
-          <Button onClick={handleAcceptAdd} disabled={acceptBtnDisable}>
-            <Check2Square />
+          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleAcceptAdd} disabled={acceptBtnDisable}>
+            <Check2 />
           </Button>
-          <Button onClick={handleDelete} disabled={deleteBtnDisable}>
+          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleDelete} disabled={deleteBtnDisable}>
             <TrashFill />
           </Button>
         </ButtonGroup>

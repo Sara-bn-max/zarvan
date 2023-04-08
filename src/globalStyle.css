@@ -5,7 +5,7 @@
 * {
   font-family: "iran-sans";
   direction: rtl !important;
-  font-size: 13px;
+  font-size: 12px;
 }
 body {
   margin: 0;
@@ -41,14 +41,9 @@ a {
 }
 .custom-rtl-btns button {
   border-radius: 6px !important;
-  min-width: 25px;
-  min-height: 25px;
-  font-weight: bolder;
 }
 .custom-rtl-btns * {
   border-radius: 6px !important;
-  min-width: 25px;
-  min-height: 25px;
   font-weight: bolder;
 }
 .btn-group > .btn:not(:last-child):not(.dropdown-toggle) {

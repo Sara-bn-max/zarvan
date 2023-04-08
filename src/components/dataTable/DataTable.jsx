@@ -17,19 +17,22 @@ export default function DataTable({
   show,
   handleModalClose,
   addFormData,
+  addedData,
   modalAcceptText,
   modalCloseText,
   modalTitle,
-  toottipBtnText,
-  popoverBody,
-  popoverHeader,
-  popoverId,
+  handleAcceptAdd
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
+  const [addBtnDisable, setAddBtnDisable] = useState(false);
+  const [editBtnDisable, setEditBtnDisable] = useState(true);
+  const [declineBtnDisable, setDeclineBtnDisable] = useState(true);
+  const [acceptBtnDisable, setAcceptBtnDisable] = useState(true);
+  const [deleteBtnDisable, setDeleteBtnDisable] = useState(true);
 
   useEffect(() => {
     setInfo(data);
@@ -42,14 +45,30 @@ export default function DataTable({
   useEffect(() => {
     if (addFormData != null) {
       setFilteredData([...filteredData, addFormData]);
-      console.log(filteredData);
+      setAddBtnDisable(true);
+      setDeclineBtnDisable(false);
+      setAcceptBtnDisable(false);
     }
   }, [addFormData]);
+  useEffect(() => {
+    if(addedData != null){
+      const element = document.getElementById(addedData);
+      if (element) {
+        element.focus();
+      }
+    }
+  }, [addedData])
   
+
   useEffect(() => {
     const newTotalPages = Math.ceil(filteredData.length / itemsPerPage);
     setTotalPages(newTotalPages);
+    if(addFormData != null){
     setCurrentPage(newTotalPages);
+
+    }else{
+    setCurrentPage(1);
+    }
   }, [filteredData, itemsPerPage, addFormData]);
 
   const handleItemsPerPage = (e) => {
@@ -158,7 +177,15 @@ export default function DataTable({
                 totalPages={totalPages}
                 onChange={setCurrentPage}
               />
-              <ShortHandTable handleAdd={handleAdd} />
+              <ShortHandTable
+                handleAdd={handleAdd}
+                handleAcceptAdd={handleAcceptAdd}
+                addBtnDisable={addBtnDisable}
+                editBtnDisable={editBtnDisable}
+                declineBtnDisable={declineBtnDisable}
+                acceptBtnDisable={acceptBtnDisable}
+                deleteBtnDisable={deleteBtnDisable}
+              />
             </div>
             <CustomModal
               modalBody={modalBody}
@@ -169,10 +196,6 @@ export default function DataTable({
               modalAcceptText={modalAcceptText}
               modalCloseText={modalCloseText}
               modalTitle={modalTitle}
-              toottipBtnText={toottipBtnText}
-              popoverBody={popoverBody}
-              popoverHeader={popoverHeader}
-              popoverId={popoverId}
             />
           </>
         )}

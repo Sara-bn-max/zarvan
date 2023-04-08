@@ -9,17 +9,15 @@ export default function Content({
   columns,
   modalBody,
   handleAdd,
+  handleAcceptAdd,
   show,
   handleModalClose,
   handleAccept,
   addFormData,
+  addedData,
   modalAcceptText,
   modalCloseText,
   modalTitle,
-  toottipBtnText,
-  popoverBody,
-  popoverHeader,
-  popoverId
 }) {
   return (
     <div className="contentBox">
@@ -40,18 +38,16 @@ export default function Content({
             data={data}
             columns={columns}
             handleAdd={handleAdd}
+            handleAcceptAdd={handleAcceptAdd}
             modalBody={modalBody}
             show={show}
             handleModalClose={handleModalClose}
             handleAccept={handleAccept}
             addFormData={addFormData}
+            addedData={addedData}
             modalAcceptText={modalAcceptText}
             modalCloseText={modalCloseText}
             modalTitle={modalTitle}
-            toottipBtnText={toottipBtnText}
-            popoverBody={popoverBody}
-            popoverHeader={popoverHeader}
-            popoverId={popoverId}
           />
         </div>
       </div>
