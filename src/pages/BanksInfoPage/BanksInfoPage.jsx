@@ -33,6 +33,10 @@ export default function BanksInfoPage() {
   //////DATA VIEW TO SET COLUMNS/////
   const columns = [
     {
+      Key: "bankId",
+      hidden: true,
+    },
+    {
       customKey: "bankCode",
       title: "کد بانک",
     },

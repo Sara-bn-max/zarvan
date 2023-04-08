@@ -38,7 +38,7 @@ export default function DataTable({
     setInfo(data);
     setFilteredData(data);
     setTotalPages(Math.ceil(data.length / itemsPerPage));
-  }, [itemsPerPage]);
+  }, [itemsPerPage,addedData]);
 
   //////CHANGE ITEM PER PAGE BY SELECT///
 
@@ -52,9 +52,12 @@ export default function DataTable({
   }, [addFormData]);
   useEffect(() => {
     if(addedData != null){
-      const element = document.getElementById(addedData);
+      const element = document.getElementById({addedData});
+      console.log(addedData)
+
       if (element) {
         element.focus();
+        console.log(element)
       }
     }
   }, [addedData])
@@ -129,19 +132,38 @@ export default function DataTable({
   const infoThead = !info ? (
     <Loading />
   ) : (
-    columns.map((column, index) => <th key={index}>{column.title}</th>)
+    columns.map((column, index) => {
+      if (column.hidden) {
+        return null;
+      } else {
+        return <th key={index}>{column.title}</th>;
+      }
+    })
   );
+  
   const infoTbody = !info ? (
     <Loading />
   ) : (
     paginatedData.map((row, index) => (
-      <tr key={index}>
-        {columns.map((column, index) => (
-          <td key={index}>{row[column.customKey]}</td>
-        ))}
+      <tr key={index} id={`${row.bankId}`}>
+        {columns.map((column, index) => {
+          if (column.hidden) {
+            return null;
+          } else if (column.customKey === "searchColumn") {
+            return (
+              <td key={index}>
+                <SearchBox handleSearchInput={(e) => handleSearchBox(e)} />
+              </td>
+            );
+          } else {
+            return <td key={index}>{row[column.customKey]}</td>;
+          }
+        })}
       </tr>
     ))
   );
+  
+  
 
   return (
     <>
@@ -159,7 +181,7 @@ export default function DataTable({
                 <tr>{infoThead}</tr>
               </thead>
               <tbody>
-                <tr>
+                {/* <tr>
                   {columns.map((column, index) => (
                     <td key={index}>
                       <SearchBox
@@ -167,7 +189,7 @@ export default function DataTable({
                       />
                     </td>
                   ))}
-                </tr>
+                </tr> */}
                 {infoTbody}
               </tbody>
             </Table>
