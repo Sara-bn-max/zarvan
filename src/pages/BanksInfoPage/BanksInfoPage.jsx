@@ -121,7 +121,6 @@ export default function BanksInfoPage() {
   const handleAcceptDl = () => {
     del(`/ACCBank/${deleteId}`)
       .then((response) => {
-        console.log(response);
         setDeleteResponse(deleteId)
         toast.success("بانک مورد نظر حذف شد", {
           position: "top-right",

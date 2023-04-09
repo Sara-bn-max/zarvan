@@ -63,13 +63,19 @@ export default function DataTable({
   }, [addFormData]);
   useEffect(() => {
     if (deleteResponse) {
-      const newData = filteredData.filter((item) => item.id !== deleteResponse);
-      setFilteredData(newData);
+      const updatedData = filteredData.filter((item) => item.bankId !== deleteResponse);
+      if (typeof deleteResponse === "number") {
+        const element = document.getElementById(deleteResponse);
+        if (element) {
+          element.classList.remove("selected");
+        }
+      }
+      setFilteredData(updatedData)
       setAddBtnDisable(false);
       setDeclineBtnDisable(true);
       setAcceptBtnDisable(true);
-      setEditBtnDisable(false);
-      setDeleteBtnDisable(false);
+      setEditBtnDisable(true);
+      setDeleteBtnDisable(true);
     }
   }, [deleteResponse]);
   useEffect(() => {
@@ -80,23 +86,28 @@ export default function DataTable({
     } else {
       setCurrentPage(1);
     }
-  }, [filteredData, itemsPerPage, addFormData]);
-  //  useEffect(() => {
-  //   if (addedData != null) {
-  //     const element = document.getElementById(`${addedData}`);
-  //     console.log(element);
-  //     setAddBtnDisable(false);
-  //     setDeclineBtnDisable(true);
-  //     setAcceptBtnDisable(true);
-  //     setEditBtnDisable(false);
-  //     setDeleteBtnDisable(false);
+  }, [filteredData, itemsPerPage, addFormData,deleteResponse]);
+   useEffect(() => {
+    if (addedData != null) {
 
-  //     if (element) {
-  //       element.focus();
-  //       console.log(element);
-  //     }
-  //   }
-  // }, [addedData]);
+      if (typeof addedData === "number") {
+        const element = document.getElementById(addedData);
+        if (element) {
+          element.classList.addClass("selected");
+        }
+      }
+      setAddBtnDisable(false);
+      setDeclineBtnDisable(true);
+      setAcceptBtnDisable(true);
+      setEditBtnDisable(true);
+      setDeleteBtnDisable(true);
+
+      // if (element) {
+      //   element.focus();
+      //   console.log(element);
+      // }
+    }
+  }, [addedData]);
   //////DATA AFTER DELETE///
 
   const handleItemsPerPage = (e) => {
