@@ -26,7 +26,15 @@ export default function Content({
   modalAcceptTextDl,
   modalCloseTextDl,
   modalTitleDl,
-  deleteResponse
+  modalBodyEdit,
+  handleAcceptEdit,
+  showEdit,
+  handleModalCloseEdit,
+  modalAcceptTextEdit,
+  modalCloseTextEdit,
+  modalTitleEdit,
+  deleteResponse,
+  handleEdit
 }) {
   return (
     <div className="contentBox">
@@ -48,6 +56,7 @@ export default function Content({
             columns={columns}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
+            handleEdit={handleEdit}
             handleAcceptAdd={handleAcceptAdd}
             modalBody={modalBody}
             show={show}
@@ -65,6 +74,13 @@ export default function Content({
             modalAcceptTextDl={modalAcceptTextDl}
             modalCloseTextDl={modalCloseTextDl}
             modalTitleDl={modalTitleDl}
+            modalBodyEdit={modalBodyEdit}
+            handleAcceptEdit={handleAcceptEdit}
+            showEdit={showEdit}
+            handleModalCloseEdit={handleModalCloseEdit}
+            modalAcceptTextEdit={modalAcceptTextEdit}
+            modalCloseTextEdit={modalCloseTextEdit}
+            modalTitleEdit={modalTitleEdit}
             deleteResponse={deleteResponse}
           />
         </div>

@@ -58,3 +58,6 @@ svg{
   min-width: 20px;
   min-height: 20px;
 }
+.modal-body {
+  min-height: 35vh;
+}

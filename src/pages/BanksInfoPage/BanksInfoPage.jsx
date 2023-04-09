@@ -12,6 +12,7 @@ export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
   const [show, setShow] = useState(false);
   const [showDl, setShowDl] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [bankCodeValue, setBankCodeValue] = useState("");
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
@@ -20,7 +21,8 @@ export default function BanksInfoPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedData, setAddedData] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [deleteResponse, setDeleteResponse] = useState(null)
+  const [preEditData, setPreEditData] = useState(null);
+  const [deleteResponse, setDeleteResponse] = useState(null);
 
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
@@ -58,13 +60,11 @@ export default function BanksInfoPage() {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
-
   const handleCodeBankChange = (e) => {
     const value = e.target.value;
     setCustomBankcode(value);
   };
   const handleAcceptAdd = () => {
-    console.log(addDataObject);
     post(`/ACCBank/Create`, addDataObject)
       .then((response) => {
         setAddedData(response.bankId);
@@ -81,7 +81,7 @@ export default function BanksInfoPage() {
       })
       .catch((error) => {
         console.log(error);
-        toast.error('امکان اضافه کردن این بانک فعلا وجود ندارد', {
+        toast.error("امکان اضافه کردن این بانک فعلا وجود ندارد", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -90,7 +90,7 @@ export default function BanksInfoPage() {
           draggable: false,
           progress: undefined,
           theme: "light",
-          });
+        });
       });
   };
   const handleAccept = (e) => {
@@ -111,17 +111,29 @@ export default function BanksInfoPage() {
       setShow(false);
     }
   };
+
+  const handleEdit = (data) => {
+    if (data) {
+      setPreEditData(data);
+      setShowEdit(true);
+    }
+  };
+
+  //////////HANDLE DELETE////
+  const handleModalCloseDl = () => {
+    setShowDl(false)
+    
+  }
   const handleDelete = (id) => {
     if (id) {
       setDeleteId(id);
       setShowDl(true);
     }
   };
-//////////HANDLE DELETE////
   const handleAcceptDl = () => {
     del(`/ACCBank/${deleteId}`)
       .then((response) => {
-        setDeleteResponse(deleteId)
+        setDeleteResponse(deleteId);
         toast.success("بانک مورد نظر حذف شد", {
           position: "top-right",
           autoClose: 3000,
@@ -135,7 +147,7 @@ export default function BanksInfoPage() {
       })
       .catch((error) => {
         console.log(error);
-        toast.error('امکان حذف این بانک وجود ندارد', {
+        toast.error("امکان حذف این بانک وجود ندارد", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -144,11 +156,13 @@ export default function BanksInfoPage() {
           draggable: false,
           progress: undefined,
           theme: "light",
-          });
+        });
       });
     setShowDl(false);
   };
-
+  // function handleEditChange(event) {
+  //   setInputValue(event.target.value);
+  // }
   ////// CUSTOM ADD MODAL BODY/////
   const modalbody = (
     <Form onSubmit={handleAccept}>
@@ -212,6 +226,76 @@ export default function BanksInfoPage() {
       </div>
     </Form>
   );
+  const modalBodyEdit = (
+    <Form onSubmit={handleAccept}>
+      <div className="w-100">
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <Form.Group className="mb-3">
+              <Form.Label>کد بانک:</Form.Label>
+              <InputGroup className="mb-3 custom-rtl-btns">
+                <Button variant="outline-secondary">کد تصادفی</Button>
+                <Form.Control
+                  value={preEditData ? preEditData.bankId : ''}
+                  placeholder="کد بانک"
+                  name="bankCode"
+                  type="text"
+                  // onChange={handleEditChange}
+                />
+              </InputGroup>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>نام بانک:</Form.Label>
+              <Form.Control
+                name="bankName"
+                required
+                placeholder="نام بانک"
+                type="text"
+                className="outline-danger"
+                value={preEditData ? preEditData.bankName : ''}
+                // onChange={handleEditChange}
+              />
+              {showErrorBankName && (
+                <Form.Text className="text-danger">
+                  نام بانک تکراری وارد شده
+                </Form.Text>
+              )}
+            </Form.Group>
+          </div>
+          <div className="col-12 col-md-6">
+            <Form.Group className="mb-3">
+              <Form.Label>آدرس وبسایت:</Form.Label>
+              <Form.Control
+                name="bankWebSite"
+                placeholder="آدرس وبسایت"
+                type="text"
+                value={preEditData ? preEditData.bankWebSite : ''}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>توضیحات:</Form.Label>
+              <Form.Control
+                name="bankDesc"
+                placeholder="توضیحات"
+                type="text"
+                value={preEditData ? preEditData.bankDesc : ''}
+              />
+            </Form.Group>
+          </div>
+          <div className="col-12 text-left">
+            <Button
+              className="bg-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              ثبت اطلاعات
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Form>
+  );
   return (
     <div>
       {infos ? (
@@ -224,6 +308,7 @@ export default function BanksInfoPage() {
             handleAdd={handleAdd}
             handleAcceptAdd={handleAcceptAdd}
             handleDelete={handleDelete}
+            handleEdit={handleEdit}
             handleModalClose={() => setShow(false)}
             handleAccept={() => handleAccept()}
             addFormData={addDataObject}
@@ -234,11 +319,18 @@ export default function BanksInfoPage() {
             modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
             handleAcceptDl={handleAcceptDl}
             showDl={showDl}
-            handleModalCloseDl={() => setShowDl(false)}
+            handleModalCloseDl={handleModalCloseDl}
             modalAcceptTextDl="حذف"
             modalCloseTextDl="انصراف"
             modalTitleDl="حذف"
             deleteResponse={deleteResponse}
+            modalBodyEdit={modalBodyEdit}
+            // handleAcceptEdit={handleAcceptEdit}
+            showEdit={showEdit}
+            handleModalCloseEdit={() => setShowEdit(false)}
+            modalAcceptTextEdit={"ویرایش"}
+            modalCloseTextEdit={"انصراف"}
+            modalTitleEdit={"ویرایش اطلاعات بانک"}
           />
           <ToastContainer />
         </>

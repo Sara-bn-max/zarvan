@@ -15,6 +15,7 @@ export default function DataTable({
   handleAccept,
   handleAdd,
   handleDelete,
+  handleEdit,
   show,
   handleModalClose,
   addFormData,
@@ -30,6 +31,13 @@ export default function DataTable({
   modalAcceptTextDl,
   modalCloseTextDl,
   modalTitleDl,
+  modalBodyEdit,
+  handleAcceptEdit,
+  showEdit,
+  handleModalCloseEdit,
+  modalAcceptTextEdit,
+  modalCloseTextEdit,
+  modalTitleEdit,
   deleteResponse,
   handleDecline,
 }) {
@@ -44,6 +52,7 @@ export default function DataTable({
   const [acceptBtnDisable, setAcceptBtnDisable] = useState(true);
   const [deleteBtnDisable, setDeleteBtnDisable] = useState(true);
   const [selectedTrId, setSelectedTrId] = useState(null);
+  const [selectedTrData, setSelectedTrData] = useState(null);
 
   useEffect(() => {
     setInfo(data);
@@ -142,8 +151,9 @@ export default function DataTable({
     setCurrentPage(1); // reset current page
   };
 
-  const handleRowClick = (id) => {
-    setSelectedTrId(id);
+  const handleRowClick = (selectedData) => {
+    setSelectedTrData(selectedData)
+    setSelectedTrId(selectedData.bankId);
     setAddBtnDisable(true);
     setDeclineBtnDisable(true);
     setAcceptBtnDisable(true);
@@ -170,7 +180,7 @@ export default function DataTable({
       <tr
         key={index}
         id={`${row.bankId}`}
-        onClick={() => handleRowClick(row.bankId)}
+        onClick={() => handleRowClick(row)}
         className={selectedTrId === row.bankId ? "selected" : ""}
       >
         {columns.map((column, index) => {
@@ -206,15 +216,6 @@ export default function DataTable({
                 <tr>{infoThead}</tr>
               </thead>
               <tbody>
-                {/* <tr>
-                  {columns.map((column, index) => (
-                    <td key={index}>
-                      <SearchBox
-                        handleSearchInput={(e) => handleSearchBox(e)}
-                      />
-                    </td>
-                  ))}
-                </tr> */}
                 {infoTbody}
               </tbody>
             </Table>
@@ -228,6 +229,7 @@ export default function DataTable({
                 handleAdd={handleAdd}
                 handleDecline={handleDecline}
                 handleDelete={() => handleDelete(selectedTrId)}
+                handleEdit={() => handleEdit(selectedTrData)}
                 handleAcceptAdd={handleAcceptAdd}
                 addBtnDisable={addBtnDisable}
                 editBtnDisable={editBtnDisable}
@@ -256,6 +258,16 @@ export default function DataTable({
               modalAcceptText={modalAcceptTextDl}
               modalCloseText={modalCloseTextDl}
               modalTitle={modalTitleDl}
+            />
+            <CustomModal
+              classNameUse="edit"
+              modalBody={modalBodyEdit}
+              handleAccept={handleAcceptEdit}
+              showOn={showEdit}
+              handleModalClose={handleModalCloseEdit}
+              modalAcceptText={modalAcceptTextEdit}
+              modalCloseText={modalCloseTextEdit}
+              modalTitle={modalTitleEdit}
             />
           </>
         )}
