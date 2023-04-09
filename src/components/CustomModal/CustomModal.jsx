@@ -14,11 +14,13 @@ export default function CustomModal({
   toottipBtnText,
   popoverBody,
   popoverHeader,
-  popoverId
+  popoverId,
+  classNameUse
 }) {
   return (
     <>
       <Modal
+        className={classNameUse}
         show={showOn}
         backdrop="static"
         keyboard={false}

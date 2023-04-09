@@ -14,6 +14,7 @@ export default function DataTable({
   modalBody,
   handleAccept,
   handleAdd,
+  handleDelete,
   show,
   handleModalClose,
   addFormData,
@@ -21,7 +22,16 @@ export default function DataTable({
   modalAcceptText,
   modalCloseText,
   modalTitle,
-  handleAcceptAdd
+  handleAcceptAdd,
+  modalBodyDl,
+  handleAcceptDl,
+  showDl,
+  handleModalCloseDl,
+  modalAcceptTextDl,
+  modalCloseTextDl,
+  modalTitleDl,
+  deleteResponse,
+  handleDecline,
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -33,15 +43,16 @@ export default function DataTable({
   const [declineBtnDisable, setDeclineBtnDisable] = useState(true);
   const [acceptBtnDisable, setAcceptBtnDisable] = useState(true);
   const [deleteBtnDisable, setDeleteBtnDisable] = useState(true);
+  const [selectedTrId, setSelectedTrId] = useState(null);
 
   useEffect(() => {
     setInfo(data);
     setFilteredData(data);
     setTotalPages(Math.ceil(data.length / itemsPerPage));
-  }, [itemsPerPage,addedData]);
+  }, [itemsPerPage]);
 
   //////CHANGE ITEM PER PAGE BY SELECT///
-
+  /////handle change data for add an item
   useEffect(() => {
     if (addFormData != null) {
       setFilteredData([...filteredData, addFormData]);
@@ -51,28 +62,42 @@ export default function DataTable({
     }
   }, [addFormData]);
   useEffect(() => {
-    if(addedData != null){
-      const element = document.getElementById({addedData});
-      console.log(addedData)
-
-      if (element) {
-        element.focus();
-        console.log(element)
-      }
+    if (deleteResponse) {
+      const newData = filteredData.filter((item) => item.id !== deleteResponse);
+      setFilteredData(newData);
+      setAddBtnDisable(false);
+      setDeclineBtnDisable(true);
+      setAcceptBtnDisable(true);
+      setEditBtnDisable(false);
+      setDeleteBtnDisable(false);
     }
-  }, [addedData])
-  
-
+  }, [deleteResponse]);
   useEffect(() => {
     const newTotalPages = Math.ceil(filteredData.length / itemsPerPage);
     setTotalPages(newTotalPages);
-    if(addFormData != null){
-    setCurrentPage(newTotalPages);
-
-    }else{
-    setCurrentPage(1);
+    if (addFormData != null) {
+      setCurrentPage(newTotalPages);
+    } else {
+      setCurrentPage(1);
     }
   }, [filteredData, itemsPerPage, addFormData]);
+  //  useEffect(() => {
+  //   if (addedData != null) {
+  //     const element = document.getElementById(`${addedData}`);
+  //     console.log(element);
+  //     setAddBtnDisable(false);
+  //     setDeclineBtnDisable(true);
+  //     setAcceptBtnDisable(true);
+  //     setEditBtnDisable(false);
+  //     setDeleteBtnDisable(false);
+
+  //     if (element) {
+  //       element.focus();
+  //       console.log(element);
+  //     }
+  //   }
+  // }, [addedData]);
+  //////DATA AFTER DELETE///
 
   const handleItemsPerPage = (e) => {
     const value = e.target.value;
@@ -105,29 +130,15 @@ export default function DataTable({
     setTotalPages(Math.ceil(filtered.length / itemsPerPage)); // <-- update totalPages
     setCurrentPage(1); // reset current page
   };
-  // const handleSearchByName = (e) => {
-  //   const query = e.target.value.toLowerCase();
-  //   const filtered = info.filter((item) => {
-  //     return item.bankName.toLowerCase().includes(query);
-  //   });
-  //   setFilteredData(filtered);
-  //   setCurrentPage(1); // reset current page
-  // };
 
-  // const handleSearchByCode = (e) => {
-  //   const query = e.target.value.toLowerCase();
-  //   const filtered = info.filter((item) => {
-  //     const lowerCaseBankCode = item.bankCode.toString().toLowerCase();
-  //     return lowerCaseBankCode.includes(query);
-  //   });
-  //   setFilteredData(filtered);
-  //   setCurrentPage(1); // reset current page
-  // };
-
-  /////////HANDLE TABLE///////
-  // if (addFormData) {
-  // setDataAppended([...paginatedData, addFormData])
-  // }
+  const handleRowClick = (id) => {
+    setSelectedTrId(id);
+    setAddBtnDisable(true);
+    setDeclineBtnDisable(true);
+    setAcceptBtnDisable(true);
+    setEditBtnDisable(false);
+    setDeleteBtnDisable(false);
+  };
 
   const infoThead = !info ? (
     <Loading />
@@ -140,12 +151,17 @@ export default function DataTable({
       }
     })
   );
-  
+
   const infoTbody = !info ? (
     <Loading />
   ) : (
     paginatedData.map((row, index) => (
-      <tr key={index} id={`${row.bankId}`}>
+      <tr
+        key={index}
+        id={`${row.bankId}`}
+        onClick={() => handleRowClick(row.bankId)}
+        className={selectedTrId === row.bankId ? "selected" : ""}
+      >
         {columns.map((column, index) => {
           if (column.hidden) {
             return null;
@@ -162,8 +178,6 @@ export default function DataTable({
       </tr>
     ))
   );
-  
-  
 
   return (
     <>
@@ -176,7 +190,7 @@ export default function DataTable({
           <Loading />
         ) : (
           <>
-            <Table responsive hover bordered>
+            <Table responsive hover bordered id="table">
               <thead className="bg-primary text-light">
                 <tr>{infoThead}</tr>
               </thead>
@@ -201,6 +215,8 @@ export default function DataTable({
               />
               <ShortHandTable
                 handleAdd={handleAdd}
+                handleDecline={handleDecline}
+                handleDelete={() => handleDelete(selectedTrId)}
                 handleAcceptAdd={handleAcceptAdd}
                 addBtnDisable={addBtnDisable}
                 editBtnDisable={editBtnDisable}
@@ -210,6 +226,7 @@ export default function DataTable({
               />
             </div>
             <CustomModal
+              classNameUse="add"
               modalBody={modalBody}
               handleAccept={handleAccept}
               showOn={show}
@@ -218,6 +235,16 @@ export default function DataTable({
               modalAcceptText={modalAcceptText}
               modalCloseText={modalCloseText}
               modalTitle={modalTitle}
+            />
+            <CustomModal
+              classNameUse="delete"
+              modalBody={modalBodyDl}
+              handleAccept={handleAcceptDl}
+              showOn={showDl}
+              handleModalClose={handleModalCloseDl}
+              modalAcceptText={modalAcceptTextDl}
+              modalCloseText={modalCloseTextDl}
+              modalTitle={modalTitleDl}
             />
           </>
         )}

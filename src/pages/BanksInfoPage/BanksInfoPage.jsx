@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Content from "../../components/content/Content";
-import { get, post } from "../../servises/axios/api";
+import { del, get, post } from "../../servises/axios/api";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Loading from "../../components/Loading/Loading";
@@ -11,13 +11,16 @@ import "react-toastify/dist/ReactToastify.css";
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
   const [show, setShow] = useState(false);
+  const [showDl, setShowDl] = useState(false);
   const [bankCodeValue, setBankCodeValue] = useState("");
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
   const [customBankcode, setCustomBankcode] = useState("");
   const [addDataObject, setAddDataObject] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [addedData, setAddedData] = useState(null)
+  const [addedData, setAddedData] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleteResponse, setDeleteResponse] = useState(null)
 
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
@@ -61,42 +64,35 @@ export default function BanksInfoPage() {
     setCustomBankcode(value);
   };
   const handleAcceptAdd = () => {
+    console.log(addDataObject);
     post(`/ACCBank/Create`, addDataObject)
       .then((response) => {
         setAddedData(response.bankId);
         toast.success("بانک مورد نظر به سیستم اضافه شد", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: false,
           pauseOnHover: true,
-          draggable: true,
+          draggable: false,
           progress: undefined,
           theme: "light",
         });
       })
       .catch((error) => {
         console.log(error);
+        toast.error('امکان اضافه کردن این بانک فعلا وجود ندارد', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          });
       });
   };
-  // const handleSubmit = (e) => {
-  //   const formData = new FormData(e.target);
-  //   e.preventDefault();
-  //   const bankNames = infos.map((item) => item.bankName);
-  //   const newBankName = formData.get("bankName");
-  //   if (bankNames.includes(newBankName)) {
-  //     setShowErrorBankName(true);
-  //     setIsSubmitting(false);
-  //     return;
-  //   } else {
-  //     setShowErrorBankName(false);
-  //     const data = Object.fromEntries(formData.entries());
-  //     setFormData({ ...data, bankCode: bankCodeValue });
-  //     setAddDataObject(data);
-  //     setIsSubmitting(true);
-  //   }
-  // };
-
   const handleAccept = (e) => {
     const formData = new FormData(e.target);
     e.preventDefault();
@@ -115,6 +111,45 @@ export default function BanksInfoPage() {
       setShow(false);
     }
   };
+  const handleDelete = (id) => {
+    if (id) {
+      setDeleteId(id);
+      setShowDl(true);
+    }
+  };
+//////////HANDLE DELETE////
+  const handleAcceptDl = () => {
+    del(`/ACCBank/${deleteId}`)
+      .then((response) => {
+        console.log(response);
+        setDeleteResponse(deleteId)
+        toast.success("بانک مورد نظر حذف شد", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('امکان حذف این بانک وجود ندارد', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          });
+      });
+    setShowDl(false);
+  };
+
   ////// CUSTOM ADD MODAL BODY/////
   const modalbody = (
     <Form onSubmit={handleAccept}>
@@ -189,13 +224,22 @@ export default function BanksInfoPage() {
             show={show}
             handleAdd={handleAdd}
             handleAcceptAdd={handleAcceptAdd}
-            handleModalClose={(e) => setShow(false)}
+            handleDelete={handleDelete}
+            handleModalClose={() => setShow(false)}
             handleAccept={() => handleAccept()}
             addFormData={addDataObject}
             addedData={addedData}
             modalAcceptText="انصراف"
             modalCloseText="تایید"
             modalTitle="اطلاعات بانک"
+            modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
+            handleAcceptDl={handleAcceptDl}
+            showDl={showDl}
+            handleModalCloseDl={() => setShowDl(false)}
+            modalAcceptTextDl="حذف"
+            modalCloseTextDl="انصراف"
+            modalTitleDl="حذف"
+            deleteResponse={deleteResponse}
           />
           <ToastContainer />
         </>
