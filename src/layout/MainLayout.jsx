@@ -1,12 +1,17 @@
-import React from "react";
+import {useState} from "react";
 import ThemeProvider from "react-bootstrap/ThemeProvider";
 import Content from "../components/content/Content";
 import Menu from "../components/manu/Menu";
-import NavBar from "../components/nav/NavBar";
 import BanksInfoPage from "../pages/BanksInfoPage/BanksInfoPage";
 import "./mainStyle.css";
+import NavBar from "../components/nav/NavBar";
 
 export default function MainLayout() {
+  const [indexOfMenu, setIndexOfMenu] = useState(null)
+  const handleNavClick = (index) => {
+    setIndexOfMenu(index)
+    console.log(indexOfMenu)
+  }
   return (
     <>
       <ThemeProvider
@@ -14,9 +19,9 @@ export default function MainLayout() {
         minBreakpoint="xxs"
       >
         <div className="customBox">
-          <NavBar />
+          <NavBar onNavClick={handleNavClick} />
           <div className="handleFlex">
-            <Menu />
+            <Menu indexOfMenu={indexOfMenu} />
             <BanksInfoPage />
           </div>
         </div>

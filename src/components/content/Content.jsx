@@ -34,7 +34,8 @@ export default function Content({
   modalCloseTextEdit,
   modalTitleEdit,
   deleteResponse,
-  handleEdit
+  handleEdit,
+  selected
 }) {
   return (
     <div className="contentBox">
@@ -82,6 +83,7 @@ export default function Content({
             modalCloseTextEdit={modalCloseTextEdit}
             modalTitleEdit={modalTitleEdit}
             deleteResponse={deleteResponse}
+            selected={selected}
           />
         </div>
       </div>

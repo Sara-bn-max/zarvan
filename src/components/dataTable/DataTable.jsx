@@ -40,6 +40,7 @@ export default function DataTable({
   modalTitleEdit,
   deleteResponse,
   handleDecline,
+  selected
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -117,6 +118,17 @@ export default function DataTable({
       // }
     }
   }, [addedData]);
+  useEffect(() => {
+    if(selected != null){
+      if(selected == false){
+        const element = document.getElementsByClassName(selected);
+        if (element) {
+          element.classList.remove("selected");
+        }
+      }
+    }
+  }, [])
+  
   //////DATA AFTER DELETE///
 
   const handleItemsPerPage = (e) => {
