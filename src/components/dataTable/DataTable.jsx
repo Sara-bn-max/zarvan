@@ -12,12 +12,12 @@ export default function DataTable({
   data,
   columns,
   modalBody,
-  handleAccept,
+  handleAcceptModalAdd,
   handleAdd,
   handleDelete,
   handleEdit,
   show,
-  handleModalClose,
+  handleModalCloseAdd,
   addFormData,
   addedData,
   modalAcceptText,
@@ -256,9 +256,9 @@ export default function DataTable({
             <CustomModal
               classNameUse="add"
               modalBody={modalBody}
-              handleAccept={handleAccept}
+              handleAcceptModal={handleAcceptModalAdd}
               showOn={show}
-              handleModalClose={handleModalClose}
+              handleModalClose={handleModalCloseAdd}
               modalClose="انصراف"
               modalAcceptText={modalAcceptText}
               modalCloseText={modalCloseText}
@@ -267,7 +267,7 @@ export default function DataTable({
             <CustomModal
               classNameUse="delete"
               modalBody={modalBodyDl}
-              handleAccept={handleAcceptDl}
+              handleAcceptModal={handleAcceptDl}
               showOn={showDl}
               handleModalClose={handleModalCloseDl}
               modalAcceptText={modalAcceptTextDl}
@@ -277,7 +277,7 @@ export default function DataTable({
             <CustomModal
               classNameUse="edit"
               modalBody={modalBodyEdit}
-              handleAccept={handleAcceptEdit}
+              handleAcceptModal={handleAcceptEdit}
               showOn={showEdit}
               handleModalClose={handleModalCloseEdit}
               modalAcceptText={modalAcceptTextEdit}

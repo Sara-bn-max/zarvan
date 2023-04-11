@@ -12,8 +12,8 @@ export default function Content({
   handleAcceptAdd,
   handleDelete,
   show,
-  handleModalClose,
-  handleAccept,
+  handleModalCloseAdd,
+  handleAcceptModalAdd,
   addFormData,
   addedData,
   modalAcceptText,
@@ -61,8 +61,8 @@ export default function Content({
             handleAcceptAdd={handleAcceptAdd}
             modalBody={modalBody}
             show={show}
-            handleModalClose={handleModalClose}
-            handleAccept={handleAccept}
+            handleModalCloseAdd={handleModalCloseAdd}
+            handleAcceptModalAdd={handleAcceptModalAdd}
             addFormData={addFormData}
             addedData={addedData}
             modalAcceptText={modalAcceptText}

@@ -64,7 +64,7 @@ export default function BanksInfoPage() {
   ];
 
   /////HANDLE OPEN ADD MODAL /////
-  const handleModalCloseAdd = () => {
+  const handleModalCloseAdd = (e) => {
     setShow(false);
     setSelected(false);
   };
@@ -76,10 +76,12 @@ export default function BanksInfoPage() {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
-  const handleCodeBankChange = (e) => {
-    const value = e.target.value;
-    setCustomBankcode(value);
-  };
+  // const handleCodeBankChange = () => {
+  //   const bankCodes = infos.map((item) => item.bankCode);
+  //   const maxNumberCode = Math.max(...bankCodes);
+  //   const bankCodeGenerate = Number(maxNumberCode) + 1;
+  //   setBankCodeValue(bankCodeGenerate);
+  // };
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject)
       .then((response) => {
@@ -110,7 +112,7 @@ export default function BanksInfoPage() {
         });
       });
   };
-  const handleAccept = (e) => {
+  const handleAcceptModalAdd = (e) => {
     const formData = new FormData(e.target);
     e.preventDefault();
     const bankNames = infos.map((item) => item.bankName);
@@ -134,6 +136,10 @@ export default function BanksInfoPage() {
     setSelected(false);
   };
   const handleEdit = (data) => {
+    const bankCodes = infos.map((item) => item.bankCode);
+    const maxNumberCode = Math.max(...bankCodes);
+    const bankCodeGenerate = Number(maxNumberCode) + 1;
+    setBankCodeValue(bankCodeGenerate);
     if (data) {
       setPreEditData(data);
       setShowEdit(true);
@@ -171,10 +177,9 @@ export default function BanksInfoPage() {
       bankDesc,
     };
     const id = preEditData.bankId;
-    console.log(id);
     put(`/api/ACCBank/${id}`, formData)
       .then((response) => {
-        console.log(response);
+        console.log(response.body);
         toast.success("ویرایش با موفقیت انجام شد", {
           position: "top-right",
           autoClose: 3000,
@@ -250,7 +255,7 @@ export default function BanksInfoPage() {
   // }
   ////// CUSTOM ADD MODAL BODY/////
   const modalbody = (
-    <Form onSubmit={handleAccept}>
+    <Form onSubmit={handleAcceptModalAdd}>
       <div className="w-100">
         <div className="row">
           <div className="col-12 col-md-6">
@@ -263,7 +268,6 @@ export default function BanksInfoPage() {
                   placeholder="کد بانک"
                   name="bankCode"
                   type="text"
-                  onChange={handleCodeBankChange}
                 />
               </InputGroup>
             </Form.Group>
@@ -397,8 +401,8 @@ export default function BanksInfoPage() {
             handleAcceptAdd={handleAcceptAdd}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
-            handleModalClose={handleModalCloseAdd}
-            handleAccept={() => handleAccept()}
+            handleModalCloseAdd={handleModalCloseAdd}
+            handleAcceptModalAdd={() => handleAcceptModalAdd()}
             addFormData={addDataObject}
             addedData={addedData}
             modalAcceptText="انصراف"

@@ -7,7 +7,7 @@ export default function CustomModal({
   modalBody,
   showOn,
   modalCloseText,
-  handleAccept,
+  handleAcceptModal,
   modalAcceptText,
   handleModalClose,
   modalTitle,
@@ -39,7 +39,7 @@ export default function CustomModal({
           <Button variant="secondary" onClick={handleModalClose}>
             {modalCloseText}
           </Button>
-          <Button variant="primary" onClick={handleAccept}>
+          <Button variant="primary" onClick={handleAcceptModal}>
             {modalAcceptText}
           </Button>
           {/* <Button disable={disableBtn1} className={classBtn1} onClick={handleClickBtn1}>
