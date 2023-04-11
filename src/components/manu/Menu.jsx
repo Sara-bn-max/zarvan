@@ -7,10 +7,13 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { X } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
 
-export default function Menu({ indexOfMenu, openMenu}) {
+export default function Menu({ indexOfMenu, openMenu, setOpenMenu}) {
   const [menuData, setMenuData] = useState(null);
-  const [closeMenu, setCloseMenu] = useState()
-  
+  // const [closeMenu, setCloseMenu] = useState()
+
+  const handleCloseBtn = () => {
+    setOpenMenu(false)
+  }
   useEffect(() => {
     if (indexOfMenu == null) {
       get(`/api/Form/MENU?id=0`)
@@ -34,7 +37,7 @@ export default function Menu({ indexOfMenu, openMenu}) {
   const Menu = () => {
     return (
       <>
-        <div className="responsive-x"><Button type="button" variant="outline-danger"><X /></Button></div>
+        <div className="responsive-x"><Button type="button" variant="outline-danger" onClick={handleCloseBtn}><X /></Button></div>
         <Accordion>
           {menuData ? (
             menuData.map((item, index) => (

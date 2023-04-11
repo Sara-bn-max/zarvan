@@ -17,3 +17,7 @@
 	align-content: space-around;
   text-align: center;
 }
+svg {
+  min-width: 10px;
+  min-height: 10px;
+}
