@@ -4,6 +4,6 @@ import loading from '../../assets/loader/load.gif'
 
 export default function Loading() {
   return (
-    <div className='loading'><img src={loading} /></div>
+    <div className='loading w-100'><img className='w-100' src={loading} /></div>
   )
 }

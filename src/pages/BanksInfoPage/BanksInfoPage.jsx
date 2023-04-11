@@ -38,7 +38,7 @@ export default function BanksInfoPage() {
   );
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
-    get(`/ACCBank/GetAllBanks`)
+    get(`/api/ACCBank/GetAllBanks`)
       .then((response) => {
         setinfos(response);
       })
@@ -81,7 +81,7 @@ export default function BanksInfoPage() {
     setCustomBankcode(value);
   };
   const handleAcceptAdd = () => {
-    post(`/ACCBank/Create`, addDataObject)
+    post(`/api/ACCBank/Create`, addDataObject)
       .then((response) => {
         setAddedData(response.bankId);
         toast.success("بانک مورد نظر به سیستم اضافه شد", {
@@ -172,7 +172,7 @@ export default function BanksInfoPage() {
     };
     const id = preEditData.bankId;
     console.log(id);
-    put(`/ACCBank/${id}`, formData)
+    put(`/api/ACCBank/${id}`, formData)
       .then((response) => {
         console.log(response);
         toast.success("ویرایش با موفقیت انجام شد", {
@@ -215,7 +215,7 @@ export default function BanksInfoPage() {
     }
   };
   const handleAcceptDl = () => {
-    del(`/ACCBank/${deleteId}`)
+    del(`/api/ACCBank/${deleteId}`)
       .then((response) => {
         setDeleteResponse(deleteId);
         toast.success("بانک مورد نظر حذف شد", {

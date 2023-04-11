@@ -40,7 +40,7 @@ export default function DataTable({
   modalTitleEdit,
   deleteResponse,
   handleDecline,
-  selected
+  selected,
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -73,14 +73,16 @@ export default function DataTable({
   }, [addFormData]);
   useEffect(() => {
     if (deleteResponse) {
-      const updatedData = filteredData.filter((item) => item.bankId !== deleteResponse);
+      const updatedData = filteredData.filter(
+        (item) => item.bankId !== deleteResponse
+      );
       if (typeof deleteResponse === "number") {
         const element = document.getElementById(deleteResponse);
         if (element) {
           element.classList.remove("selected");
         }
       }
-      setFilteredData(updatedData)
+      setFilteredData(updatedData);
       setAddBtnDisable(false);
       setDeclineBtnDisable(true);
       setAcceptBtnDisable(true);
@@ -96,10 +98,9 @@ export default function DataTable({
     } else {
       setCurrentPage(1);
     }
-  }, [filteredData, itemsPerPage, addFormData,deleteResponse]);
-   useEffect(() => {
+  }, [filteredData, itemsPerPage, addFormData, deleteResponse]);
+  useEffect(() => {
     if (addedData != null) {
-
       if (typeof addedData === "number") {
         const element = document.getElementById(addedData);
         if (element) {
@@ -119,16 +120,16 @@ export default function DataTable({
     }
   }, [addedData]);
   useEffect(() => {
-    if(selected != null){
-      if(selected == false){
+    if (selected != null) {
+      if (selected == false) {
         const element = document.getElementsByClassName(selected);
         if (element) {
           element.classList.remove("selected");
         }
       }
     }
-  }, [])
-  
+  }, []);
+
   //////DATA AFTER DELETE///
 
   const handleItemsPerPage = (e) => {
@@ -164,7 +165,7 @@ export default function DataTable({
   };
 
   const handleRowClick = (selectedData) => {
-    setSelectedTrData(selectedData)
+    setSelectedTrData(selectedData);
     setSelectedTrId(selectedData.bankId);
     setAddBtnDisable(true);
     setDeclineBtnDisable(true);
@@ -205,7 +206,11 @@ export default function DataTable({
               </td>
             );
           } else {
-            return <td key={index}>{row[column.customKey]}</td>;
+            return (
+              <>
+                <td key={index}>{row[column.customKey]}</td>
+              </>
+            );
           }
         })}
       </tr>
@@ -227,9 +232,7 @@ export default function DataTable({
               <thead className="bg-primary text-light">
                 <tr>{infoThead}</tr>
               </thead>
-              <tbody>
-                {infoTbody}
-              </tbody>
+              <tbody>{infoTbody}</tbody>
             </Table>
             <div className="space-between">
               <Pagination
