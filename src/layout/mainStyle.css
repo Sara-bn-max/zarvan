@@ -1,4 +1,5 @@
 .customBox {
+  position: relative;
   width: 96vw;
   margin: 2vh 2vw;
   background-color: #fff;
@@ -9,7 +10,53 @@
 .handleFlex {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-content: stretch;
+}
+.mobile-menu {
+  width: 100%;
+  background: #ecf4ff;
+  padding: 10px 15px;
+  border: 1px solid #9191911f;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 6px;
+}
+@media only screen and (max-width: 810px) {
+  .responsive-menu {
+    position: absolute;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    width: 100%;
+    overflow-y: scroll;
+  }
+  .responsive-x{
+    padding: 10px;
+    text-align: left;
+  }
+}
+@media only screen and (min-width: 811px) {
+  .mobile-menu{
+    display: none;
+  }
+  .responsive-x{
+    display: none;
+  }
+  .customMenu {
+    transition: all 2s;
+    width: 14vw;
+    min-width: 120px;
+    max-width: 250px;
+    border-radius: 6px;
+    margin: 20px 0px;
+    background: #ecf4ff !important;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  }
+  .closed{
+    display: none;
+  }
 }

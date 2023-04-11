@@ -15,7 +15,7 @@ export default function NavBar(props) {
 
   return (
     <Navbar className="customNav">
-      <Container>
+      <Container className="flex-responsive">
         <Navbar.Brand href="#home">
           <Image className="logo-style" src={logo} />
         </Navbar.Brand>

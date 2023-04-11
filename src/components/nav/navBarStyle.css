@@ -8,3 +8,12 @@
 .logo-style {
   max-width: 19vw;
 }
+.flex-responsive{
+  display: flex;
+	flex-direction: row;
+	flex-wrap: wrap !important;
+	justify-content: space-between;
+	align-items: center;
+	align-content: space-around;
+  text-align: center;
+}

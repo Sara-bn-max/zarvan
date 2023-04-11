@@ -5,13 +5,22 @@ import Menu from "../components/manu/Menu";
 import BanksInfoPage from "../pages/BanksInfoPage/BanksInfoPage";
 import "./mainStyle.css";
 import NavBar from "../components/nav/NavBar";
+import { MenuButtonWideFill } from "react-bootstrap-icons";
 
 export default function MainLayout() {
-  const [indexOfMenu, setIndexOfMenu] = useState(null)
+  
+  const [indexOfMenu, setIndexOfMenu] = useState(null);
+  const [openMenu, setopenMenu] = useState(false)
+
+
   const handleNavClick = (index) => {
     setIndexOfMenu(index)
-    console.log(indexOfMenu)
   }
+  const handleMenu = () => {
+    setopenMenu(!openMenu)
+    console.log(openMenu)
+  }
+  
   return (
     <>
       <ThemeProvider
@@ -21,7 +30,10 @@ export default function MainLayout() {
         <div className="customBox">
           <NavBar onNavClick={handleNavClick} />
           <div className="handleFlex">
-            <Menu indexOfMenu={indexOfMenu} />
+            <div className="mobile-menu" onClick={handleMenu} >
+            <MenuButtonWideFill />
+            </div>
+            <Menu indexOfMenu={indexOfMenu} openMenu={openMenu} />
             <BanksInfoPage />
           </div>
         </div>

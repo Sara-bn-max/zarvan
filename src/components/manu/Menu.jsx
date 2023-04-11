@@ -4,11 +4,13 @@ import "./menuStyle.css";
 import { get } from "../../servises/axios/api";
 import Loading from "../Loading/Loading";
 import ListGroup from "react-bootstrap/ListGroup";
-import AccordionBody from "react-bootstrap/esm/AccordionBody";
+import { X } from "react-bootstrap-icons";
+import { Button } from "react-bootstrap";
 
-export default function Menu({ indexOfMenu }) {
+export default function Menu({ indexOfMenu, openMenu}) {
   const [menuData, setMenuData] = useState(null);
-
+  const [closeMenu, setCloseMenu] = useState()
+  
   useEffect(() => {
     if (indexOfMenu == null) {
       get(`/api/Form/MENU?id=0`)
@@ -31,24 +33,22 @@ export default function Menu({ indexOfMenu }) {
 
   const Menu = () => {
     return (
-      <Accordion>
-        {menuData ? (
-          menuData.map((item, index) => (
-            <MenuItem
-              key={item.title}
-              item={item}
-              eventKey={index}
-            />
-          ))
-        ) : (
-          <Loading />
-        )}
-      </Accordion>
+      <>
+        <div className="responsive-x"><Button type="button" variant="outline-danger"><X /></Button></div>
+        <Accordion>
+          {menuData ? (
+            menuData.map((item, index) => (
+              <MenuItem key={item.title} item={item} eventKey={index} />
+            ))
+          ) : (
+            <Loading />
+          )}
+        </Accordion>
+      </>
     );
   };
 
   const MenuItem = ({ item, eventKey }) => {
-    console.log(eventKey)
     return (
       <Accordion.Item eventKey={eventKey}>
         <Accordion.Header href={item.url}>
@@ -59,9 +59,7 @@ export default function Menu({ indexOfMenu }) {
           <Accordion.Body>
             <ListGroup>
               {item.childrens.map((subItem, index) => (
-                <ListGroup.Item
-                  key={subItem.title}
-                >
+                <ListGroup.Item key={subItem.title}>
                   <a href={subItem.url}>{subItem.title}</a>
                 </ListGroup.Item>
               ))}
@@ -73,8 +71,9 @@ export default function Menu({ indexOfMenu }) {
   };
 
   return (
-    <div className="customMenu">
+    <div className={`${openMenu ? 'customMenu responsive-menu' : 'customMenu responsive-menu closed'}`}>
       <Menu />
     </div>
+    
   );
 }
