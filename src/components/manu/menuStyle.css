@@ -14,3 +14,6 @@
 .accordion-body {
   padding: 0px !important;
 }
+.accordion-button{
+  text-align: right !important;
+}
