@@ -24,18 +24,7 @@ export default function BanksInfoPage() {
   const [preEditData, setPreEditData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [bankCode, setBankCode] = useState(
-    preEditData ? preEditData.bankId : ""
-  );
-  const [bankName, setBankName] = useState(
-    preEditData ? preEditData.bankName : ""
-  );
-  const [bankWebSite, setBankWebSite] = useState(
-    preEditData ? preEditData.bankWebSite : ""
-  );
-  const [bankDesc, setBankDesc] = useState(
-    preEditData ? preEditData.bankDesc : ""
-  );
+
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
     get(`/api/ACCBank/GetAllBanks`)
@@ -69,7 +58,7 @@ export default function BanksInfoPage() {
     setSelected(false);
   };
   const handleAdd = () => {
-    const bankCodes = infos.map((item) => item.bankCode);
+    const bankCodes = infos ? infos.map((item) => item.bankCode) : [];
     const maxNumberCode = Math.max(...bankCodes);
     const bankCodeGenerate = Number(maxNumberCode) + 1;
     setBankCodeValue(bankCodeGenerate);
@@ -136,48 +125,22 @@ export default function BanksInfoPage() {
     setSelected(false);
   };
   const handleEdit = (data) => {
-    const bankCodes = infos.map((item) => item.bankCode);
-    const maxNumberCode = Math.max(...bankCodes);
-    const bankCodeGenerate = Number(maxNumberCode) + 1;
-    setBankCodeValue(bankCodeGenerate);
     if (data) {
       setPreEditData(data);
       setShowEdit(true);
     }
   };
 
-  function handleInputChange(event) {
-    const { name, value } = event.target;
-
-    switch (name) {
-      case "bankCode":
-        setBankCode(value);
-        break;
-      case "bankName":
-        setBankName(value);
-        break;
-      case "bankWebSite":
-        setBankWebSite(value);
-        break;
-      case "bankDesc":
-        setBankDesc(value);
-        break;
-      default:
-        break;
+  function handleAcceptEdit(e) {
+    e.preventDefault();
+    const editData = {
+      "bankCode": preEditData.bankCode,
+      "bankName": `${preEditData.bankName}`,
+      "bankWebSite": `${preEditData.bankWebSite}`,
+      "bankDesc": `${preEditData.bankDesc}`
     }
-  }
-
-  function handleAcceptEdit(event) {
-    event.preventDefault();
-
-    const formData = {
-      bankCode,
-      bankName,
-      bankWebSite,
-      bankDesc,
-    };
     const id = preEditData.bankId;
-    put(`/api/ACCBank/${id}`, formData)
+    put(`/api/ACCBank/${id}`, editData)
       .then((response) => {
         console.log(response.body);
         toast.success("ویرایش با موفقیت انجام شد", {
@@ -315,7 +278,6 @@ export default function BanksInfoPage() {
       </div>
     </Form>
   );
-
   const modalBodyEdit = (
     <Form onSubmit={handleAcceptEdit}>
       <div className="w-100">
@@ -326,11 +288,11 @@ export default function BanksInfoPage() {
               <InputGroup className="mb-3 custom-rtl-btns">
                 <Button variant="outline-secondary">ایجاد کد</Button>
                 <Form.Control
-                  value={bankCode}
                   placeholder="کد بانک"
                   name="bankCode"
                   type="text"
-                  onChange={handleInputChange}
+                  value={preEditData ? preEditData.bankCode : ''}
+                  onChange={(e) => setPreEditData({...preEditData, bankCode: e.target.value})}
                 />
               </InputGroup>
             </Form.Group>
@@ -343,8 +305,8 @@ export default function BanksInfoPage() {
                 placeholder="نام بانک"
                 type="text"
                 className="outline-danger"
-                value={bankName}
-                onChange={handleInputChange}
+                value={preEditData ? preEditData.bankName : ''}
+                onChange={(e) => setPreEditData({...preEditData, bankName: e.target.value})}
               />
               {showErrorBankName && (
                 <Form.Text className="text-danger">
@@ -360,8 +322,8 @@ export default function BanksInfoPage() {
                 name="bankWebSite"
                 placeholder="آدرس وبسایت"
                 type="text"
-                value={bankWebSite}
-                onChange={handleInputChange}
+                value={preEditData ? preEditData.bankWebSite : ''}
+                onChange={(e) => setPreEditData({...preEditData, bankWebSite: e.target.value})}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -370,8 +332,8 @@ export default function BanksInfoPage() {
                 name="bankDesc"
                 placeholder="توضیحات"
                 type="text"
-                value={bankDesc}
-                onChange={handleInputChange}
+                value={preEditData ? preEditData.bankDesc : ''}
+                onChange={(e) => setPreEditData({...preEditData, bankDesc: e.target.value})}
               />
             </Form.Group>
           </div>
