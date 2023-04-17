@@ -53,7 +53,7 @@ export default function BanksInfoPage() {
   ];
 
   /////HANDLE OPEN ADD MODAL /////
-  const handleModalCloseAdd = (e) => {
+  const handleModalCloseAdd = () => {
     setShow(false);
     setSelected(false);
   };
@@ -65,12 +65,12 @@ export default function BanksInfoPage() {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
-  // const handleCodeBankChange = () => {
-  //   const bankCodes = infos.map((item) => item.bankCode);
-  //   const maxNumberCode = Math.max(...bankCodes);
-  //   const bankCodeGenerate = Number(maxNumberCode) + 1;
-  //   setBankCodeValue(bankCodeGenerate);
-  // };
+  const handleCodeBankChange = () => {
+    const bankCodes = infos.map((item) => item.bankCode);
+    const maxNumberCode = Math.max(...bankCodes);
+    const bankCodeGenerate = Number(maxNumberCode) + 1;
+    setBankCodeValue(bankCodeGenerate);
+  };
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject)
       .then((response) => {
@@ -217,7 +217,7 @@ export default function BanksInfoPage() {
   //   setInputValue(event.target.value);
   // }
   ////// CUSTOM ADD MODAL BODY/////
-  const modalbody = (
+  const modalbodyAdd = (
     <Form onSubmit={handleAcceptModalAdd}>
       <div className="w-100">
         <div className="row">
@@ -357,18 +357,18 @@ export default function BanksInfoPage() {
           <Content
             data={infos}
             columns={columns}
-            modalBody={modalbody}
+            modalBodyAdd={modalbodyAdd}
             show={show}
             handleAdd={handleAdd}
             handleAcceptAdd={handleAcceptAdd}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
             handleModalCloseAdd={handleModalCloseAdd}
-            handleAcceptModalAdd={() => handleAcceptModalAdd()}
+            handleAcceptModalAdd={(e) => handleAcceptModalAdd(e)}
             addFormData={addDataObject}
             addedData={addedData}
-            modalAcceptText="انصراف"
-            modalCloseText="تایید"
+            modalAcceptText="تایید"
+            modalCloseText="انصراف"
             modalTitle="اطلاعات بانک"
             modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
             handleAcceptDl={handleAcceptDl}

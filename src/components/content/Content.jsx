@@ -7,7 +7,7 @@ import "./contentStyle.css";
 export default function Content({
   data,
   columns,
-  modalBody,
+  modalBodyAdd,
   handleAdd,
   handleAcceptAdd,
   handleDelete,
@@ -59,7 +59,7 @@ export default function Content({
             handleDelete={handleDelete}
             handleEdit={handleEdit}
             handleAcceptAdd={handleAcceptAdd}
-            modalBody={modalBody}
+            modalBodyAdd={modalBodyAdd}
             show={show}
             handleModalCloseAdd={handleModalCloseAdd}
             handleAcceptModalAdd={handleAcceptModalAdd}

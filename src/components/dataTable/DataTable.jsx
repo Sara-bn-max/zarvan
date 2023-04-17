@@ -11,7 +11,7 @@ import CustomModal from "../CustomModal/CustomModal";
 export default function DataTable({
   data,
   columns,
-  modalBody,
+  modalBodyAdd,
   handleAcceptModalAdd,
   handleAdd,
   handleDelete,
@@ -45,7 +45,7 @@ export default function DataTable({
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [addBtnDisable, setAddBtnDisable] = useState(false);
   const [editBtnDisable, setEditBtnDisable] = useState(true);
@@ -258,7 +258,7 @@ export default function DataTable({
             </div>
             <CustomModal
               classNameUse="add"
-              modalBody={modalBody}
+              modalBody={modalBodyAdd}
               handleAcceptModal={handleAcceptModalAdd}
               showOn={show}
               handleModalClose={handleModalCloseAdd}

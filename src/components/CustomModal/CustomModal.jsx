@@ -36,11 +36,11 @@ export default function CustomModal({
         </Modal.Header>
         <Modal.Body>{modalBody}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalClose}>
-            {modalCloseText}
-          </Button>
-          <Button variant="primary" onClick={handleAcceptModal}>
+          <Button variant="success" onClick={handleAcceptModal}>
             {modalAcceptText}
+          </Button>
+          <Button variant="danger" onClick={handleModalClose}>
+            {modalCloseText}
           </Button>
           {/* <Button disable={disableBtn1} className={classBtn1} onClick={handleClickBtn1}>
             {textBtn1}
