@@ -54,6 +54,7 @@ export default function DataTable({
   const [deleteBtnDisable, setDeleteBtnDisable] = useState(true);
   const [selectedTrId, setSelectedTrId] = useState(null);
   const [selectedTrData, setSelectedTrData] = useState(null);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     setInfo(data);
@@ -165,13 +166,14 @@ export default function DataTable({
   };
 
   const handleRowClick = (selectedData) => {
+    setIsActive(!isActive);
     setSelectedTrData(selectedData);
     setSelectedTrId(selectedData.bankId);
-    setAddBtnDisable(true);
+    setAddBtnDisable(!addBtnDisable);
     setDeclineBtnDisable(true);
     setAcceptBtnDisable(true);
-    setEditBtnDisable(false);
-    setDeleteBtnDisable(false);
+    setEditBtnDisable(!editBtnDisable);
+    setDeleteBtnDisable(!deleteBtnDisable);
   };
 
   const infoThead = !info ? (
@@ -194,7 +196,8 @@ export default function DataTable({
         key={index}
         id={`${row.bankId}`}
         onClick={() => handleRowClick(row)}
-        className={selectedTrId === row.bankId ? "selected" : ""}
+        // className={selectedTrId === row.bankId ? "selected" : ""}
+        className={(isActive && selectedTrId === row.bankId) ? 'selected' : 'Unselected'}
       >
         {columns.map((column, index) => {
           if (column.hidden) {
