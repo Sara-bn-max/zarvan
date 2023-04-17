@@ -14,12 +14,14 @@ export default function Content({
   show,
   handleModalCloseAdd,
   handleAcceptModalAdd,
+  handleSubmitAdd,
   addFormData,
   addedData,
   modalAcceptText,
   modalCloseText,
   modalTitle,
   modalBodyDl,
+  handleSubmitDl,
   handleAcceptDl,
   showDl,
   handleModalCloseDl,
@@ -31,6 +33,7 @@ export default function Content({
   showEdit,
   handleModalCloseEdit,
   modalAcceptTextEdit,
+  handleSubmitEdit={handleSubmitEdit},
   modalCloseTextEdit,
   modalTitleEdit,
   deleteResponse,
@@ -58,6 +61,7 @@ export default function Content({
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
+            handleSubmitAdd={handleSubmitAdd}
             handleAcceptAdd={handleAcceptAdd}
             modalBodyAdd={modalBodyAdd}
             show={show}
@@ -69,6 +73,7 @@ export default function Content({
             modalCloseText={modalCloseText}
             modalTitle={modalTitle}
             modalBodyDl={modalBodyDl}
+            handleSubmitDl={handleSubmitDl}
             handleAcceptDl={handleAcceptDl}
             showDl={showDl}
             handleModalCloseDl={handleModalCloseDl}
@@ -77,6 +82,7 @@ export default function Content({
             modalTitleDl={modalTitleDl}
             modalBodyEdit={modalBodyEdit}
             handleAcceptEdit={handleAcceptEdit}
+            handleSubmitEdit={handleSubmitEdit}
             showEdit={showEdit}
             handleModalCloseEdit={handleModalCloseEdit}
             modalAcceptTextEdit={modalAcceptTextEdit}

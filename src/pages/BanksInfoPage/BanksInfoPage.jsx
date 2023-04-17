@@ -119,6 +119,7 @@ export default function BanksInfoPage() {
       setShow(false);
     }
   };
+
   /////// handle edit
   const handleModalCloseEdit = () => {
     setShowEdit(false);
@@ -134,11 +135,11 @@ export default function BanksInfoPage() {
   function handleAcceptEdit(e) {
     e.preventDefault();
     const editData = {
-      "bankCode": preEditData.bankCode,
-      "bankName": `${preEditData.bankName}`,
-      "bankWebSite": `${preEditData.bankWebSite}`,
-      "bankDesc": `${preEditData.bankDesc}`
-    }
+      bankCode: preEditData.bankCode,
+      bankName: `${preEditData.bankName}`,
+      bankWebSite: `${preEditData.bankWebSite}`,
+      bankDesc: `${preEditData.bankDesc}`,
+    };
     const id = preEditData.bankId;
     put(`/api/ACCBank/${id}`, editData)
       .then((response) => {
@@ -182,7 +183,8 @@ export default function BanksInfoPage() {
       setShowDl(true);
     }
   };
-  const handleAcceptDl = () => {
+  const handleAcceptDl = (e) => {
+    e.preventDefault()
     del(`/api/ACCBank/${deleteId}`)
       .then((response) => {
         setDeleteResponse(deleteId);
@@ -213,148 +215,135 @@ export default function BanksInfoPage() {
       });
     setShowDl(false);
   };
-  // function handleEditChange(event) {
-  //   setInputValue(event.target.value);
-  // }
+
   ////// CUSTOM ADD MODAL BODY/////
   const modalbodyAdd = (
-    <Form onSubmit={handleAcceptModalAdd}>
-      <div className="w-100">
-        <div className="row">
-          <div className="col-12 col-md-6">
-            <Form.Group className="mb-3">
-              <Form.Label>کد بانک:</Form.Label>
-              <InputGroup className="mb-3 custom-rtl-btns">
-                <Button variant="outline-secondary">ایجاد کد</Button>
-                <Form.Control
-                  value={bankCodeValue}
-                  placeholder="کد بانک"
-                  name="bankCode"
-                  type="text"
-                />
-              </InputGroup>
-            </Form.Group>
+    <div className="w-100">
+      <div className="row">
+        <div className="col-12 col-md-6">
+          <Form.Group className="mb-3">
+            <Form.Label>کد بانک:</Form.Label>
+            <InputGroup className="mb-3 custom-rtl-btns">
+              <Button variant="outline-secondary">ایجاد کد</Button>
+              <Form.Control
+                value={bankCodeValue}
+                placeholder="کد بانک"
+                name="bankCode"
+                type="text"
+              />
+            </InputGroup>
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>نام بانک:</Form.Label>
-              <Form.Control
-                name="bankName"
-                required
-                placeholder="نام بانک"
-                type="text"
-                className="outline-danger"
-              />
-              {showErrorBankName && (
-                <Form.Text className="text-danger">
-                  نام بانک تکراری وارد شده
-                </Form.Text>
-              )}
-            </Form.Group>
-          </div>
-          <div className="col-12 col-md-6">
-            <Form.Group className="mb-3">
-              <Form.Label>آدرس وبسایت:</Form.Label>
-              <Form.Control
-                name="bankWebSite"
-                placeholder="آدرس وبسایت"
-                type="text"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>توضیحات:</Form.Label>
-              <Form.Control name="bankDesc" placeholder="توضیحات" type="text" />
-            </Form.Group>
-          </div>
-          <div className="col-12 text-left">
-            <Button
-              className="bg-primary"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              ثبت اطلاعات
-            </Button>
-          </div>
+          <Form.Group className="mb-3">
+            <Form.Label>نام بانک:</Form.Label>
+            <Form.Control
+              name="bankName"
+              required
+              placeholder="نام بانک"
+              type="text"
+              className="outline-danger"
+            />
+            {showErrorBankName && (
+              <Form.Text className="text-danger">
+                نام بانک تکراری وارد شده
+              </Form.Text>
+            )}
+          </Form.Group>
+        </div>
+        <div className="col-12 col-md-6">
+          <Form.Group className="mb-3">
+            <Form.Label>آدرس وبسایت:</Form.Label>
+            <Form.Control
+              name="bankWebSite"
+              placeholder="آدرس وبسایت"
+              type="text"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>توضیحات:</Form.Label>
+            <Form.Control name="bankDesc" placeholder="توضیحات" type="text" />
+          </Form.Group>
         </div>
       </div>
-    </Form>
+    </div>
   );
   const modalBodyEdit = (
-    <Form onSubmit={handleAcceptEdit}>
-      <div className="w-100">
-        <div className="row">
-          <div className="col-12 col-md-6">
-            <Form.Group className="mb-3">
-              <Form.Label>کد بانک:</Form.Label>
-              <InputGroup className="mb-3 custom-rtl-btns">
-                <Button variant="outline-secondary">ایجاد کد</Button>
-                <Form.Control
-                  placeholder="کد بانک"
-                  name="bankCode"
-                  type="text"
-                  value={preEditData ? preEditData.bankCode : ''}
-                  onChange={(e) => setPreEditData({...preEditData, bankCode: e.target.value})}
-                />
-              </InputGroup>
-            </Form.Group>
+    <div className="w-100">
+      <div className="row">
+        <div className="col-12 col-md-6">
+          <Form.Group className="mb-3">
+            <Form.Label>کد بانک:</Form.Label>
+            <InputGroup className="mb-3 custom-rtl-btns">
+              <Button variant="outline-secondary">ایجاد کد</Button>
+              <Form.Control
+                placeholder="کد بانک"
+                name="bankCode"
+                type="text"
+                value={preEditData ? preEditData.bankCode : ""}
+                onChange={(e) =>
+                  setPreEditData({ ...preEditData, bankCode: e.target.value })
+                }
+              />
+            </InputGroup>
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>نام بانک:</Form.Label>
-              <Form.Control
-                name="bankName"
-                required
-                placeholder="نام بانک"
-                type="text"
-                className="outline-danger"
-                value={preEditData ? preEditData.bankName : ''}
-                onChange={(e) => setPreEditData({...preEditData, bankName: e.target.value})}
-              />
-              {showErrorBankName && (
-                <Form.Text className="text-danger">
-                  نام بانک تکراری وارد شده
-                </Form.Text>
-              )}
-            </Form.Group>
-          </div>
-          <div className="col-12 col-md-6">
-            <Form.Group className="mb-3">
-              <Form.Label>آدرس وبسایت:</Form.Label>
-              <Form.Control
-                name="bankWebSite"
-                placeholder="آدرس وبسایت"
-                type="text"
-                value={preEditData ? preEditData.bankWebSite : ''}
-                onChange={(e) => setPreEditData({...preEditData, bankWebSite: e.target.value})}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>توضیحات:</Form.Label>
-              <Form.Control
-                name="bankDesc"
-                placeholder="توضیحات"
-                type="text"
-                value={preEditData ? preEditData.bankDesc : ''}
-                onChange={(e) => setPreEditData({...preEditData, bankDesc: e.target.value})}
-              />
-            </Form.Group>
-          </div>
-          <div className="col-12 text-left">
-            <Button
-              className="bg-primary"
-              type="submit"
-              // disabled={isSubmitting}
-            >
-              ثبت اطلاعات
-            </Button>
-          </div>
+          <Form.Group className="mb-3">
+            <Form.Label>نام بانک:</Form.Label>
+            <Form.Control
+              name="bankName"
+              required
+              placeholder="نام بانک"
+              type="text"
+              className="outline-danger"
+              value={preEditData ? preEditData.bankName : ""}
+              onChange={(e) =>
+                setPreEditData({ ...preEditData, bankName: e.target.value })
+              }
+            />
+            {showErrorBankName && (
+              <Form.Text className="text-danger">
+                نام بانک تکراری وارد شده
+              </Form.Text>
+            )}
+          </Form.Group>
+        </div>
+        <div className="col-12 col-md-6">
+          <Form.Group className="mb-3">
+            <Form.Label>آدرس وبسایت:</Form.Label>
+            <Form.Control
+              name="bankWebSite"
+              placeholder="آدرس وبسایت"
+              type="text"
+              value={preEditData ? preEditData.bankWebSite : ""}
+              onChange={(e) =>
+                setPreEditData({ ...preEditData, bankWebSite: e.target.value })
+              }
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>توضیحات:</Form.Label>
+            <Form.Control
+              name="bankDesc"
+              placeholder="توضیحات"
+              type="text"
+              value={preEditData ? preEditData.bankDesc : ""}
+              onChange={(e) =>
+                setPreEditData({ ...preEditData, bankDesc: e.target.value })
+              }
+            />
+          </Form.Group>
         </div>
       </div>
-    </Form>
+    </div>
   );
   return (
     <div>
       {infos ? (
         <>
           <Content
+            handleSubmitAdd={handleAcceptModalAdd}
+            handleSubmitDl={handleAcceptDl}
+            handleSubmitEdit={handleAcceptEdit}
             data={infos}
             columns={columns}
             modalBodyAdd={modalbodyAdd}
@@ -364,14 +353,12 @@ export default function BanksInfoPage() {
             handleDelete={handleDelete}
             handleEdit={handleEdit}
             handleModalCloseAdd={handleModalCloseAdd}
-            handleAcceptModalAdd={(e) => handleAcceptModalAdd(e)}
             addFormData={addDataObject}
             addedData={addedData}
             modalAcceptText="تایید"
             modalCloseText="انصراف"
             modalTitle="اطلاعات بانک"
             modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
-            handleAcceptDl={handleAcceptDl}
             showDl={showDl}
             handleModalCloseDl={handleModalCloseDl}
             modalAcceptTextDl="حذف"
@@ -379,7 +366,6 @@ export default function BanksInfoPage() {
             modalTitleDl="حذف"
             deleteResponse={deleteResponse}
             modalBodyEdit={modalBodyEdit}
-            handleAcceptEdit={handleAcceptEdit}
             showEdit={showEdit}
             handleModalCloseEdit={handleModalCloseEdit}
             modalAcceptTextEdit={"ویرایش"}

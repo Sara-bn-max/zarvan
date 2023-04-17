@@ -12,6 +12,7 @@ export default function DataTable({
   data,
   columns,
   modalBodyAdd,
+  handleSubmitAdd,
   handleAcceptModalAdd,
   handleAdd,
   handleDelete,
@@ -25,6 +26,7 @@ export default function DataTable({
   modalTitle,
   handleAcceptAdd,
   modalBodyDl,
+  handleSubmitDl,
   handleAcceptDl,
   showDl,
   handleModalCloseDl,
@@ -32,6 +34,7 @@ export default function DataTable({
   modalCloseTextDl,
   modalTitleDl,
   modalBodyEdit,
+  handleSubmitEdit,
   handleAcceptEdit,
   showEdit,
   handleModalCloseEdit,
@@ -197,7 +200,9 @@ export default function DataTable({
         id={`${row.bankId}`}
         onClick={() => handleRowClick(row)}
         // className={selectedTrId === row.bankId ? "selected" : ""}
-        className={(isActive && selectedTrId === row.bankId) ? 'selected' : 'Unselected'}
+        className={
+          isActive && selectedTrId === row.bankId ? "selected" : "Unselected"
+        }
       >
         {columns.map((column, index) => {
           if (column.hidden) {
@@ -257,6 +262,7 @@ export default function DataTable({
               />
             </div>
             <CustomModal
+              handleSubmit={handleSubmitAdd}
               classNameUse="add"
               modalBody={modalBodyAdd}
               handleAcceptModal={handleAcceptModalAdd}
@@ -268,6 +274,7 @@ export default function DataTable({
               modalTitle={modalTitle}
             />
             <CustomModal
+              handleSubmit={handleSubmitDl}
               classNameUse="delete"
               modalBody={modalBodyDl}
               handleAcceptModal={handleAcceptDl}
@@ -278,6 +285,7 @@ export default function DataTable({
               modalTitle={modalTitleDl}
             />
             <CustomModal
+              handleSubmit={handleSubmitEdit}
               classNameUse="edit"
               modalBody={modalBodyEdit}
               handleAcceptModal={handleAcceptEdit}
