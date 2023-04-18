@@ -36,6 +36,7 @@
     background: none !important;
     outline: none !important;
     border: none;
+    box-shadow: 1px 2px 5px 0px rgba(144, 144, 144, 0.6);
   }
   .form-input::-moz-placeholder {
     opacity: 0;
@@ -54,7 +55,7 @@
   }
   .form-input:focus {
     outline: none;
-    border: 2px solid rgb(55, 55, 255);
+    border: 2px solid rgb(176, 112, 34);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
   .form-input:focus ~ .form-label {

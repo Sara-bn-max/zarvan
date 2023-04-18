@@ -7,6 +7,7 @@ import Loading from "../../components/Loading/Loading";
 import InputGroup from "react-bootstrap/InputGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import MainLayout from "../../layout/MainLayout";
 
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
@@ -337,7 +338,8 @@ export default function BanksInfoPage() {
     </div>
   );
   return (
-    <div>
+    <MainLayout>
+ <div>
       {infos ? (
         <>
           <Content
@@ -379,5 +381,7 @@ export default function BanksInfoPage() {
         <Loading />
       )}
     </div>
+    </MainLayout>
+   
   );
 }

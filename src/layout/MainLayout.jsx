@@ -7,7 +7,7 @@ import "./mainStyle.css";
 import NavBar from "../components/nav/NavBar";
 import { List, MenuButtonWideFill } from "react-bootstrap-icons";
 
-export default function MainLayout() {
+export default function MainLayout({children}) {
   const [openMenu, setOpenMenu] = useState(false); // state variable for menu open/close
   const [indexOfMenu, setIndexOfMenu] = useState(null);
 
@@ -32,7 +32,7 @@ export default function MainLayout() {
           <NavBar onNavClick={handleNavClick} />
           <div className="handleFlex">
             <Menu indexOfMenu={indexOfMenu} openMenu={openMenu} setOpenMenu={setOpenMenu} />
-            <BanksInfoPage />
+            {children}
           </div>
         </div>
       </ThemeProvider>
