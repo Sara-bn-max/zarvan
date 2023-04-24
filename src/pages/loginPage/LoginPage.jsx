@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import "./loginPageStyle.css";
 import { Button, Form } from "react-bootstrap";
 import CustomInput from "../../components/customInput/CustomInput";
@@ -6,6 +6,7 @@ import { get, post } from "../../servises/axios/api";
 import { useAuthDispatch, useAuthState } from "../../contexts/auth-context";
 import Loading from "../../components/Loading/Loading";
 import { actionTypes } from "../../contexts/reducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [useName, setUseName] = useState("");
@@ -14,7 +15,10 @@ export default function LoginPage() {
   const [token, setToken] = useState(null);
   const { loading } = useAuthState() || {};
   const dispatch = useAuthDispatch();
-    // const { loginReq, loginSuccess, loginError } = useAuthActions();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { from } = location.state || { from: { pathname: "/" } };
+  // const { loginReq, loginSuccess, loginError } = useAuthActions();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -43,9 +47,11 @@ export default function LoginPage() {
           token: token,
         },
       });
+      navigate(from);
     }
-  }, [token, dispatch]);
-  useEffect(() => {
+  }, [token, dispatch, from]);
+  
+  useLayoutEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       dispatch({

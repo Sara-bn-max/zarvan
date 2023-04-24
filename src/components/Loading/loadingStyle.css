@@ -1,4 +1,5 @@
 .loading{
+  max-width: 200px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
