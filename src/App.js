@@ -1,24 +1,19 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globalStyle.css";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/loginPage/LoginPage";
-import { AuthProvider } from "./contexts/auth-context";
+import {  useAuthState } from "./contexts/auth-context";
 import BanksInfoPage from "./pages/BanksInfoPage/BanksInfoPage";
 
 function App() {
+  // const { token } = useAuthState();
   return (
     <div className="App">
-      <BrowserRouter>
-        <React.StrictMode>
-          <AuthProvider>
             <Routes>
-              <Route index element={<BanksInfoPage />} path="/ACCBank" />
-              <Route index element={<LoginPage />} path="/" />
+              <Route  element={<BanksInfoPage />} path="/ACCBank" />
+              <Route exact element={<LoginPage />} path="/" />
             </Routes>
-          </AuthProvider>
-        </React.StrictMode>
-      </BrowserRouter>
     </div>
   );
 }
