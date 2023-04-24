@@ -3,81 +3,96 @@ import "./loginPageStyle.css";
 import { Button, Form } from "react-bootstrap";
 import CustomInput from "../../components/customInput/CustomInput";
 import { get, post } from "../../servises/axios/api";
-import { useAuthDispatch } from "../../contexts/auth-context";
-import { actionType } from "../../contexts/reducer";
+import { useAuthDispatch, useAuthState } from "../../contexts/auth-context";
+import Loading from "../../components/Loading/Loading";
+import { actionTypes } from "../../contexts/reducer";
 
 export default function LoginPage() {
   const [useName, setUseName] = useState("");
   const [password, setPassword] = useState("");
   const [isPersistent, setIsPersistent] = useState(false);
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState(null);
+  const { loading } = useAuthState() || {};
+  const dispatch = useAuthDispatch();
+    // const { loginReq, loginSuccess, loginError } = useAuthActions();
 
-  const dispatch = useAuthDispatch()
   const handleLogin = (e) => {
     e.preventDefault();
+    dispatch({
+      type: actionTypes.LOGIN_REQUEST,
+    });
     post("/api/Account/Login", {
       userName: `${useName}`,
       passWord: `${password}`,
       isPersistent: isPersistent,
-    }).then((response)=>{
-      if(response){
-        setToken(response.access_token)
-      }
-      console.log(token)
-    })
+    }).then((response) => {
+      setToken(response.access_token);
+      console.log(token);
+    });
   };
   // const fetchCurrentUserInfo = () => {
   //   get()
   // }
   useEffect(() => {
-    if(token){
-      localStorage.setItem('token', token)
+    if (token) {
+      localStorage.setItem("token", token);
       dispatch({
-        type: actionType.LOGIN_SUCCESS,
+        type: actionTypes.LOGIN_SUCCESS,
         payload: {
-          user: '',
-          token:token
-        }
-      })
+          user: "",
+          token: token,
+        },
+      });
     }
-  }, [token, dispatch])
+  }, [token, dispatch]);
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if(token) {
-      setToken(token)
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch({
+        type: actionTypes.LOGIN_REQUEST,
+      });
+      setToken(token);
     }
-  }, [token])
-  
-  
+  }, [dispatch]);
+  const handleIsPersistent = (e) => {
+    setIsPersistent(e.target.checked);
+  };
   return (
-    <div className="w-100 centered-style aaa">
-      <div className="login-form">
-        <Form onSubmit={handleLogin}>
-          <CustomInput
-            type="text"
-            name="userName"
-            required={true}
-            handleChange={(e) => setUseName(e.target.value)}
-            labelText="نام کاربری"
-          />
-          <CustomInput
-            type="password"
-            name="password"
-            required={true}
-            handleChange={(e) => setPassword(e.target.value)}
-            labelText="رمز عبور"
-          />
-          <Form.Group className="mb-3">
-            <Form.Check
-              required
-              label="مرا به خاطر بسپار!"
-            />
-          </Form.Group>
-          <Button type="submit" variant="success">
-            ورود
-          </Button>
-        </Form>
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="w-100 centered-style aaa">
+          <div className="login-form">
+            <Form onSubmit={handleLogin}>
+              <CustomInput
+                type="text"
+                name="userName"
+                required={true}
+                handleChange={(e) => setUseName(e.target.value)}
+                labelText="نام کاربری"
+              />
+              <CustomInput
+                type="password"
+                name="password"
+                required={true}
+                handleChange={(e) => setPassword(e.target.value)}
+                labelText="رمز عبور"
+              />
+              <Form.Group className="mb-3">
+                <Form.Check
+                  checked={isPersistent}
+                  onChange={handleIsPersistent}
+                  label="مرا به خاطر بسپار!"
+                />
+              </Form.Group>
+              <Button type="submit" variant="success">
+                ورود
+              </Button>
+            </Form>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
