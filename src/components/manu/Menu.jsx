@@ -7,13 +7,15 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { X } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
 
-export default function Menu({ indexOfMenu, openMenu, setOpenMenu}) {
+export default function Menu({ indexOfMenu, openMenu, setOpenMenu }) {
   const [menuData, setMenuData] = useState(null);
+  const [submenuUrls, setSubmenuUrls] = useState([]);
+
   // const [closeMenu, setCloseMenu] = useState()
 
   const handleCloseBtn = () => {
-    setOpenMenu(false)
-  }
+    setOpenMenu(false);
+  };
   useEffect(() => {
     if (indexOfMenu == null) {
       get(`/api/Form/MENU?id=0`)
@@ -33,11 +35,18 @@ export default function Menu({ indexOfMenu, openMenu, setOpenMenu}) {
         });
     }
   }, [indexOfMenu]);
-
   const Menu = () => {
     return (
       <>
-        <div className="responsive-x"><Button type="button" variant="outline-danger" onClick={handleCloseBtn}><X /></Button></div>
+        <div className="responsive-x">
+          <Button
+            type="button"
+            variant="outline-danger"
+            onClick={handleCloseBtn}
+          >
+            <X />
+          </Button>
+        </div>
         <Accordion>
           {menuData ? (
             menuData.map((item, index) => (
@@ -73,10 +82,33 @@ export default function Menu({ indexOfMenu, openMenu, setOpenMenu}) {
     );
   };
 
+  useEffect(() => {
+    if (menuData) {
+      const urls = extractSubmenuUrls(menuData);
+      setSubmenuUrls(urls);
+    }
+  }, [menuData]);
+  const extractSubmenuUrls = (menuData) => {
+    let urls = [];
+    menuData.forEach((item) => {
+      if (item.childrens) {
+        item.childrens.forEach((subItem) => {
+          urls.push(subItem.url);
+        });
+      }
+    });
+    return [...new Set(urls)]; // convert to Set and back to array to remove duplicates
+  };
+  console.log(submenuUrls);
   return (
-    <div className={`${openMenu ? 'customMenu responsive-menu' : 'customMenu responsive-menu closed'}`}>
+    <div
+      className={`${
+        openMenu
+          ? "customMenu responsive-menu"
+          : "customMenu responsive-menu closed"
+      }`}
+    >
       <Menu />
     </div>
-    
   );
 }
