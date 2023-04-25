@@ -15,3 +15,6 @@
 .selected{
 	background-color: #c1ccdbc2;
 }
+table:hover{
+	cursor: pointer;
+}
