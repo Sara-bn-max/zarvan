@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 export const get = async (url, token) => {
   const config = {

@@ -49,7 +49,7 @@ export default function LoginPage() {
       });
       navigate(from);
     }
-  }, [token, dispatch, from]);
+  }, [token, dispatch]);
   
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");

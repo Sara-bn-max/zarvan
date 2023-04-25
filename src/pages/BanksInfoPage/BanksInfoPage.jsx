@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useLayoutEffect} from "react";
 import Content from "../../components/content/Content";
 import { del, get, post, put } from "../../servises/axios/api";
 import Button from "react-bootstrap/Button";
@@ -25,10 +25,19 @@ export default function BanksInfoPage() {
   const [preEditData, setPreEditData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [token, setToken] = useState(null)
 
+
+  //////GET TOKEN/////////
+useLayoutEffect(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    setToken(token);
+  }
+}, [token]);
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
-    get(`/api/ACCBank/GetAllBanks`)
+    get(`/api/ACCBank/GetAllBanks`,token)
       .then((response) => {
         setinfos(response);
       })
@@ -73,7 +82,7 @@ export default function BanksInfoPage() {
     setBankCodeValue(bankCodeGenerate);
   };
   const handleAcceptAdd = () => {
-    post(`/api/ACCBank/Create`, addDataObject)
+    post(`/api/ACCBank/Create`, addDataObject , token)
       .then((response) => {
         setAddedData(response.bankId);
         toast.success("بانک مورد نظر به سیستم اضافه شد", {
@@ -142,7 +151,7 @@ export default function BanksInfoPage() {
       bankDesc: `${preEditData.bankDesc}`,
     };
     const id = preEditData.bankId;
-    put(`/api/ACCBank/${id}`, editData)
+    put(`/api/ACCBank/${id}`, editData, token)
       .then((response) => {
         console.log(response.body);
         toast.success("ویرایش با موفقیت انجام شد", {
@@ -186,7 +195,7 @@ export default function BanksInfoPage() {
   };
   const handleAcceptDl = (e) => {
     e.preventDefault()
-    del(`/api/ACCBank/${deleteId}`)
+    del(`/api/ACCBank/${deleteId}`, token)
       .then((response) => {
         setDeleteResponse(deleteId);
         toast.success("بانک مورد نظر حذف شد", {
@@ -374,6 +383,7 @@ export default function BanksInfoPage() {
             modalCloseTextEdit={"انصراف"}
             modalTitleEdit={"ویرایش اطلاعات بانک"}
             selected={selected}
+            idName='bankId'
           />
           <ToastContainer />
         </>

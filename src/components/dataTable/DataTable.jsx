@@ -44,6 +44,7 @@ export default function DataTable({
   deleteResponse,
   handleDecline,
   selected,
+  idName,
 }) {
   const [info, setInfo] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -78,7 +79,7 @@ export default function DataTable({
   useEffect(() => {
     if (deleteResponse) {
       const updatedData = filteredData.filter(
-        (item) => item.bankId !== deleteResponse
+        (item) => item[`${idName}`] !== deleteResponse
       );
       if (typeof deleteResponse === "number") {
         const element = document.getElementById(deleteResponse);
@@ -135,7 +136,6 @@ export default function DataTable({
   }, []);
 
   //////DATA AFTER DELETE///
-
   const handleItemsPerPage = (e) => {
     const value = e.target.value;
     setItemsPerPage(value);
@@ -144,7 +144,37 @@ export default function DataTable({
     setTotalPages(newTotalPages);
     setCurrentPage(1);
   };
+  //////////////DATA SORTING///
+  const [sortedData, setSortedData] = useState(null);
+  const [sortKey, setSortKey] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
 
+
+  function sortByField(key) {
+    const sortedArray = [...filteredData].sort((a, b) => {
+      const valueA = a[key];
+      const valueB = b[key];
+
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return valueA - valueB;
+      } else {
+        const collator = new Intl.Collator("fa");
+        return collator.compare(valueA.toString(), valueB.toString());
+      }
+    });
+
+    const newSortedData = sortDirection === "desc" ? sortedArray.reverse() : sortedArray;
+
+    setSortedData(newSortedData);
+    setSortKey(key);
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  }
+  
+  useEffect(() => {
+    if(sortedData){
+      setFilteredData(sortedData);
+    }
+  }, [sortedData]);
   //////HANDLE PAGINATION///
   const getPaginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -171,7 +201,7 @@ export default function DataTable({
   const handleRowClick = (selectedData) => {
     setIsActive(!isActive);
     setSelectedTrData(selectedData);
-    setSelectedTrId(selectedData.bankId);
+    setSelectedTrId(selectedData[`${idName}`]);
     setAddBtnDisable(!addBtnDisable);
     setDeclineBtnDisable(true);
     setAcceptBtnDisable(true);
@@ -186,7 +216,14 @@ export default function DataTable({
       if (column.hidden) {
         return null;
       } else {
-        return <th key={index}>{column.title}</th>;
+        return (
+          <th
+            key={column.customKey}
+            onClick={() => sortByField(column.customKey)}
+          >
+            {column.title}
+          </th>
+        );
       }
     })
   );
@@ -197,11 +234,13 @@ export default function DataTable({
     paginatedData.map((row, index) => (
       <tr
         key={index}
-        id={`${row.bankId}`}
+        id={`${row[`${idName}`]}`}
         onClick={() => handleRowClick(row)}
-        // className={selectedTrId === row.bankId ? "selected" : ""}
+        // className={selectedTrId === row[`${idName}`] ? "selected" : ""}
         className={
-          isActive && selectedTrId === row.bankId ? "selected" : "Unselected"
+          isActive && selectedTrId === row[`${idName}`]
+            ? "selected"
+            : "Unselected"
         }
       >
         {columns.map((column, index) => {

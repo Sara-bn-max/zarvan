@@ -99,7 +99,6 @@ export default function Menu({ indexOfMenu, openMenu, setOpenMenu }) {
     });
     return [...new Set(urls)]; // convert to Set and back to array to remove duplicates
   };
-  console.log(submenuUrls);
   return (
     <div
       className={`${
