@@ -9,8 +9,6 @@ import ShortHandTable from "../tableShortHand/ShortHandTable";
 import CustomModal from "../CustomModal/CustomModal";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-
-
 export default function DataTable({
   data,
   columns,
@@ -211,32 +209,37 @@ export default function DataTable({
     setEditBtnDisable(!editBtnDisable);
     setDeleteBtnDisable(!deleteBtnDisable);
   };
-  //////////HANDLE EXEL/////////
+  //////////HANDLE PRINT/////////
   const handlePrint = () => {
-     // Get the table element by ID
-  const table = document.getElementById("table");
-  // Open a new window
-  const newWindow = window.open();
-  // Write the table to the new window
-  newWindow.document.write(table.outerHTML);
-  // Print the window
-  newWindow.print();
-  // Close the window
-  newWindow.close();
-  const tableStyle = `
-    <style>
-      table { border-collapse: collapse; text-align: right; }
-      th, td { border: 1px solid black; padding: 0.5rem; }
-      th { background-color: #eee; }
-      @media print {
-        body * { visibility: hidden; }
-        table { visibility: visible; }
-        table { position: absolute; top: 0; left: 0; }
+    const table = document.getElementById("prinTable");
+    const printWindow = window.open("", "", "height=600,width=800");
+    const styleElement = printWindow.document.createElement("style");
+    styleElement.innerHTML = `
+      table {
+        direction: rtl;
+        border-collapse: collapse;
+        text-align: right;
+        margin-top: 1rem;
       }
-    </style>
-  `;
+      th, td {
+        border: 1px solid black;
+        padding: 0.5rem;
+      }
+      th {
+        background-color: #eee;
+      }
+    `;
+    printWindow.document.head.appendChild(styleElement);
+    printWindow.document.body.appendChild(table.cloneNode(true));
+    printWindow.print();
+    printWindow.close();
   };
 
+  ///////HANDLE EXPORT EXEL//////
+  const handleExcel = () => {
+    const btn = document.getElementById("button-download-as-xls");
+    btn.click();
+  };
   /////////HANDLE DATA MAPING//////
   const infoThead = !info ? (
     <Loading />
@@ -306,7 +309,54 @@ export default function DataTable({
       </tr>
     ))
   );
+  /////////HANDLE MAPING TO EXPORT/////
+  const infoTheadExport = !info ? (
+    <Loading />
+  ) : (
+    columns.map((column, index) => {
+      if (column.hidden) {
+        return null;
+      } else {
+        return (
+          <th
+            key={column.customKey}
+            onClick={() => sortByField(column.customKey)}
+          >
+            {column.title}
+          </th>
+        );
+      }
+    })
+  );
 
+  const infoTbodyeExport = !info ? (
+    <Loading />
+  ) : (
+    filteredData.map((row, index) => (
+      <tr
+        key={index}
+        id={`${row[`${idName}`]}`}
+        onClick={() => handleRowClick(row)}
+        className={
+          isActive && selectedTrId === row[`${idName}`]
+            ? "selected"
+            : "Unselected"
+        }
+      >
+        {columns.map((column, index) => {
+          if (column.hidden) {
+            return null;
+          } else {
+            return (
+              <>
+                <td key={index}>{row[column.customKey]}</td>
+              </>
+            );
+          }
+        })}
+      </tr>
+    ))
+  );
   return (
     <>
       <TopBar
@@ -318,6 +368,19 @@ export default function DataTable({
           <Loading />
         ) : (
           <>
+            <table id="prinTable" className="d-none">
+              <thead className="bg-primary text-light">
+                <tr>{infoTheadExport}</tr>
+              </thead>
+              <tbody>{infoTbodyeExport}</tbody>
+            </table>
+            <ReactHTMLTableToExcel
+             className="d-none"
+              table="prinTable"
+              filename="datatable"
+              sheet="sheet1"
+              buttonText="Export to Excel"
+            />
             <Table responsive hover bordered id="table">
               <thead className="bg-primary text-light">
                 <tr>{infoThead}</tr>
@@ -334,6 +397,7 @@ export default function DataTable({
                 onChange={setCurrentPage}
               />
               <ShortHandTable
+                handleExcel={handleExcel}
                 handlePrint={handlePrint}
                 PrintBtnDisable=""
                 handleAdd={handleAdd}

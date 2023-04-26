@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import {
   Check2,
+  FileEarmarkExcel,
   Pencil,
   Plus,
   Printer,
@@ -22,29 +23,34 @@ export default function ShortHandTable({
   acceptBtnDisable,
   deleteBtnDisable,
   handlePrint,
-  PrintBtnDisable
+  PrintBtnDisable,
+  handleExcel,
+  excelBtnDisable
 }) {
   return (
     <>
       <div className="centered-style">
         <ButtonGroup className="custom-rtl-btns">
-          <Button variant="outline-primary" className="outline-primary mx-1" onClick={handleAdd} disabled={addBtnDisable}>
+          <Button variant="primary" className="primary mx-1" onClick={handleAdd} disabled={addBtnDisable}>
             <Plus />
           </Button>
-          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleEdit} disabled={editBtnDisable}>
+          <Button variant="primary"  className="primary mx-1" onClick={handleEdit} disabled={editBtnDisable}>
             <Pencil />
           </Button>
-          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleDecline} disabled={declineBtnDisable}>
+          <Button variant="primary"  className="primary mx-1" onClick={handleDecline} disabled={declineBtnDisable}>
             <X />
           </Button>
-          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleAcceptAdd} disabled={acceptBtnDisable}>
+          <Button variant="primary"  className="primary mx-1" onClick={handleAcceptAdd} disabled={acceptBtnDisable}>
             <Check2 />
           </Button>
-          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleDelete} disabled={deleteBtnDisable}>
+          <Button variant="primary"  className="primary mx-1" onClick={handleDelete} disabled={deleteBtnDisable}>
             <TrashFill />
           </Button>
-          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handlePrint} disabled={PrintBtnDisable}>
+          <Button variant="primary"  className="primary mx-1" onClick={handlePrint} disabled={PrintBtnDisable}>
             <Printer />
+          </Button>
+          <Button variant="primary"  className="primary mx-1" onClick={handleExcel} disabled={excelBtnDisable}>
+            <FileEarmarkExcel />
           </Button>
         </ButtonGroup>
       </div>
