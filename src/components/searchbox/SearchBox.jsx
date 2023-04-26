@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 export default function SearchBox({handleSearchInput}) {
   return (
     <>
-      <Form.Control type="text" placeholder="search some thing" onChange={handleSearchInput} />
+      <Form.Control type="text" placeholder="search something" onChange={handleSearchInput} />
     </>
   );
 }

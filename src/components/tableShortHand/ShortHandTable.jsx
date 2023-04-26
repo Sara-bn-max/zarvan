@@ -5,6 +5,7 @@ import {
   Check2,
   Pencil,
   Plus,
+  Printer,
   TrashFill,
   X,
 } from "react-bootstrap-icons";
@@ -20,6 +21,8 @@ export default function ShortHandTable({
   declineBtnDisable,
   acceptBtnDisable,
   deleteBtnDisable,
+  handlePrint,
+  PrintBtnDisable
 }) {
   return (
     <>
@@ -39,6 +42,9 @@ export default function ShortHandTable({
           </Button>
           <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handleDelete} disabled={deleteBtnDisable}>
             <TrashFill />
+          </Button>
+          <Button variant="outline-primary"  className="outline-primary mx-1" onClick={handlePrint} disabled={PrintBtnDisable}>
+            <Printer />
           </Button>
         </ButtonGroup>
       </div>

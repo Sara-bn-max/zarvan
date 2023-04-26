@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MainLayout from "../../layout/MainLayout";
 
+
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
   const [show, setShow] = useState(false);
@@ -59,6 +60,18 @@ useLayoutEffect(() => {
     {
       customKey: "bankName",
       title: "نام بانک",
+    },
+    {
+      customKey: "bankLname",
+      title: "نام لاتین",
+    },
+    {
+      customKey: "bankWebSite",
+      title: "وبسایت",
+    },
+    {
+      customKey: "bankDesc",
+      title: "توضیحات",
     },
   ];
 

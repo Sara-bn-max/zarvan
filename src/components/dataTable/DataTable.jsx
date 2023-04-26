@@ -7,6 +7,9 @@ import SearchBox from "../searchbox/SearchBox";
 import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import CustomModal from "../CustomModal/CustomModal";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+
+
 
 export default function DataTable({
   data,
@@ -149,7 +152,6 @@ export default function DataTable({
   const [sortKey, setSortKey] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
 
-
   function sortByField(key) {
     const sortedArray = [...filteredData].sort((a, b) => {
       const valueA = a[key];
@@ -163,15 +165,16 @@ export default function DataTable({
       }
     });
 
-    const newSortedData = sortDirection === "desc" ? sortedArray.reverse() : sortedArray;
+    const newSortedData =
+      sortDirection === "desc" ? sortedArray.reverse() : sortedArray;
 
     setSortedData(newSortedData);
     setSortKey(key);
     setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   }
-  
+
   useEffect(() => {
-    if(sortedData){
+    if (sortedData) {
       setFilteredData(sortedData);
     }
   }, [sortedData]);
@@ -202,13 +205,39 @@ export default function DataTable({
     setIsActive(!isActive);
     setSelectedTrData(selectedData);
     setSelectedTrId(selectedData[`${idName}`]);
-    setAddBtnDisable(!addBtnDisable);
+    setAddBtnDisable(false);
     setDeclineBtnDisable(true);
     setAcceptBtnDisable(true);
     setEditBtnDisable(!editBtnDisable);
     setDeleteBtnDisable(!deleteBtnDisable);
   };
+  //////////HANDLE EXEL/////////
+  const handlePrint = () => {
+     // Get the table element by ID
+  const table = document.getElementById("table");
+  // Open a new window
+  const newWindow = window.open();
+  // Write the table to the new window
+  newWindow.document.write(table.outerHTML);
+  // Print the window
+  newWindow.print();
+  // Close the window
+  newWindow.close();
+  const tableStyle = `
+    <style>
+      table { border-collapse: collapse; text-align: right; }
+      th, td { border: 1px solid black; padding: 0.5rem; }
+      th { background-color: #eee; }
+      @media print {
+        body * { visibility: hidden; }
+        table { visibility: visible; }
+        table { position: absolute; top: 0; left: 0; }
+      }
+    </style>
+  `;
+  };
 
+  /////////HANDLE DATA MAPING//////
   const infoThead = !info ? (
     <Loading />
   ) : (
@@ -227,6 +256,21 @@ export default function DataTable({
       }
     })
   );
+  const tdSearchBox = !info ? (
+    <Loading />
+  ) : (
+    columns.map((column, index) => {
+      if (column.hidden) {
+        return null;
+      } else {
+        return (
+          <td key={column.customKey}>
+            <SearchBox handleSearchInput={(e) => handleSearchBox(e)} />
+          </td>
+        );
+      }
+    })
+  );
 
   const infoTbody = !info ? (
     <Loading />
@@ -236,7 +280,6 @@ export default function DataTable({
         key={index}
         id={`${row[`${idName}`]}`}
         onClick={() => handleRowClick(row)}
-        // className={selectedTrId === row[`${idName}`] ? "selected" : ""}
         className={
           isActive && selectedTrId === row[`${idName}`]
             ? "selected"
@@ -279,7 +322,10 @@ export default function DataTable({
               <thead className="bg-primary text-light">
                 <tr>{infoThead}</tr>
               </thead>
-              <tbody>{infoTbody}</tbody>
+              <tbody>
+                <tr>{tdSearchBox}</tr>
+                {infoTbody}
+              </tbody>
             </Table>
             <div className="space-between">
               <Pagination
@@ -288,6 +334,8 @@ export default function DataTable({
                 onChange={setCurrentPage}
               />
               <ShortHandTable
+                handlePrint={handlePrint}
+                PrintBtnDisable=""
                 handleAdd={handleAdd}
                 handleDecline={handleDecline}
                 handleDelete={() => handleDelete(selectedTrId)}
