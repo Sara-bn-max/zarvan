@@ -8,6 +8,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MainLayout from "../../layout/MainLayout";
+import { DatabaseCheck } from "react-bootstrap-icons";
 
 
 export default function BanksInfoPage() {
@@ -93,6 +94,7 @@ useLayoutEffect(() => {
     const maxNumberCode = Math.max(...bankCodes);
     const bankCodeGenerate = Number(maxNumberCode) + 1;
     setBankCodeValue(bankCodeGenerate);
+    alert(bankCodeGenerate)
   };
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject , token)
@@ -247,7 +249,7 @@ useLayoutEffect(() => {
           <Form.Group className="mb-3">
             <Form.Label>کد بانک:</Form.Label>
             <InputGroup className="mb-3 custom-rtl-btns">
-              <Button variant="outline-secondary">ایجاد کد</Button>
+              <Button variant="outline-secondary" onClick={handleCodeBankChange} ><DatabaseCheck /></Button>
               <Form.Control
                 value={bankCodeValue}
                 placeholder="کد بانک"
@@ -297,7 +299,7 @@ useLayoutEffect(() => {
           <Form.Group className="mb-3">
             <Form.Label>کد بانک:</Form.Label>
             <InputGroup className="mb-3 custom-rtl-btns">
-              <Button variant="outline-secondary">ایجاد کد</Button>
+              <Button variant="outline-secondary" onClick={handleCodeBankChange} ><DatabaseCheck /></Button>
               <Form.Control
                 placeholder="کد بانک"
                 name="bankCode"

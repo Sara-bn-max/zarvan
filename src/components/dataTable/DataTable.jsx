@@ -309,6 +309,7 @@ export default function DataTable({
       </tr>
     ))
   );
+  
   /////////HANDLE MAPING TO EXPORT/////
   const infoTheadExport = !info ? (
     <Loading />
