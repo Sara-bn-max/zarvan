@@ -89,12 +89,9 @@ useLayoutEffect(() => {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
-  const handleCodeBankChange = () => {
-    const bankCodes = infos.map((item) => item.bankCode);
-    const maxNumberCode = Math.max(...bankCodes);
-    const bankCodeGenerate = Number(maxNumberCode) + 1;
-    setBankCodeValue(bankCodeGenerate);
-    alert(bankCodeGenerate)
+  const [changableCode, setchangableCode] = useState(bankCodeValue)
+  const handleCodeBankChange = (e) => {
+    setchangableCode(e.target.value);
   };
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject , token)
@@ -251,7 +248,7 @@ useLayoutEffect(() => {
             <InputGroup className="mb-3 custom-rtl-btns">
               <Button variant="outline-secondary" onClick={handleCodeBankChange} ><DatabaseCheck /></Button>
               <Form.Control
-                value={bankCodeValue}
+                value={changableCode}
                 placeholder="کد بانک"
                 name="bankCode"
                 type="text"

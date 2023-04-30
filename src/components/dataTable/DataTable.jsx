@@ -8,6 +8,7 @@ import Loading from "../Loading/Loading";
 import ShortHandTable from "../tableShortHand/ShortHandTable";
 import CustomModal from "../CustomModal/CustomModal";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import CustomToolTip from "../customTooltip/CustomToolTip";
 
 export default function DataTable({
   data,
@@ -289,15 +290,40 @@ export default function DataTable({
             : "Unselected"
         }
       >
+        {/* <CustomToolTip
+          tooltipBody={
+            <Table striped bordered hover variant="dark">
+              <thead>
+                <tr>{infoThead}</tr>
+              </thead>
+              <tbody>
+                {paginatedData.map((row, index) => (
+                  <tr
+                    key={index}
+                    id={`${row[`${idName}`]}`}
+                    onClick={() => handleRowClick(row)}
+                    className={
+                      isActive && selectedTrId === row[`${idName}`]
+                        ? "selected"
+                        : "Unselected"
+                    }
+                  >
+                    {columns.map((column, index) => {
+                        return (
+                          <>
+                            <td key={index}>{row[column.customKey]}</td>
+                          </>
+                        );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          }
+        > */}
         {columns.map((column, index) => {
           if (column.hidden) {
             return null;
-          } else if (column.customKey === "searchColumn") {
-            return (
-              <td key={index}>
-                <SearchBox handleSearchInput={(e) => handleSearchBox(e)} />
-              </td>
-            );
           } else {
             return (
               <>
@@ -306,11 +332,12 @@ export default function DataTable({
             );
           }
         })}
+        {/* </CustomToolTip> */}
       </tr>
     ))
   );
-  
-  /////////HANDLE MAPING TO EXPORT/////
+
+  /////////HANDLE MAPING TO EXPORT OR PRINT/////
   const infoTheadExport = !info ? (
     <Loading />
   ) : (
@@ -376,7 +403,7 @@ export default function DataTable({
               <tbody>{infoTbodyeExport}</tbody>
             </table>
             <ReactHTMLTableToExcel
-             className="d-none"
+              className="d-none"
               table="prinTable"
               filename="datatable"
               sheet="sheet1"

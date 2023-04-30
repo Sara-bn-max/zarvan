@@ -1,20 +1,22 @@
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
-import Button from "react-bootstrap/Button";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
+export default function CustomToolTip({children,tooltipBody}) {
+  
 
-export default function CustomToolTip({toottipBtnText,popoverBody,popoverHeader,popoverId}) {
-  const popover = (
-    <Popover id={`${popoverId}`}>
-      <Popover.Header as="h3">{popoverHeader}</Popover.Header>
-      <Popover.Body>
-        {popoverBody}
-      </Popover.Body>
-    </Popover>
-  );
+const renderTooltip = (props) => (
+  <Tooltip id="button-tooltip" {...props}>
+    {tooltipBody}
+  </Tooltip>
+);
   return (
-    <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-      <Button variant="success">{toottipBtnText}</Button>
+    <OverlayTrigger
+    placement="left"
+    delay={{ show: 200, hide: 1000 }}
+    overlay={renderTooltip}
+  >
+      {children}
     </OverlayTrigger>
-  );
+  )
 }
