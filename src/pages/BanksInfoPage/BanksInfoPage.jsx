@@ -1,4 +1,4 @@
-import { useEffect, useState ,useLayoutEffect} from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import Content from "../../components/content/Content";
 import { del, get, post, put } from "../../servises/axios/api";
 import Button from "react-bootstrap/Button";
@@ -9,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MainLayout from "../../layout/MainLayout";
 import { DatabaseCheck } from "react-bootstrap-icons";
-
 
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
@@ -27,19 +26,19 @@ export default function BanksInfoPage() {
   const [preEditData, setPreEditData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
-  const [token, setToken] = useState(null)
-
+  const [token, setToken] = useState(null);
+  const [generatedToEdit, setGeneratedToEdit] = useState('');
 
   //////GET TOKEN/////////
-useLayoutEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    setToken(token);
-  }
-}, [token]);
+  useLayoutEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, [token]);
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
-    get(`/api/ACCBank/GetAllBanks`,token)
+    get(`/api/ACCBank/GetAllBanks`, token)
       .then((response) => {
         setinfos(response);
       })
@@ -89,12 +88,22 @@ useLayoutEffect(() => {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
     setShow(true);
   };
-  const [changableCode, setchangableCode] = useState(bankCodeValue)
-  const handleCodeBankChange = (e) => {
-    setchangableCode(e.target.value);
+  const handleCodeBankgenerate = () => {
+    const bankCodes = infos ? infos.map((item) => item.bankCode) : [];
+    const maxNumberCode = Math.max(...bankCodes);
+    const bankCodeGenerate = Number(maxNumberCode) + 1;
+    setBankCodeValue(bankCodeGenerate);
+    setFormData({ ...formData, bankCode: bankCodeGenerate });
   };
+  // useLayoutEffect(() => {
+  //   setGeneratedToEdit(preEditData ? preEditData.bankCode : '')
+  // }, [preEditData])
+  // const handleCodeBankgenerate2 = (preEditData) => {
+  //   setGeneratedToEdit(preEditData.bankCode);
+  // };
+
   const handleAcceptAdd = () => {
-    post(`/api/ACCBank/Create`, addDataObject , token)
+    post(`/api/ACCBank/Create`, addDataObject, token)
       .then((response) => {
         setAddedData(response.bankId);
         toast.success("بانک مورد نظر به سیستم اضافه شد", {
@@ -206,7 +215,7 @@ useLayoutEffect(() => {
     }
   };
   const handleAcceptDl = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     del(`/api/ACCBank/${deleteId}`, token)
       .then((response) => {
         setDeleteResponse(deleteId);
@@ -246,12 +255,18 @@ useLayoutEffect(() => {
           <Form.Group className="mb-3">
             <Form.Label>کد بانک:</Form.Label>
             <InputGroup className="mb-3 custom-rtl-btns">
-              <Button variant="outline-secondary" onClick={handleCodeBankChange} ><DatabaseCheck /></Button>
+              <Button
+                variant="outline-secondary"
+                onClick={handleCodeBankgenerate}
+              >
+                <DatabaseCheck />
+              </Button>
               <Form.Control
-                value={changableCode}
+                value={bankCodeValue}
                 placeholder="کد بانک"
                 name="bankCode"
                 type="text"
+                onChange={(e) => setBankCodeValue(e.target.value)}
               />
             </InputGroup>
           </Form.Group>
@@ -289,6 +304,7 @@ useLayoutEffect(() => {
       </div>
     </div>
   );
+  
   const modalBodyEdit = (
     <div className="w-100">
       <div className="row">
@@ -296,7 +312,12 @@ useLayoutEffect(() => {
           <Form.Group className="mb-3">
             <Form.Label>کد بانک:</Form.Label>
             <InputGroup className="mb-3 custom-rtl-btns">
-              <Button variant="outline-secondary" onClick={handleCodeBankChange} ><DatabaseCheck /></Button>
+              <Button
+                variant="outline-secondary"
+                // onClick={() => handleCodeBankgenerate2(preEditData)}
+              >
+                <DatabaseCheck />
+              </Button>
               <Form.Control
                 placeholder="کد بانک"
                 name="bankCode"
@@ -360,50 +381,49 @@ useLayoutEffect(() => {
   );
   return (
     <MainLayout>
- <div>
-      {infos ? (
-        <>
-          <Content
-            handleSubmitAdd={handleAcceptModalAdd}
-            handleSubmitDl={handleAcceptDl}
-            handleSubmitEdit={handleAcceptEdit}
-            data={infos}
-            columns={columns}
-            modalBodyAdd={modalbodyAdd}
-            show={show}
-            handleAdd={handleAdd}
-            handleAcceptAdd={handleAcceptAdd}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-            handleModalCloseAdd={handleModalCloseAdd}
-            addFormData={addDataObject}
-            addedData={addedData}
-            modalAcceptText="تایید"
-            modalCloseText="انصراف"
-            modalTitle="اطلاعات بانک"
-            modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
-            showDl={showDl}
-            handleModalCloseDl={handleModalCloseDl}
-            modalAcceptTextDl="حذف"
-            modalCloseTextDl="انصراف"
-            modalTitleDl="حذف"
-            deleteResponse={deleteResponse}
-            modalBodyEdit={modalBodyEdit}
-            showEdit={showEdit}
-            handleModalCloseEdit={handleModalCloseEdit}
-            modalAcceptTextEdit={"ویرایش"}
-            modalCloseTextEdit={"انصراف"}
-            modalTitleEdit={"ویرایش اطلاعات بانک"}
-            selected={selected}
-            idName='bankId'
-          />
-          <ToastContainer />
-        </>
-      ) : (
-        <Loading />
-      )}
-    </div>
+      <div>
+        {infos ? (
+          <>
+            <Content
+              handleSubmitAdd={handleAcceptModalAdd}
+              handleSubmitDl={handleAcceptDl}
+              handleSubmitEdit={handleAcceptEdit}
+              data={infos}
+              columns={columns}
+              modalBodyAdd={modalbodyAdd}
+              show={show}
+              handleAdd={handleAdd}
+              handleAcceptAdd={handleAcceptAdd}
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleModalCloseAdd={handleModalCloseAdd}
+              addFormData={addDataObject}
+              addedData={addedData}
+              modalAcceptText="تایید"
+              modalCloseText="انصراف"
+              modalTitle="اطلاعات بانک"
+              modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
+              showDl={showDl}
+              handleModalCloseDl={handleModalCloseDl}
+              modalAcceptTextDl="حذف"
+              modalCloseTextDl="انصراف"
+              modalTitleDl="حذف"
+              deleteResponse={deleteResponse}
+              modalBodyEdit={modalBodyEdit}
+              showEdit={showEdit}
+              handleModalCloseEdit={handleModalCloseEdit}
+              modalAcceptTextEdit={"ویرایش"}
+              modalCloseTextEdit={"انصراف"}
+              modalTitleEdit={"ویرایش اطلاعات بانک"}
+              selected={selected}
+              idName="bankId"
+            />
+            <ToastContainer />
+          </>
+        ) : (
+          <Loading />
+        )}
+      </div>
     </MainLayout>
-   
   );
 }

@@ -81,7 +81,6 @@ export default function Menu({ indexOfMenu, openMenu, setOpenMenu }) {
       </Accordion.Item>
     );
   };
-console.log(submenuUrls)
   useEffect(() => {
     if (menuData) {
       const urls = extractSubmenuUrls(menuData);
