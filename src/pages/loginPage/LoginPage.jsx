@@ -7,6 +7,7 @@ import { useAuthDispatch, useAuthState } from "../../contexts/auth-context";
 import Loading from "../../components/Loading/Loading";
 import { actionTypes } from "../../contexts/reducer";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ArrowRight } from "react-bootstrap-icons";
 
 export default function LoginPage() {
   const [useName, setUseName] = useState("");
@@ -50,7 +51,7 @@ export default function LoginPage() {
       navigate(from);
     }
   }, [token, dispatch]);
-  
+
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -68,9 +69,9 @@ export default function LoginPage() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-100 centered-style aaa">
+        <div className="w-100 centered-style login-container">
           <div className="login-form">
-            <Form onSubmit={handleLogin}>
+            <Form onSubmit={handleLogin} className="login">
               <CustomInput
                 type="text"
                 name="userName"
@@ -92,9 +93,14 @@ export default function LoginPage() {
                   label="مرا به خاطر بسپار!"
                 />
               </Form.Group>
-              <Button type="submit" variant="success">
-                ورود
-              </Button>
+              <div className="frame">
+                <button type="submit" className="custom-btn btn-5">
+                  <span class="btn-icon mx-2">
+                    <ArrowRight />
+                  </span>
+                  <span class="btn-txt">ورود</span>
+                </button>
+              </div>
             </Form>
           </div>
         </div>

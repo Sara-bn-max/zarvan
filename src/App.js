@@ -8,14 +8,12 @@ import BanksInfoPage from "./pages/BanksInfoPage/BanksInfoPage";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 
 function App() {
-  // const { token } = useAuthState();
+  const { token } = useAuthState();
   return (
     <div className="App">
       <Routes>
-        <Route exact path={"/"} element={<LoginPage />} />
-        <Route path="/ACCBank" element={<PrivateRoute component={<BanksInfoPage />} />}>
-          <Route element={<BanksInfoPage />} />
-        </Route>
+        <Route exact path={"/"} element={!token ? <LoginPage /> : <BanksInfoPage />} />
+        <Route path="/ACCBank" element={<PrivateRoute component={<BanksInfoPage />} />} />
       </Routes>
     </div>
   );

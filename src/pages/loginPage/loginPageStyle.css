@@ -1,3 +1,177 @@
-.aaa{
+.login-container{
 height: 100vh;
+width: 100%;
 }
+.login-form{
+    max-width: 300px;
+    width: 40vw;
+}
+.login .form-control {
+    position: relative;
+    min-width: 150px;
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 1.5rem;
+    background-color: #f7f7f7 !important;
+    border: none !important;
+  }
+  .login .form-label {
+    position: absolute;
+    color: #212121;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: inherit;
+    right: 1rem;
+    top: 0.75rem;
+    padding: 0 0.25rem;
+    transition: all 0.3s ease;
+  }
+  .login .form-input {
+    position: absolute;
+    font-weight: 400;
+    line-height: inherit;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    background: none !important;
+    outline: none !important;
+    border: none;
+    box-shadow: 1px 2px 5px 0px rgba(144, 144, 144, 0.6);
+  }
+  .login .form-input::-moz-placeholder {
+    opacity: 0;
+    visibility: hidden;
+    color: transparent;
+  }
+  .login .form-input:-ms-input-placeholder {
+    opacity: 0;
+    visibility: hidden;
+    color: transparent;
+  }
+  .login .form-input::placeholder {
+    opacity: 0;
+    visibility: hidden;
+    color: transparent;
+  }
+  .login .form-input:focus {
+    outline: none;
+    border: 2px solid rgb(176, 112, 34);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  }
+  .login .form-input:focus ~ .form-label {
+    top: 2px;
+    left: 1rem;
+    z-index: 5;
+    font-size: 9px;
+    font-weight: 500;
+    color: #b6b5bc;
+    transition: all 0.2s ease-in-out;
+  }
+  .login .form-input:not(:-moz-placeholder-shown).form-input:not(:focus) ~ .form-label {
+    top: -0.75rem;
+    left: 1rem;
+    z-index: 9;
+    font-size: 0.875rem;
+    font-weight: 500;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+  .login .form-input:not(:-ms-input-placeholder).form-input:not(:focus) ~ .form-label {
+    top: -0.75rem;
+    left: 1rem;
+    z-index: 9;
+    font-size: 0.875rem;
+    font-weight: 500;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+  .login .form-input:not(:placeholder-shown).form-input:not(:focus) ~ .form-label {
+    top: 1px;
+    left: 1rem;
+    z-index: 5;
+    font-size: 9px;
+    font-weight: 500;
+    color: #b6b5bc;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .login .contact-column {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .login .contact-inform {
+    padding: 4rem 2rem 2rem;
+    border-radius: 0.25rem;
+  }
+  .frame {
+    width: 100%;
+    text-align: center;
+  }
+  .custom-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+     box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+     7px 7px 20px 0px rgba(0,0,0,.1),
+     4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+  }
+ /* 5 */
+ .btn-5 {
+    width: 100%;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    background: rgb(255,27,0);
+  background:linear-gradient(0deg, rgb(217 79 11) 0%, rgb(255 90 22) 100%);
+  }
+  .btn-5:hover {
+    color: #f0094a;
+    background: transparent;
+     box-shadow:none;
+  }
+  .btn-5:before,
+  .btn-5:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #f0094a;
+    box-shadow:
+     -1px -1px 5px 0px #fff,
+     7px 7px 20px 0px #0003,
+     4px 4px 5px 0px #0002;
+    transition:400ms ease all;
+  }
+  .btn-5:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+  }
+  .btn-5:hover:before,
+  .btn-5:hover:after{
+    width:100%;
+    transition:800ms ease all;
+  }
