@@ -380,7 +380,6 @@ export default function BanksInfoPage() {
     </div>
   );
   return (
-    <MainLayout>
       <div>
         {infos ? (
           <>
@@ -424,6 +423,5 @@ export default function BanksInfoPage() {
           <Loading />
         )}
       </div>
-    </MainLayout>
   );
 }

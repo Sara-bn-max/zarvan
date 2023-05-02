@@ -6,6 +6,7 @@ import Loading from "../Loading/Loading";
 import ListGroup from "react-bootstrap/ListGroup";
 import { X } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function Menu({ indexOfMenu, openMenu, setOpenMenu }) {
   const [menuData, setMenuData] = useState(null);
@@ -72,7 +73,7 @@ export default function Menu({ indexOfMenu, openMenu, setOpenMenu }) {
             <ListGroup>
               {item.childrens.map((subItem, index) => (
                 <ListGroup.Item key={subItem.title}>
-                  <a href={subItem.url}>{subItem.title}</a>
+                  <Link to={subItem.url}>{subItem.title}</Link>
                 </ListGroup.Item>
               ))}
             </ListGroup>

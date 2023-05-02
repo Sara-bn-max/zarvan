@@ -44,7 +44,6 @@ export default function DataTable({
   modalCloseTextEdit,
   modalTitleEdit,
   deleteResponse,
-  handleDecline,
   selected,
   idName,
 }) {
@@ -136,7 +135,15 @@ export default function DataTable({
       }
     }
   }, []);
-
+const handleDeclineAdd = () =>{
+  // addFormData = null,
+  setCurrentPage(1);
+  setAddBtnDisable(false);
+  setDeclineBtnDisable(true);
+  setAcceptBtnDisable(true);
+  setEditBtnDisable(true);
+  setDeleteBtnDisable(true);
+}
   //////DATA AFTER DELETE///
   const handleItemsPerPage = (e) => {
     const value = e.target.value;
@@ -429,7 +436,7 @@ export default function DataTable({
                 handlePrint={handlePrint}
                 PrintBtnDisable=""
                 handleAdd={handleAdd}
-                handleDecline={handleDecline}
+                handleDecline={handleDeclineAdd}
                 handleDelete={() => handleDelete(selectedTrId)}
                 handleEdit={() => handleEdit(selectedTrData)}
                 handleAcceptAdd={handleAcceptAdd}

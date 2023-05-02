@@ -6,8 +6,9 @@ import BanksInfoPage from "../pages/BanksInfoPage/BanksInfoPage";
 import "./mainStyle.css";
 import NavBar from "../components/nav/NavBar";
 import { List, MenuButtonWideFill } from "react-bootstrap-icons";
+import Routings from "../components/routing/Routings";
 
-export default function MainLayout({children}) {
+export default function MainLayout() {
   const [openMenu, setOpenMenu] = useState(false); // state variable for menu open/close
   const [indexOfMenu, setIndexOfMenu] = useState(null);
 
@@ -21,6 +22,7 @@ export default function MainLayout({children}) {
 
   return (
     <>
+    <Routings />
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minBreakpoint="xxs"
@@ -32,7 +34,7 @@ export default function MainLayout({children}) {
           <NavBar onNavClick={handleNavClick} />
           <div className="handleFlex">
             <Menu indexOfMenu={indexOfMenu} openMenu={openMenu} setOpenMenu={setOpenMenu} />
-            {children}
+            
           </div>
         </div>
       </ThemeProvider>
