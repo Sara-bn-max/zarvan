@@ -31,7 +31,7 @@ export default function LoginPage() {
       passWord: `${password}`,
       isPersistent: isPersistent,
     }).then((response) => {
-      setToken(response.access_token);
+      setToken(response.accessToken);
       console.log(token);
     });
   };
