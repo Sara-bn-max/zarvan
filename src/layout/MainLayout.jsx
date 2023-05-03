@@ -23,30 +23,32 @@ export default function MainLayout() {
 
   const location = useLocation();
   const currentUrl = location.pathname;
-  console.log(currentUrl)
+  const showNavAndSidebar = currentUrl !== "/";
   return (
     <>
-     
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minBreakpoint="xxs"
       >
-        <div className="customBox">
-          <div className="mobile-menu" onClick={handleMenuClick}>
-            <List />
-          </div>
-          <NavBar onNavClick={handleNavClick} />
-          <div className="handleFlex">
-            <Menu
-              indexOfMenu={indexOfMenu}
-              openMenu={openMenu}
-              setOpenMenu={setOpenMenu}
-            />
-            <div className="routing-container">
-             <Routings />
+        {showNavAndSidebar ? (
+          <div className="customBox">
+            <div className="mobile-menu" onClick={handleMenuClick}>
+              <List />
             </div>
-          </div>
-        </div>
+            <NavBar onNavClick={handleNavClick} />
+            <div className="handleFlex">
+              <Menu
+                indexOfMenu={indexOfMenu}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
+              />
+              <div className="routing-container">
+                <Routings />
+              </div>
+            </div>
+          </div>        ) : (
+          <Routings />
+        )}
       </ThemeProvider>
     </>
   );
