@@ -5,7 +5,7 @@ import CustomInput from "../../components/customInput/CustomInput";
 import { get, post } from "../../servises/axios/api";
 import { useAuthDispatch, useAuthState } from "../../contexts/auth-context";
 import Loading from "../../components/Loading/Loading";
-import { actionTypes } from "../../contexts/reducer";
+import { actionTypes, useAuthActions } from "../../contexts/reducer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight } from "react-bootstrap-icons";
 
@@ -14,25 +14,30 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isPersistent, setIsPersistent] = useState(false);
   const [token, setToken] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
+  const [centerId, setCenterId] = useState(null);
+  const [langId, setLangId] = useState(null);
   const { loading } = useAuthState() || {};
   const dispatch = useAuthDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const { from } = location.state || { from: { pathname: "/" } };
-  // const { loginReq, loginSuccess, loginError } = useAuthActions();
+  const { loginReq, loginSuccess, loginError } = useAuthActions();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch({
-      type: actionTypes.LOGIN_REQUEST,
-    });
+    loginReq();
     post("/api/Account/Login", {
       userName: `${useName}`,
       passWord: `${password}`,
       isPersistent: isPersistent,
     }).then((response) => {
       setToken(response.accessToken);
-      console.log(token);
+      setUserId(response.userId);
+      setUserName(response.userFullName);
+      setCenterId(response.systemCenterId);
+      setLangId(response.systemLanguageId);
     });
   };
   // const fetchCurrentUserInfo = () => {
@@ -40,25 +45,33 @@ export default function LoginPage() {
   // }
   useEffect(() => {
     if (token) {
+      const user = {
+        userId: userId,
+        userName: userName
+      }
+      const setting ={
+        centerId: centerId,
+        langId: langId
+      }
       localStorage.setItem("token", token);
-      dispatch({
-        type: actionTypes.LOGIN_SUCCESS,
-        payload: {
-          user: "",
-          token: token,
-        },
-      });
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("setting", JSON.stringify(setting));
+      loginSuccess(token, user, setting);
       navigate(from);
     }
-  }, [token, dispatch]);
+  }, [token, userId, userName, dispatch]);
 
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      dispatch({
-        type: actionTypes.LOGIN_REQUEST,
-      });
+    const user = localStorage.getItem("user");
+    const setting = localStorage.getItem("setting");
+    if (token && user && setting) {
+      loginReq();
       setToken(token);
+      setUserId(user.userId);
+      setUserName(user.userName);
+      setCenterId(setting.centerId);
+      setLangId(setting.langId)
     }
   }, [dispatch]);
   const handleIsPersistent = (e) => {

@@ -1,3 +1,4 @@
+import { useAuthDispatch } from "./auth-context"
 
 export const actionTypes = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
@@ -9,6 +10,7 @@ export const actionTypes = {
 export const initialState = {
     user: null,
     token: null,
+    setting: null,
     loading: false,
     error: null
 }
@@ -20,14 +22,16 @@ export function reducer(state, action) {
                 ...state,
                 user: null,
                 token: null,
+                setting: null,
                 loading: true,
                 error: null
             }
         case actionTypes.LOGIN_SUCCESS:
-            const { user, token } = action.payload
+            const { user, token, setting } = action.payload
             return {
                 ...state,
                 user: user,
+                setting: setting,
                 token: token,
                 loading: false,
                 error: null
@@ -37,6 +41,7 @@ export function reducer(state, action) {
                 ...state,
                 user: null,
                 token: null,
+                setting: null,
                 loading: false,
                 error: action.payload.error
             }
@@ -45,6 +50,7 @@ export function reducer(state, action) {
                 ...state,
                 user: null,
                 token: null,
+                setting: null,
                 loading: false,
                 error: null
             }
@@ -55,45 +61,46 @@ export function reducer(state, action) {
 
 
 
-// export function useAuthActions() {
-//     const dispatch = useAuthDispatch();
+export function useAuthActions() {
+    
+    const dispatch = useAuthDispatch()
   
-//     function loginReq() {
-//       return dispatch({
-//         type: actionType.LOGIN_REQUEST,
-//       });
-//     }
+    function loginReq() {
+      return dispatch({
+        type: actionTypes.LOGIN_REQUEST,
+      });
+    }
   
-//     function loginSuccess(user, token) {
-//       return dispatch({
-//         type: actionType.LOGIN_SUCCESS,
-//         payload: {
-//           user: user,
-//           token: token,
-//         },
-//       });
-//     }
+    function loginSuccess(user, token) {
+      return dispatch({
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: {
+          user: user,
+          token: token,
+        },
+      });
+    }
   
-//     function loginError(error) {
-//       return dispatch({
-//         type: actionType.LOGIN_ERROR,
-//         payload: {
-//           error: error,
-//         },
-//       });
-//     }
+    function loginError(error) {
+      return dispatch({
+        type: actionTypes.LOGIN_ERROR,
+        payload: {
+          error: error,
+        },
+      });
+    }
   
-//     function logOut() {
-//       return dispatch({
-//         type: actionType.LOGOUT,
-//       });
-//     }
+    function logOut() {
+      return dispatch({
+        type: actionTypes.LOGOUT,
+      });
+    }
   
-//     return {
-//       loginReq,
-//       loginSuccess,
-//       loginError,
-//       logOut,
-//       dispatch,
-//     };
-//   }
+    return {
+      loginReq,
+      loginSuccess,
+      loginError,
+      logOut,
+      dispatch,
+    };
+  }
