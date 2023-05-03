@@ -7,6 +7,7 @@ import "./mainStyle.css";
 import NavBar from "../components/nav/NavBar";
 import { List, MenuButtonWideFill } from "react-bootstrap-icons";
 import Routings from "../components/routing/Routings";
+import { useLocation } from "react-router-dom";
 
 export default function MainLayout() {
   const [openMenu, setOpenMenu] = useState(false); // state variable for menu open/close
@@ -20,21 +21,30 @@ export default function MainLayout() {
     setOpenMenu(!openMenu); // toggle the state variable
   };
 
+  const location = useLocation();
+  const currentUrl = location.pathname;
+  console.log(currentUrl)
   return (
     <>
-    <Routings />
+     
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minBreakpoint="xxs"
       >
         <div className="customBox">
-        <div className="mobile-menu"  onClick={handleMenuClick}>
-              <List />
-            </div>
+          <div className="mobile-menu" onClick={handleMenuClick}>
+            <List />
+          </div>
           <NavBar onNavClick={handleNavClick} />
           <div className="handleFlex">
-            <Menu indexOfMenu={indexOfMenu} openMenu={openMenu} setOpenMenu={setOpenMenu} />
-            
+            <Menu
+              indexOfMenu={indexOfMenu}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
+            />
+            <div className="routing-container">
+             <Routings />
+            </div>
           </div>
         </div>
       </ThemeProvider>
