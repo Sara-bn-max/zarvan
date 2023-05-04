@@ -24,6 +24,7 @@ export default function BanksInfoPage() {
   const [addedData, setAddedData] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [preEditData, setPreEditData] = useState(null);
+  const [editedData, setEditedData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
   const [token, setToken] = useState(null);
@@ -95,12 +96,8 @@ export default function BanksInfoPage() {
     setBankCodeValue(bankCodeGenerate);
     setFormData({ ...formData, bankCode: bankCodeGenerate });
   };
-  // useLayoutEffect(() => {
-  //   setGeneratedToEdit(preEditData ? preEditData.bankCode : '')
-  // }, [preEditData])
-  // const handleCodeBankgenerate2 = (preEditData) => {
-  //   setGeneratedToEdit(preEditData.bankCode);
-  // };
+  const [notEditedCode, setNotEditedCode] = useState(null);
+ console.log(notEditedCode);
 
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject, token)
@@ -159,6 +156,7 @@ export default function BanksInfoPage() {
   const handleEdit = (data) => {
     if (data) {
       setPreEditData(data);
+      setNotEditedCode(data.bankCode)
       setShowEdit(true);
     }
   };
@@ -314,7 +312,9 @@ export default function BanksInfoPage() {
             <InputGroup className="mb-3 custom-rtl-btns">
               <Button
                 variant="outline-secondary"
-                // onClick={() => handleCodeBankgenerate2(preEditData)}
+                onClick={() =>
+                  setPreEditData({ ...preEditData, bankCode: notEditedCode })
+                }
               >
                 <DatabaseCheck />
               </Button>
