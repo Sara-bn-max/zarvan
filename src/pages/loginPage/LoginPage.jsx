@@ -33,11 +33,11 @@ export default function LoginPage() {
       passWord: `${password}`,
       isPersistent: isPersistent,
     }).then((response) => {
-      setToken(response.accessToken);
-      setUserId(response.userId);
-      setUserName(response.userFullName);
-      setCenterId(response.systemCenterId);
-      setLangId(response.systemLanguageId);
+      setToken(response.userTokens.accessToken);
+      setUserId(response.userInfos.userId);
+      setUserName(response.userInfos.userFullName);
+      setCenterId(response.userConfigs.systemCenterId);
+      setLangId(response.userConfigs.systemLanguageId);
     });
   };
   // const fetchCurrentUserInfo = () => {
