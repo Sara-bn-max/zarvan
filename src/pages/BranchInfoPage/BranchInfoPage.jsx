@@ -26,12 +26,22 @@ export default function BranchInfoPage() {
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
   const [token, setToken] = useState(null);
+  const [langId, setLangId] = useState(null);
+  const [centerId, setCenterId] = useState(null);
 
   //////GET TOKEN/////////
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
+    const configs = JSON.parse(localStorage.getItem("configs"));
+
+    const lang = configs.systemLanguageId;
+    const center = configs.systemLanguageId;
     if (token) {
       setToken(token);
+    }
+    if (configs) {
+      setLangId(lang);
+      setCenterId(center);
     }
   }, [token]);
   //////GET ALL DATA OF THE BANKS/////
@@ -46,34 +56,59 @@ export default function BranchInfoPage() {
       });
   }, []);
 
-  //////DATA VIEW TO SET COLUMNS/////
-  const columns = [
-    {
-      Key: "id",
-      hidden: true,
-    },
-    {
-      customKey: "code",
-      title: "کد شعبه",
-    },
-    {
-      customKey: "bankBrancheName",
-      title: "نام شعبه",
-    },
-    {
-      customKey: "bankBrancheLname",
-      title: "نام لاتین",
-    },
-    {
-      customKey: "bankBrancheTypeName",
-      title: "نوع شعبه",
-    },
-    {
-      customKey: "active",
-      title: "فعال",
-    },
-  ];
+  
+//////DATA VIEW TO SET COLUMNS/////
+const [columnInfo, setColumnInfo] = useState(null);
 
+useEffect(() => {
+  if (langId) {
+    get(
+      `api/SystemLableNameInfo/GetAllSystemLableNameInfo?tableId=63&languageId=${langId}`,
+      token
+    ).then((response) => setColumnInfo(response));
+  }
+}, [langId]);
+
+const columns = [
+  {
+    Key: "id",
+    hidden: true,
+  },
+  {
+    customKey: "code",
+    title: "کد شعبه",
+  },
+  {
+    customKey: "bankBrancheName",
+    title: "نام شعبه",
+  },
+  {
+    customKey: "bankBrancheLname",
+    title: "نام لاتین",
+  },
+  {
+    customKey: "bankBrancheTypeName",
+    title: "نوع شعبه",
+  },
+  {
+    customKey: "active",
+    title: "فعال",
+  },
+];
+
+if (columnInfo) {
+  columnInfo.forEach((item) => {
+    const column = columns.find((col) => col.customKey === item.customKey);
+    if (!column) {
+      columns.push({
+        customKey: item.customKey,
+        title: item.lableValue,
+      });
+    }
+  });
+}
+
+console.log(columns);
   /////HANDLE OPEN ADD MODAL /////
   const handleModalCloseAdd = () => {
     setShow(false);

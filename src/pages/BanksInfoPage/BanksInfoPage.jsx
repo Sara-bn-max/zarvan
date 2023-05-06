@@ -7,7 +7,6 @@ import Loading from "../../components/Loading/Loading";
 import InputGroup from "react-bootstrap/InputGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MainLayout from "../../layout/MainLayout";
 import { DatabaseCheck } from "react-bootstrap-icons";
 
 export default function BanksInfoPage() {
@@ -18,63 +17,83 @@ export default function BanksInfoPage() {
   const [bankCodeValue, setBankCodeValue] = useState("");
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
-  const [customBankcode, setCustomBankcode] = useState("");
   const [addDataObject, setAddDataObject] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedData, setAddedData] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [preEditData, setPreEditData] = useState(null);
-  const [editedData, setEditedData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
   const [token, setToken] = useState(null);
-  const [generatedToEdit, setGeneratedToEdit] = useState('');
+  const [langId, setLangId] = useState(null);
+  const [centerId, setCenterId] = useState(null);
 
-  //////GET TOKEN/////////
+  //////GET DATA OF USER AND TOKEN/////////
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
+    const configs = JSON.parse(localStorage.getItem("configs"));
+
+    const lang = configs.systemLanguageId;
+    const center = configs.systemLanguageId;
     if (token) {
       setToken(token);
+    }
+    if (configs) {
+      setLangId(lang);
+      setCenterId(center);
     }
   }, [token]);
   //////GET ALL DATA OF THE BANKS/////
   useEffect(() => {
-    get(`/api/ACCBank/GetAllBanks`, token)
-      .then((response) => {
-        setinfos(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (token) {
+      get(`/api/ACCBank/GetAllBanks`, token)
+        .then((response) => {
+          setinfos(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [token]);
 
   //////DATA VIEW TO SET COLUMNS/////
+  const [columnInfo, setColumnInfo] = useState(null);
+
+  useEffect(() => {
+    if (langId) {
+      get(
+        `api/SystemLableNameInfo/GetAllSystemLableNameInfo?tableId=58&languageId=${langId}`,
+        token
+      ).then((response) => setColumnInfo(response));
+    }
+  }, [langId]);
+
   const columns = [
-    {
-      Key: "bankId",
-      hidden: true,
-    },
-    {
-      customKey: "bankCode",
-      title: "کد بانک",
-    },
-    {
-      customKey: "bankName",
-      title: "نام بانک",
-    },
-    {
-      customKey: "bankLname",
-      title: "نام لاتین",
-    },
-    {
-      customKey: "bankWebSite",
-      title: "وبسایت",
-    },
-    {
-      customKey: "bankDesc",
-      title: "توضیحات",
-    },
+    
+  {
+    Key: "bankId",
+    hidden: true,
+  },
+    { customKey: "bankCode", title: "کد بانک" },
+    { customKey: "bankName", title: "نام بانک" },
+    { customKey: "bankLname", title: "نام لاتین" },
+    { customKey: "bankWebSite", title: "وبسایت" },
+    { customKey: "bankDesc", title: "توضیحات" },
   ];
+
+  if (columnInfo) {
+    columnInfo.forEach((item) => {
+      const column = columns.find((col) => col.customKey === item.customKey);
+      if (!column) {
+        columns.push({
+          customKey: item.customKey,
+          title: item.lableValue,
+        });
+      }
+    });
+  }
+
+  console.log(columns);
 
   /////HANDLE OPEN ADD MODAL /////
   const handleModalCloseAdd = () => {
@@ -97,7 +116,6 @@ export default function BanksInfoPage() {
     setFormData({ ...formData, bankCode: bankCodeGenerate });
   };
   const [notEditedCode, setNotEditedCode] = useState(null);
- console.log(notEditedCode);
 
   const handleAcceptAdd = () => {
     post(`/api/ACCBank/Create`, addDataObject, token)
@@ -156,7 +174,7 @@ export default function BanksInfoPage() {
   const handleEdit = (data) => {
     if (data) {
       setPreEditData(data);
-      setNotEditedCode(data.bankCode)
+      setNotEditedCode(data.bankCode);
       setShowEdit(true);
     }
   };
@@ -302,7 +320,7 @@ export default function BanksInfoPage() {
       </div>
     </div>
   );
-  
+
   const modalBodyEdit = (
     <div className="w-100">
       <div className="row">
@@ -380,48 +398,48 @@ export default function BanksInfoPage() {
     </div>
   );
   return (
-      <div>
-        {infos ? (
-          <>
-            <Content
-              handleSubmitAdd={handleAcceptModalAdd}
-              handleSubmitDl={handleAcceptDl}
-              handleSubmitEdit={handleAcceptEdit}
-              data={infos}
-              columns={columns}
-              modalBodyAdd={modalbodyAdd}
-              show={show}
-              handleAdd={handleAdd}
-              handleAcceptAdd={handleAcceptAdd}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-              handleModalCloseAdd={handleModalCloseAdd}
-              addFormData={addDataObject}
-              addedData={addedData}
-              modalAcceptText="تایید"
-              modalCloseText="انصراف"
-              modalTitle="اطلاعات بانک"
-              modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
-              showDl={showDl}
-              handleModalCloseDl={handleModalCloseDl}
-              modalAcceptTextDl="حذف"
-              modalCloseTextDl="انصراف"
-              modalTitleDl="حذف"
-              deleteResponse={deleteResponse}
-              modalBodyEdit={modalBodyEdit}
-              showEdit={showEdit}
-              handleModalCloseEdit={handleModalCloseEdit}
-              modalAcceptTextEdit={"ویرایش"}
-              modalCloseTextEdit={"انصراف"}
-              modalTitleEdit={"ویرایش اطلاعات بانک"}
-              selected={selected}
-              idName="bankId"
-            />
-            <ToastContainer />
-          </>
-        ) : (
-          <Loading />
-        )}
-      </div>
+    <div>
+      {infos ? (
+        <>
+          <Content
+            handleSubmitAdd={handleAcceptModalAdd}
+            handleSubmitDl={handleAcceptDl}
+            handleSubmitEdit={handleAcceptEdit}
+            data={infos}
+            columns={columns}
+            modalBodyAdd={modalbodyAdd}
+            show={show}
+            handleAdd={handleAdd}
+            handleAcceptAdd={handleAcceptAdd}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleModalCloseAdd={handleModalCloseAdd}
+            addFormData={addDataObject}
+            addedData={addedData}
+            modalAcceptText="تایید"
+            modalCloseText="انصراف"
+            modalTitle="اطلاعات بانک"
+            modalBodyDl={`آیا از حذف این بانک اطمینان دارید`}
+            showDl={showDl}
+            handleModalCloseDl={handleModalCloseDl}
+            modalAcceptTextDl="حذف"
+            modalCloseTextDl="انصراف"
+            modalTitleDl="حذف"
+            deleteResponse={deleteResponse}
+            modalBodyEdit={modalBodyEdit}
+            showEdit={showEdit}
+            handleModalCloseEdit={handleModalCloseEdit}
+            modalAcceptTextEdit={"ویرایش"}
+            modalCloseTextEdit={"انصراف"}
+            modalTitleEdit={"ویرایش اطلاعات بانک"}
+            selected={selected}
+            idName="bankId"
+          />
+          <ToastContainer />
+        </>
+      ) : (
+        <Loading />
+      )}
+    </div>
   );
 }

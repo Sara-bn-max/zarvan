@@ -14,10 +14,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isPersistent, setIsPersistent] = useState(false);
   const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState(null);
-  const [centerId, setCenterId] = useState(null);
-  const [langId, setLangId] = useState(null);
+  // const [userId, setUserId] = useState(null);
+  // const [userName, setUserName] = useState(null);
+  // const [centerId, setCenterId] = useState(null);
+  // const [langId, setLangId] = useState(null);
+  const [userInfos, setUserInfos] = useState(null);
+  const [userConfigs, setUserConfigs] = useState(null)
   const { loading } = useAuthState() || {};
   const dispatch = useAuthDispatch();
   const location = useLocation();
@@ -34,44 +36,31 @@ export default function LoginPage() {
       isPersistent: isPersistent,
     }).then((response) => {
       setToken(response.userTokens.accessToken);
-      setUserId(response.userInfos.userId);
-      setUserName(response.userInfos.userFullName);
-      setCenterId(response.userConfigs.systemCenterId);
-      setLangId(response.userConfigs.systemLanguageId);
+      setUserInfos(response.userInfos);
+      setUserConfigs(response.userConfigs);
+     
     });
   };
-  // const fetchCurrentUserInfo = () => {
-  //   get()
-  // }
+
   useEffect(() => {
     if (token) {
-      const user = {
-        userId: userId,
-        userName: userName
-      }
-      const setting ={
-        centerId: centerId,
-        langId: langId
-      }
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("setting", JSON.stringify(setting));
-      loginSuccess(token, user, setting);
+      localStorage.setItem("user", JSON.stringify(userInfos));
+      localStorage.setItem("configs", JSON.stringify(userConfigs));
+      loginSuccess(token, userInfos, userConfigs);
       navigate(from);
     }
-  }, [token, userId, userName, dispatch]);
+  }, [token, userInfos,userConfigs, dispatch]);
 
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    const setting = localStorage.getItem("setting");
-    if (token && user && setting) {
+    const user = localStorage.getItem("userInfos");
+    const configs = localStorage.getItem("userConfigs");
+    if (token && user && configs) {
       loginReq();
       setToken(token);
-      setUserId(user.userId);
-      setUserName(user.userName);
-      setCenterId(setting.centerId);
-      setLangId(setting.langId)
+      setUserInfos(user);
+      setUserConfigs(configs);
     }
   }, [dispatch]);
   const handleIsPersistent = (e) => {
