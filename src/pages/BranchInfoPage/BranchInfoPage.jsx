@@ -48,7 +48,7 @@ export default function BranchInfoPage() {
   useEffect(() => {
     get(`/api/AccBranches`, token)
       .then((response) => {
-        console.log(response)
+        console.log(response);
         setinfos(response);
       })
       .catch((error) => {
@@ -56,59 +56,52 @@ export default function BranchInfoPage() {
       });
   }, []);
 
-  
-//////DATA VIEW TO SET COLUMNS/////
-const [columnInfo, setColumnInfo] = useState(null);
+  //////DATA VIEW TO SET COLUMNS/////
 
-useEffect(() => {
-  if (langId) {
-    get(
-      `api/SystemLableNameInfo/GetAllSystemLableNameInfo?tableId=63&languageId=${langId}`,
-      token
-    ).then((response) => setColumnInfo(response));
-  }
-}, [langId]);
+  const [columnInfo, setColumnInfo] = useState([]);
 
-const columns = [
-  {
-    Key: "id",
-    hidden: true,
-  },
-  {
-    customKey: "code",
-    title: "کد شعبه",
-  },
-  {
-    customKey: "bankBrancheName",
-    title: "نام شعبه",
-  },
-  {
-    customKey: "bankBrancheLname",
-    title: "نام لاتین",
-  },
-  {
-    customKey: "bankBrancheTypeName",
-    title: "نوع شعبه",
-  },
-  {
-    customKey: "active",
-    title: "فعال",
-  },
-];
-
-if (columnInfo) {
-  columnInfo.forEach((item) => {
-    const column = columns.find((col) => col.customKey === item.customKey);
-    if (!column) {
-      columns.push({
-        customKey: item.customKey,
-        title: item.lableValue,
-      });
+  useEffect(() => {
+    if (langId) {
+      get(
+        `api/SystemLableNameInfo/GetAllSystemLableNameInfo?tableId=63&languageId=${langId}`,
+        token
+      ).then((response) => setColumnInfo(response));
     }
-  });
-}
+  }, [langId]);
 
-console.log(columns);
+  let columns = [
+    {
+      Key: "id",
+      hidden: true,
+    },
+    {
+      customKey: "code",
+      title: "کد شعبه",
+    },
+    {
+      customKey: "bankBrancheName",
+      title: "نام شعبه",
+    },
+    {
+      customKey: "bankBrancheLname",
+      title: "نام لاتین",
+    },
+    {
+      customKey: "bankBrancheTypeName",
+      title: "نوع شعبه",
+    },
+    {
+      customKey: "active",
+      title: "فعال",
+    },
+  ];
+
+  if (columnInfo && columnInfo.length > 0) {
+    columns = columnInfo.map((column) => ({
+      customKey: column.lableName,
+      title: column.lableValue,
+    }));
+  }
   /////HANDLE OPEN ADD MODAL /////
   const handleModalCloseAdd = () => {
     setShow(false);
@@ -188,7 +181,7 @@ console.log(columns);
   const handleEdit = (data) => {
     if (data) {
       setPreEditData(data);
-      setNotEditedCode(data.code)
+      setNotEditedCode(data.code);
       setShowEdit(true);
     }
   };
@@ -196,11 +189,11 @@ console.log(columns);
   function handleAcceptEdit(e) {
     e.preventDefault();
     const editData = {
-      code:  preEditData.code,
+      code: preEditData.code,
       bankBrancheName: `${preEditData.bankBrancheName}`,
       bankBrancheType: preEditData.bankBrancheType,
       active: preEditData.true,
-      bankBrancheLname: `${preEditData.bankBrancheLname}`
+      bankBrancheLname: `${preEditData.bankBrancheLname}`,
     };
     const id = preEditData.id;
     put(`/api/AccBranches/${id}`, editData, token)
@@ -335,7 +328,7 @@ console.log(columns);
       </div>
     </div>
   );
-  
+
   const modalBodyEdit = (
     <div className="w-100">
       <div className="row">
@@ -413,48 +406,48 @@ console.log(columns);
     </div>
   );
   return (
-      <div>
-        {infos ? (
-          <>
-            <Content
-              handleSubmitAdd={handleAcceptModalAdd}
-              handleSubmitDl={handleAcceptDl}
-              handleSubmitEdit={handleAcceptEdit}
-              data={infos}
-              columns={columns}
-              modalBodyAdd={modalbodyAdd}
-              show={show}
-              handleAdd={handleAdd}
-              handleAcceptAdd={handleAcceptAdd}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit}
-              handleModalCloseAdd={handleModalCloseAdd}
-              addFormData={addDataObject}
-              addedData={addedData}
-              modalAcceptText="تایید"
-              modalCloseText="انصراف"
-              modalTitle="اطلاعات شعبه"
-              modalBodyDl={`آیا از حذف این شعبه اطمینان دارید`}
-              showDl={showDl}
-              handleModalCloseDl={handleModalCloseDl}
-              modalAcceptTextDl="حذف"
-              modalCloseTextDl="انصراف"
-              modalTitleDl="حذف"
-              deleteResponse={deleteResponse}
-              modalBodyEdit={modalBodyEdit}
-              showEdit={showEdit}
-              handleModalCloseEdit={handleModalCloseEdit}
-              modalAcceptTextEdit={"ویرایش"}
-              modalCloseTextEdit={"انصراف"}
-              modalTitleEdit={"ویرایش اطلاعات شعبه"}
-              selected={selected}
-              idName="id"
-            />
-            <ToastContainer />
-          </>
-        ) : (
-          <Loading />
-        )}
-      </div>
+    <div>
+      {infos ? (
+        <>
+          <Content
+            handleSubmitAdd={handleAcceptModalAdd}
+            handleSubmitDl={handleAcceptDl}
+            handleSubmitEdit={handleAcceptEdit}
+            data={infos}
+            columns={columns}
+            modalBodyAdd={modalbodyAdd}
+            show={show}
+            handleAdd={handleAdd}
+            handleAcceptAdd={handleAcceptAdd}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleModalCloseAdd={handleModalCloseAdd}
+            addFormData={addDataObject}
+            addedData={addedData}
+            modalAcceptText="تایید"
+            modalCloseText="انصراف"
+            modalTitle="اطلاعات شعبه"
+            modalBodyDl={`آیا از حذف این شعبه اطمینان دارید`}
+            showDl={showDl}
+            handleModalCloseDl={handleModalCloseDl}
+            modalAcceptTextDl="حذف"
+            modalCloseTextDl="انصراف"
+            modalTitleDl="حذف"
+            deleteResponse={deleteResponse}
+            modalBodyEdit={modalBodyEdit}
+            showEdit={showEdit}
+            handleModalCloseEdit={handleModalCloseEdit}
+            modalAcceptTextEdit={"ویرایش"}
+            modalCloseTextEdit={"انصراف"}
+            modalTitleEdit={"ویرایش اطلاعات شعبه"}
+            selected={selected}
+            idName="id"
+          />
+          <ToastContainer />
+        </>
+      ) : (
+        <Loading />
+      )}
+    </div>
   );
 }

@@ -57,7 +57,7 @@ export default function BanksInfoPage() {
   }, [token]);
 
   //////DATA VIEW TO SET COLUMNS/////
-  const [columnInfo, setColumnInfo] = useState(null);
+  const [columnInfo, setColumnInfo] = useState([]);
 
   useEffect(() => {
     if (langId) {
@@ -68,12 +68,7 @@ export default function BanksInfoPage() {
     }
   }, [langId]);
 
-  const columns = [
-    
-  {
-    Key: "bankId",
-    hidden: true,
-  },
+  let columns = [
     { customKey: "bankCode", title: "کد بانک" },
     { customKey: "bankName", title: "نام بانک" },
     { customKey: "bankLname", title: "نام لاتین" },
@@ -81,19 +76,13 @@ export default function BanksInfoPage() {
     { customKey: "bankDesc", title: "توضیحات" },
   ];
 
-  if (columnInfo) {
-    columnInfo.forEach((item) => {
-      const column = columns.find((col) => col.customKey === item.customKey);
-      if (!column) {
-        columns.push({
-          customKey: item.customKey,
-          title: item.lableValue,
-        });
-      }
-    });
+  if (columnInfo && columnInfo.length > 0) {
+    columns = columnInfo.map((column) => ({
+      customKey: column.lableName,
+      title: column.lableValue,
+    }));
   }
 
-  console.log(columns);
 
   /////HANDLE OPEN ADD MODAL /////
   const handleModalCloseAdd = () => {
