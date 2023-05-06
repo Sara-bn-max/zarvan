@@ -48,7 +48,6 @@ export default function BranchInfoPage() {
   useEffect(() => {
     get(`/api/AccBranches`, token)
       .then((response) => {
-        console.log(response);
         setinfos(response);
       })
       .catch((error) => {
