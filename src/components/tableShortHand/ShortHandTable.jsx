@@ -4,6 +4,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import {
   Check2,
   FileEarmarkExcel,
+  Geo,
   Pencil,
   Plus,
   Printer,
@@ -25,7 +26,9 @@ export default function ShortHandTable({
   handlePrint,
   PrintBtnDisable,
   handleExcel,
-  excelBtnDisable
+  excelBtnDisable,
+  handleCenter,
+  centerBtnDisable,
 }) {
   return (
     <>
@@ -51,6 +54,9 @@ export default function ShortHandTable({
           </Button>
           <Button variant="primary"  className="primary mx-1" onClick={handleExcel} disabled={excelBtnDisable}>
             <FileEarmarkExcel />
+          </Button>
+          <Button variant="primary"  className="primary mx-1" onClick={handleCenter} disabled={centerBtnDisable}>
+            <Geo />
           </Button>
         </ButtonGroup>
       </div>

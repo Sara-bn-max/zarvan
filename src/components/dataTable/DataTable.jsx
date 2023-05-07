@@ -60,6 +60,7 @@ export default function DataTable({
   const [selectedTrId, setSelectedTrId] = useState(null);
   const [selectedTrData, setSelectedTrData] = useState(null);
   const [isActive, setIsActive] = useState(false);
+  const [centerDisable, setCenterDisable] = useState(false)
 
   useEffect(() => {
     setInfo(data);
@@ -434,7 +435,8 @@ const handleDeclineAdd = () =>{
               <ShortHandTable
                 handleExcel={handleExcel}
                 handlePrint={handlePrint}
-                PrintBtnDisable=""
+                handleCenter=''
+                PrintBtnDisable={centerDisable}
                 handleAdd={handleAdd}
                 handleDecline={handleDeclineAdd}
                 handleDelete={() => handleDelete(selectedTrId)}

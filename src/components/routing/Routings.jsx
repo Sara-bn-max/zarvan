@@ -14,7 +14,7 @@ export default function Routings() {
         exact
         path={"/"}
         element={
-          token ? <PrivateRoute component={<BanksInfoPage />} /> : <LoginPage />
+          token ? <BanksInfoPage /> : <LoginPage />
         }
       />
       <Route
