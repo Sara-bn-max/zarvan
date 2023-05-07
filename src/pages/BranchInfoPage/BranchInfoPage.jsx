@@ -17,7 +17,7 @@ export default function BranchInfoPage() {
   const [showEdit, setShowEdit] = useState(false);
   const [branchCode, setBranchCode] = useState("");
   const [formData, setFormData] = useState({});
-  const [showErrorBankName, setShowErrorBankName] = useState(false);
+  const [showErrorBranchName, setShowErrorBranchName] = useState(false);
   const [addDataObject, setAddDataObject] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedData, setAddedData] = useState(null);
@@ -44,7 +44,7 @@ export default function BranchInfoPage() {
       setCenterId(center);
     }
   }, [token]);
-  //////GET ALL DATA OF THE BANKS/////
+  //////GET ALL DATA OF THE BRANCHES/////
   useEffect(() => {
     get(`/api/AccBranches`, token)
       .then((response) => {
@@ -159,11 +159,11 @@ export default function BranchInfoPage() {
     const branchName = infos.map((item) => item.branchName);
     const newBranchName = formData.get("branchName");
     if (branchName.includes(newBranchName)) {
-      setShowErrorBankName(true);
+      setShowErrorBranchName(true);
       setIsSubmitting(false);
       return;
     } else {
-      setShowErrorBankName(false);
+      setShowErrorBranchName(false);
       const data = Object.fromEntries(formData.entries());
       setFormData({ ...data, code: branchCode });
       setAddDataObject(data);
@@ -287,23 +287,22 @@ export default function BranchInfoPage() {
               <Form.Control
                 value={branchCode}
                 placeholder="کد شعبه"
-                name="bankCode"
+                name="branchCode"
                 type="text"
                 onChange={(e) => setBranchCode(e.target.value)}
               />
             </InputGroup>
           </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>نام شعبه:</Form.Label>
             <Form.Control
-              name="bankName"
+              name="branchName"
               required
               placeholder="نام شعبه"
               type="text"
               className="outline-danger"
             />
-            {showErrorBankName && (
+            {showErrorBranchName && (
               <Form.Text className="text-danger">
                 نام شعبه تکراری وارد شده
               </Form.Text>
@@ -314,14 +313,14 @@ export default function BranchInfoPage() {
           <Form.Group className="mb-3">
             <Form.Label>نوع شعبه</Form.Label>
             <Form.Control
-              name="bankWebSite"
+              name="typeOfBranch"
               placeholder="نوع شعبه"
               type="text"
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>فعال:</Form.Label>
-            <Form.Control name="bankDesc" placeholder="فعال" type="text" />
+            <Form.Control name="active" placeholder="فعال" type="text" />
           </Form.Group>
         </div>
       </div>
@@ -368,7 +367,7 @@ export default function BranchInfoPage() {
                 setPreEditData({ ...preEditData, bankName: e.target.value })
               }
             />
-            {showErrorBankName && (
+            {showErrorBranchName && (
               <Form.Text className="text-danger">
                 نام شعبه تکراری وارد شده
               </Form.Text>

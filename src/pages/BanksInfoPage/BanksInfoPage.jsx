@@ -43,7 +43,7 @@ export default function BanksInfoPage() {
       setCenterId(center);
     }
   }, [token]);
-  //////GET ALL DATA OF THE BANKS/////
+  //////GET ALL DATA API/////
   useEffect(() => {
     if (token) {
       get(`/api/ACCBank/GetAllBanks`, token)
@@ -56,7 +56,7 @@ export default function BanksInfoPage() {
     }
   }, [token]);
 
-  //////DATA VIEW TO SET COLUMNS/////
+  //////DATA VIEW TO SET COLUMNS LABELS/////
   const [columnInfo, setColumnInfo] = useState([]);
 
   useEffect(() => {
