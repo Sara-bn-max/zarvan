@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import "./navBarStyle.css";
 import { Image } from "react-bootstrap";
 import logo from "../../assets/images/logo-zarvan.png";
-import { Geo } from "react-bootstrap-icons";
+import { Geo, Person, Translate } from "react-bootstrap-icons";
 
 export default function NavBar(props) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -14,14 +14,19 @@ export default function NavBar(props) {
   const [langName, setLangName] = useState(null);
   const [centerId, setCenterId] = useState(null);
   const [centerName, setCenterName] = useState(null);
+  const [userName, setUserName] = useState(null);
+
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
     const configs = JSON.parse(localStorage.getItem("configs"));
+    const user =  JSON.parse(localStorage.getItem("user"));
 
     const lang = configs.systemLanguageId;
     const langName = configs.systemUserLanguageName;
     const center = configs.systemLanguageId;
     const centerName = configs.systemUserCenterName;
+    const userName = user.userFullName;
+
     if (token) {
       setToken(token);
     }
@@ -30,6 +35,7 @@ export default function NavBar(props) {
       setLangName(langName);
       setCenterId(center);
       setCenterName(centerName);
+      setUserName(userName)
     }
   }, [token]);
 console.log(langId)
@@ -54,12 +60,19 @@ console.log(langId)
           <Nav.Link onClick={() => handleNavClick(3)}>تنظیمات</Nav.Link>
           <Nav.Link onClick={() => handleNavClick(4)}>اتوماسیون اداری</Nav.Link>
         </Nav>
-        <div>
+        <div className="flex-column"> 
           <span>
-            <Geo className="m-2" varient="primary" />
+            <Person className="mx-2" varient="primary" />
+            خوش آمدید {userName} عزیز!
+          </span>
+          <span>
+            <Geo className="mx-2" varient="primary" />
             {centerName}
           </span>
-          {/* <span>{langId ? {showLang} : ''}</span> */}
+          <span>
+            <Translate className="mx-2" varient="primary" />
+            {langName}
+          </span>
         </div>
       </Container>
     </Navbar>

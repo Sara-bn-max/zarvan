@@ -46,7 +46,7 @@ export default function BanksInfoPage() {
   //////GET ALL DATA API/////
   useEffect(() => {
     if (token) {
-      get(`/api/ACCBank/GetAllBanks`, token)
+      get(`/api/ACCBank/GetsUserBankAcces`, token)
         .then((response) => {
           setinfos(response);
         })

@@ -21,3 +21,8 @@ svg {
   min-width: 17px;
   min-height: 17px;
 }
+.flex-column{
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
