@@ -30,7 +30,7 @@ export default function LoginPage() {
   const handleLogin = (e) => {
     e.preventDefault();
     loginReq();
-    post("/api/Account/Login", {
+    post("/api/Account/LoginWebClient", {
       userName: `${useName}`,
       passWord: `${password}`,
       isPersistent: isPersistent,

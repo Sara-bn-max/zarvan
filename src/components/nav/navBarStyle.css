@@ -12,9 +12,9 @@
   display: flex;
 	flex-direction: row;
 	flex-wrap: wrap !important;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
-	align-content: space-around;
+	align-content: space-between;
   text-align: center;
 }
 svg {
