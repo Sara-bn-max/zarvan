@@ -8,12 +8,14 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DatabaseCheck } from "react-bootstrap-icons";
+import CustomSelect from "../../components/customSelect/CustomSelect";
 
 export default function BanksInfoPage() {
   const [infos, setinfos] = useState(null);
   const [show, setShow] = useState(false);
   const [showDl, setShowDl] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showCenter, setShowCenter] = useState(false);
   const [bankCodeValue, setBankCodeValue] = useState("");
   const [formData, setFormData] = useState({});
   const [showErrorBankName, setShowErrorBankName] = useState(false);
@@ -55,7 +57,25 @@ export default function BanksInfoPage() {
         });
     }
   }, [token]);
-
+  ////HANDLE CENTER ADD /////
+  const handleCenter = () => {
+    setShowCenter(true);
+    get(`/api/SystemCenter`,token)
+    .then((response) => {
+      console.log(response)
+    })
+  };
+  const modalBodyCenter = (
+    <div>
+      <CustomSelect>
+        <option>aaa</option>
+        <option>aaa</option>
+      </CustomSelect>
+    </div>
+  );
+  const handleAcceptCenter=() =>{
+    setShowCenter(false)
+  }
   //////DATA VIEW TO SET COLUMNS LABELS/////
   const [columnInfo, setColumnInfo] = useState([]);
 
@@ -82,7 +102,6 @@ export default function BanksInfoPage() {
       title: column.lableValue,
     }));
   }
-
 
   /////HANDLE OPEN ADD MODAL /////
   const handleModalCloseAdd = () => {
@@ -421,6 +440,12 @@ export default function BanksInfoPage() {
             modalAcceptTextEdit={"ویرایش"}
             modalCloseTextEdit={"انصراف"}
             modalTitleEdit={"ویرایش اطلاعات بانک"}
+            handleSubmitCenter={handleAcceptCenter}
+            modalBodyCenter={modalBodyCenter}
+            handleAcceptCenter={handleAcceptCenter}
+            showCenter={showCenter}
+            handleModalCloseCenter={handleAcceptCenter}
+            handleCenter={handleCenter}
             selected={selected}
             idName="bankId"
           />

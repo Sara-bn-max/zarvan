@@ -19,6 +19,7 @@ export default function DataTable({
   handleAdd,
   handleDelete,
   handleEdit,
+  handleCenter,
   show,
   handleModalCloseAdd,
   addFormData,
@@ -43,6 +44,11 @@ export default function DataTable({
   modalAcceptTextEdit,
   modalCloseTextEdit,
   modalTitleEdit,
+  handleSubmitCenter,
+  modalBodyCenter,
+  handleAcceptCenter,
+  showCenter,
+  handleModalCloseCenter,
   deleteResponse,
   selected,
   idName,
@@ -60,7 +66,8 @@ export default function DataTable({
   const [selectedTrId, setSelectedTrId] = useState(null);
   const [selectedTrData, setSelectedTrData] = useState(null);
   const [isActive, setIsActive] = useState(false);
-  const [centerDisable, setCenterDisable] = useState(false)
+  const [centerBtnDisable, setCenterBtnDisable] = useState(true)
+  const [PrintBtnDisable, setPrintBtnDisable] = useState(false)
 
   useEffect(() => {
     setInfo(data);
@@ -95,6 +102,7 @@ export default function DataTable({
       setAcceptBtnDisable(true);
       setEditBtnDisable(true);
       setDeleteBtnDisable(true);
+      setCenterBtnDisable(true)
     }
   }, [deleteResponse]);
   useEffect(() => {
@@ -119,6 +127,7 @@ export default function DataTable({
       setAcceptBtnDisable(true);
       setEditBtnDisable(true);
       setDeleteBtnDisable(true);
+      setCenterBtnDisable(true)
 
       // if (element) {
       //   element.focus();
@@ -144,6 +153,7 @@ const handleDeclineAdd = () =>{
   setAcceptBtnDisable(true);
   setEditBtnDisable(true);
   setDeleteBtnDisable(true);
+  setCenterBtnDisable(true)
 }
   //////DATA AFTER DELETE///
   const handleItemsPerPage = (e) => {
@@ -154,7 +164,7 @@ const handleDeclineAdd = () =>{
     setTotalPages(newTotalPages);
     setCurrentPage(1);
   };
-  //////////////DATA SORTING///
+  //////////DATA SORTING///////
   const [sortedData, setSortedData] = useState(null);
   const [sortKey, setSortKey] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -217,6 +227,7 @@ const handleDeclineAdd = () =>{
     setAcceptBtnDisable(true);
     setEditBtnDisable(!editBtnDisable);
     setDeleteBtnDisable(!deleteBtnDisable);
+    setCenterBtnDisable(!centerBtnDisable)
   };
   //////////HANDLE PRINT/////////
   const handlePrint = () => {
@@ -435,8 +446,9 @@ const handleDeclineAdd = () =>{
               <ShortHandTable
                 handleExcel={handleExcel}
                 handlePrint={handlePrint}
-                handleCenter=''
-                PrintBtnDisable={centerDisable}
+                handleCenter={() => handleCenter(selectedTrData)}
+                centerBtnDisable={centerBtnDisable}
+                PrintBtnDisable={PrintBtnDisable}
                 handleAdd={handleAdd}
                 handleDecline={handleDeclineAdd}
                 handleDelete={() => handleDelete(selectedTrId)}
@@ -482,6 +494,17 @@ const handleDeclineAdd = () =>{
               modalAcceptText={modalAcceptTextEdit}
               modalCloseText={modalCloseTextEdit}
               modalTitle={modalTitleEdit}
+            />
+            <CustomModal
+              handleSubmit={handleSubmitCenter}
+              classNameUse="Center"
+              modalBody={modalBodyCenter}
+              handleAcceptModal={handleAcceptCenter}
+              showOn={showCenter}
+              handleModalClose={handleModalCloseCenter}
+              modalAcceptText='تایید'
+              modalCloseText='انصراف'
+              modalTitle='تخصیص مراکز'
             />
           </>
         )}

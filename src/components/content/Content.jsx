@@ -33,13 +33,19 @@ export default function Content({
   showEdit,
   handleModalCloseEdit,
   modalAcceptTextEdit,
-  handleSubmitEdit={handleSubmitEdit},
+  handleSubmitEdit = { handleSubmitEdit },
   modalCloseTextEdit,
   modalTitleEdit,
   deleteResponse,
   handleEdit,
+  handleSubmitCenter,
+  modalBodyCenter,
+  handleAcceptCenter,
+  showCenter,
+  handleModalCloseCenter,
+  handleCenter,
   selected,
-  idName
+  idName,
 }) {
   return (
     <div className="contentBox">
@@ -90,6 +96,12 @@ export default function Content({
             modalCloseTextEdit={modalCloseTextEdit}
             modalTitleEdit={modalTitleEdit}
             deleteResponse={deleteResponse}
+            handleSubmitCenter={handleSubmitCenter}
+            modalBodyCenter={modalBodyCenter}
+            handleAcceptCenter={handleAcceptCenter}
+            showCenter={showCenter}
+            handleModalCloseCenter={handleModalCloseCenter}
+            handleCenter={handleCenter}
             selected={selected}
             idName={idName}
           />
