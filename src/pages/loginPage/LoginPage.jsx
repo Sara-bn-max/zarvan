@@ -47,7 +47,7 @@ export default function LoginPage() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(userInfos));
       localStorage.setItem("configs", JSON.stringify(userConfigs));
-      loginSuccess(token, userInfos, userConfigs);
+      loginSuccess(userConfigs, userInfos, token);
       navigate(from);
     }
   }, [token, userInfos,userConfigs, dispatch]);
@@ -55,12 +55,12 @@ export default function LoginPage() {
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("userInfos");
-    const configs = localStorage.getItem("userConfigs");
-    if (token && user && configs) {
+    const setting = localStorage.getItem("userConfigs");
+    if (token && user && setting) {
       loginReq();
       setToken(token);
       setUserInfos(user);
-      setUserConfigs(configs);
+      setUserConfigs(setting);
     }
   }, [dispatch]);
   const handleIsPersistent = (e) => {

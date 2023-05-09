@@ -1,20 +1,26 @@
 .custom-container {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
-.table-responsive{
-	border-radius: 15px;
+.table-responsive {
+  border-radius: 15px;
 }
-.space-between{
-		display: flex;
-		flex-direction: row-reverse;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: center;
-		align-content: space-around;
+.space-between {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: space-around;
 }
-.selected{
-	background-color: #c1ccdbc2;
+.selected {
+  background-color: #c1ccdbc2;
 }
-table:hover{
-	cursor: pointer;
+table:hover {
+  cursor: pointer;
+}
+.list-rendering {
+  padding: 5px 5px;
+  border: 1.5px solid #dfdfdf;
+  border-radius: 6px;
+  max-width: 150px;
 }

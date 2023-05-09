@@ -1,4 +1,4 @@
-import React from "react";
+import {useState, useEffect} from "react";
 import { useAuthState } from "../../contexts/auth-context";
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "../../pages/loginPage/LoginPage";
@@ -8,6 +8,7 @@ import BranchInfoPage from "../../pages/BranchInfoPage/BranchInfoPage";
 
 export default function Routings() {
   const { token } = useAuthState();
+  console.log(token)
   return (
     <Routes>
       <Route

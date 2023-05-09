@@ -27,7 +27,7 @@ export function reducer(state, action) {
                 error: null
             }
         case actionTypes.LOGIN_SUCCESS:
-            const { user, token, setting } = action.payload
+            const { user, setting, token} = action.payload
             return {
                 ...state,
                 user: user,
@@ -71,12 +71,13 @@ export function useAuthActions() {
       });
     }
   
-    function loginSuccess(user, token) {
+    function loginSuccess(user, setting, token) {
       return dispatch({
         type: actionTypes.LOGIN_SUCCESS,
         payload: {
           user: user,
           token: token,
+          setting: setting,
         },
       });
     }

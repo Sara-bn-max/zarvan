@@ -29,6 +29,8 @@ export default function BanksInfoPage() {
   const [token, setToken] = useState(null);
   const [langId, setLangId] = useState(null);
   const [centerId, setCenterId] = useState(null);
+  const [centers, setCenters] = useState(null);
+  const [checkedCenters, setCheckedCenters] = useState([]);
 
   //////GET DATA OF USER AND TOKEN/////////
   useLayoutEffect(() => {
@@ -60,22 +62,45 @@ export default function BanksInfoPage() {
   ////HANDLE CENTER ADD /////
   const handleCenter = () => {
     setShowCenter(true);
-    get(`/api/SystemCenter`,token)
-    .then((response) => {
-      console.log(response)
-    })
+    get(`/api/SystemCenter`, token).then((response) => {
+      response ? setCenters(response) : <Loading />;
+    });
   };
-  const modalBodyCenter = (
-    <div>
-      <CustomSelect>
-        <option>aaa</option>
-        <option>aaa</option>
-      </CustomSelect>
-    </div>
+  const centersMap = centers ? (
+    centers.map((center) => (
+      <Form.Group
+        className="col-12 col-md-12 mb-3 list-rendering"
+        controlId={`${center.saleCenterId}`}
+        onChange={(event) => {
+          if (event.target.checked) {
+            setCheckedCenters([...checkedCenters, center.saleCenterId]);
+          } else {
+            setCheckedCenters(
+              checkedCenters.filter(
+                (checkedCenter) => checkedCenter !== center.saleCenterId
+              )
+            );
+          }
+        }}
+      >
+        <Form.Check
+          type="checkbox"
+          key={center.saleCenterId}
+          label={`${center.saleCenterName}`}
+        />
+      </Form.Group>
+    ))
+  ) : (
+    <Loading />
   );
-  const handleAcceptCenter=() =>{
-    setShowCenter(false)
-  }
+  const modalBodyCenter = <div className="row p-2">{centersMap}</div>;
+  const handleAcceptCenter = (e) => {
+    e.preventdefault();
+    post(`/api/SystemCenter/Id?id=1`, checkedCenters).then((response) => {
+      console.log(response);
+    });
+    setShowCenter(false);
+  };
   //////DATA VIEW TO SET COLUMNS LABELS/////
   const [columnInfo, setColumnInfo] = useState([]);
 
