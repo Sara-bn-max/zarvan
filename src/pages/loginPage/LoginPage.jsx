@@ -19,7 +19,7 @@ export default function LoginPage() {
   // const [centerId, setCenterId] = useState(null);
   // const [langId, setLangId] = useState(null);
   const [userInfos, setUserInfos] = useState(null);
-  const [userConfigs, setUserConfigs] = useState(null)
+  const [userConfigs, setUserConfigs] = useState(null);
   const { loading } = useAuthState() || {};
   const dispatch = useAuthDispatch();
   const location = useLocation();
@@ -29,7 +29,9 @@ export default function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginReq();
+    dispatch({
+      type: actionTypes.LOGIN_REQUEST,
+    });
     post("/api/Account/LoginWebClient", {
       userName: `${useName}`,
       passWord: `${password}`,
@@ -38,7 +40,6 @@ export default function LoginPage() {
       setToken(response.userTokens.accessToken);
       setUserInfos(response.userInfos);
       setUserConfigs(response.userConfigs);
-     
     });
   };
 
@@ -47,20 +48,29 @@ export default function LoginPage() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(userInfos));
       localStorage.setItem("configs", JSON.stringify(userConfigs));
-      loginSuccess(userConfigs, userInfos, token);
+      dispatch({
+        type: actionTypes.LOGIN_SUCCESS,
+        payload: {
+          user: userInfos,
+          setting: userConfigs,
+          token: token,
+        },
+      });
       navigate(from);
     }
-  }, [token, userInfos,userConfigs, dispatch]);
+  }, [token, userInfos, userConfigs, dispatch]);
 
   useLayoutEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("userInfos");
-    const setting = localStorage.getItem("userConfigs");
+    const user = localStorage.getItem("user");
+    const setting = localStorage.getItem("configs");
     if (token && user && setting) {
-      loginReq();
+      dispatch({
+        type: actionTypes.LOGIN_REQUEST,
+      });
       setToken(token);
-      setUserInfos(user);
-      setUserConfigs(setting);
+      setUserInfos( JSON.parse(user));
+      setUserConfigs( JSON.parse(setting));
     }
   }, [dispatch]);
   const handleIsPersistent = (e) => {

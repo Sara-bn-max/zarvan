@@ -21,11 +21,11 @@ export default function NavBar(props) {
     const configs = JSON.parse(localStorage.getItem("configs"));
     const user =  JSON.parse(localStorage.getItem("user"));
 
-    const lang = configs.systemLanguageId;
-    const langName = configs.systemUserLanguageName;
-    const center = configs.systemLanguageId;
-    const centerName = configs.systemUserCenterName;
-    const userName = user.userFullName;
+    const lang = configs?.systemLanguageId;
+    const langName = configs?.systemUserLanguageName;
+    const center = configs?.systemCenterId;
+    const centerName = configs?.systemUserCenterName;
+    const userName = user?.userFullName;
 
     if (token) {
       setToken(token);
@@ -38,7 +38,6 @@ export default function NavBar(props) {
       setUserName(userName)
     }
   }, [token]);
-console.log(langId)
   const handleNavClick = (index) => {
     props.onNavClick(index);
   };

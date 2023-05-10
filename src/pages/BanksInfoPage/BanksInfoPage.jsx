@@ -37,8 +37,8 @@ export default function BanksInfoPage() {
     const token = localStorage.getItem("token");
     const configs = JSON.parse(localStorage.getItem("configs"));
 
-    const lang = configs.systemLanguageId;
-    const center = configs.systemCenterId;
+    const lang = configs?.systemLanguageId;
+    const center = configs?.systemCenterId;
     if (token) {
       setToken(token);
     }
