@@ -1,13 +1,13 @@
 import { useState } from "react";
 import ThemeProvider from "react-bootstrap/ThemeProvider";
-import Content from "../components/content/Content";
 import Menu from "../components/manu/Menu";
-import BanksInfoPage from "../pages/BanksInfoPage/BanksInfoPage";
 import "./mainStyle.css";
 import NavBar from "../components/nav/NavBar";
-import { List, MenuButtonWideFill } from "react-bootstrap-icons";
+import { List } from "react-bootstrap-icons";
 import Routings from "../components/routing/Routings";
 import { useLocation } from "react-router-dom";
+import LoginPage from "../pages/loginPage/LoginPage";
+import { useAuthState } from "../contexts/auth-context";
 
 export default function MainLayout() {
   const [openMenu, setOpenMenu] = useState(false); // state variable for menu open/close
@@ -16,6 +16,7 @@ export default function MainLayout() {
   const handleNavClick = (index) => {
     setIndexOfMenu(index);
   };
+  const { token } = useAuthState()
 
   const handleMenuClick = () => {
     setOpenMenu(!openMenu); // toggle the state variable
@@ -23,14 +24,14 @@ export default function MainLayout() {
 
   const location = useLocation();
   const currentUrl = location.pathname;
-  const showNavAndSidebar = currentUrl !== "/";
+  const showNavAndSidebar =  currentUrl !== "/";
   return (
     <>
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
         minBreakpoint="xxs"
       >
-        {showNavAndSidebar ? (
+        {token ? (
           <div className="customBox">
             <div className="mobile-menu" onClick={handleMenuClick}>
               <List />
@@ -47,7 +48,7 @@ export default function MainLayout() {
               </div>
             </div>
           </div>        ) : (
-          <Routings />
+          <LoginPage />
         )}
       </ThemeProvider>
     </>

@@ -8,14 +8,13 @@ import BranchInfoPage from "../../pages/BranchInfoPage/BranchInfoPage";
 
 export default function Routings() {
   const { token } = useAuthState();
-  console.log(token)
   return (
     <Routes>
       <Route
         exact
         path={"/"}
         element={
-          token ? <BanksInfoPage /> : <LoginPage />
+          token ? <PrivateRoute component={<BanksInfoPage />} /> : <LoginPage />
         }
       />
       <Route
