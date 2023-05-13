@@ -22,7 +22,7 @@ export default function BanksInfoPage() {
   const [addDataObject, setAddDataObject] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addedData, setAddedData] = useState(null);
-  const [deleteId, setDeleteId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [preEditData, setPreEditData] = useState(null);
   const [deleteResponse, setDeleteResponse] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -60,7 +60,11 @@ export default function BanksInfoPage() {
     }
   }, [token]);
   ////HANDLE CENTER ADD /////
-  const handleCenter = () => {
+  const handleCenter = (id) => {
+    console.log(id);
+    if (id) {
+      setSelectedId(id.bankId);
+    }
     setShowCenter(true);
     get(`/api/SystemCenter`, token).then((response) => {
       response ? setCenters(response) : <Loading />;
@@ -87,6 +91,7 @@ export default function BanksInfoPage() {
           type="checkbox"
           key={center.saleCenterId}
           label={`${center.saleCenterName}`}
+          className="d-block"
         />
       </Form.Group>
     ))
@@ -95,9 +100,35 @@ export default function BanksInfoPage() {
   );
   const modalBodyCenter = <div className="row p-2">{centersMap}</div>;
   const handleAcceptCenter = (e) => {
-    e.preventdefault();
-    post(`/api/SystemCenter/Id?id=1`, checkedCenters).then((response) => {
-      console.log(response);
+    e.preventDefault();
+    post(`/api/SystemCenter/Id?id=${selectedId}`, {"centerId": checkedCenters}, token)
+    .then((response) => {
+      setCheckedCenters([]);
+      toast.success("بانک مورد نظر به مراکز ذکر شده اضافه شد", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    })
+    .catch((error) => {
+      setCheckedCenters([]);
+      console.log(error);
+      setSelected(false);
+      toast.error("امکان اضافه کردن این بانک به مراکز فعلا وجود ندارد", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     });
     setShowCenter(false);
   };
@@ -199,7 +230,7 @@ export default function BanksInfoPage() {
     }
   };
 
-  /////// handle edit
+  /////// handle edit////////
   const handleModalCloseEdit = () => {
     setShowEdit(false);
     setSelected(false);
@@ -259,15 +290,15 @@ export default function BanksInfoPage() {
   };
   const handleDelete = (id) => {
     if (id) {
-      setDeleteId(id);
+      setSelectedId(id);
       setShowDl(true);
     }
   };
   const handleAcceptDl = (e) => {
     e.preventDefault();
-    del(`/api/ACCBank/${deleteId}`, token)
+    del(`/api/ACCBank/${selectedId}`, token)
       .then((response) => {
-        setDeleteResponse(deleteId);
+        setDeleteResponse(selectedId);
         toast.success("بانک مورد نظر حذف شد", {
           position: "top-right",
           autoClose: 3000,
@@ -446,6 +477,7 @@ export default function BanksInfoPage() {
             handleAcceptAdd={handleAcceptAdd}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
+            handleCenter={handleCenter}
             handleModalCloseAdd={handleModalCloseAdd}
             addFormData={addDataObject}
             addedData={addedData}
@@ -470,7 +502,6 @@ export default function BanksInfoPage() {
             handleAcceptCenter={handleAcceptCenter}
             showCenter={showCenter}
             handleModalCloseCenter={handleAcceptCenter}
-            handleCenter={handleCenter}
             selected={selected}
             idName="bankId"
           />
