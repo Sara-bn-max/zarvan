@@ -49,7 +49,6 @@ export default function MainLayout() {
             </div>
           </div>        ) : (
           <LoginPage />
-          //sarah
         )}
       </ThemeProvider>
     </>
